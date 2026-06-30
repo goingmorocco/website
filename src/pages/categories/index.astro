@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+import { buildBreadcrumbSchema, type BreadcrumbItem } from "../../utils/seo";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { getCollection } from "astro:content";
+
+const locale = "en" as const;
+
+const breadcrumbItems: BreadcrumbItem[] = [
+  { label: "Home", href: "/" },
+  { label: "Categories" },
+];
+
+const categories = await getCollection("categories", (c) => c.data.locale === locale);
+const posts = await getCollection("blog", (p) => p.data.locale === locale && !p.data.draft);
+const countFor = (id: string) => posts.filter((p) => p.data.category === id).length;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Categories — GoingMorocco"
+  description="Browse Morocco travel guides by topic: the Sahara, the Atlas Mountains, the medinas, food, and trip planning."
+  alternateUrls={{ en: "/categories/", ar: "/ar/categories/" }}
+  structuredData={buildBreadcrumbSchema(breadcrumbItems)}
+>
+  <Container class="py-12">
+    <Breadcrumbs items={breadcrumbItems} />
+  </Container>
+
+  <Container class="pb-20">
+    <h1 class="font-display text-3xl text-ink sm:text-4xl">Categories</h1>
+    <div class="mt-8 grid gap-5 sm:grid-cols-2">
+      {categories.map((category) => (
+        <a
+          href={`/categories/${category.data.id}/`}
+          class="rounded-2xl border border-sand-light bg-white p-6 transition-shadow hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal"
+        >
+          <h2 class="font-display text-xl text-ink">{category.data.name}</h2>
+          <p class="mt-2 text-sm text-ink/70">{category.data.description}</p>
+          <p class="mt-3 text-xs font-medium uppercase tracking-wide text-gold-text">
+            {countFor(category.data.id)} {countFor(category.data.id) === 1 ? "guide" : "guides"}
+          </p>
+        </a>
+      ))}
+    </div>
+  </Container>
+</BaseLayout>

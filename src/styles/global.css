@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+/*
+  Self-hosted via @fontsource-variable (not Google Fonts CDN): one origin
+  instead of two (no extra DNS/TLS handshake to fonts.googleapis.com), works
+  offline/in restricted networks, and ships as a single variable font per
+  family instead of one file per weight. Using the weight-axis-only build
+  (`wght.css`, not `full.css`) skips the optical-size and italic axes we
+  don't use, which keeps the file smaller.
+  Each family's CSS is itself split into multiple @font-face blocks by
+  unicode-range (latin vs arabic, etc.), so the browser only ever downloads
+  the subset actually needed for the characters on the page.
+*/
+@import "@fontsource-variable/fraunces/wght.css";
+@import "@fontsource-variable/inter/wght.css";
+@import "@fontsource-variable/markazi-text/wght.css";
+@import "@fontsource-variable/noto-sans-arabic/wght.css";
+
+/*
+  Design tokens for GoingMorocco.
+  Palette: royal blue (trust, the Atlantic/Mediterranean coast) paired with
+  warm sand/gold (the desert interior) on a warm off-white paper background —
+  deliberately not a generic "travel blue gradient" or cream+terracotta combo.
+  Full rationale and the rest of the type/layout system lands in Step 2
+  (layout + components); this file defines the tokens so every later step
+  draws from the same palette instead of re-deciding colors per component.
+*/
+@theme {
+  --color-paper: #faf7f1; /* page background: warm off-white, not stark white */
+  --color-ink: #232017; /* primary text: warm near-black, not pure #000 */
+  --color-royal: #1b3a5c; /* primary brand color: deep royal blue */
+  --color-royal-dark: #122a44;
+  --color-royal-light: #3a5d87;
+  --color-sand: #c9a876; /* accent: gold/sand, used sparingly */
+  --color-sand-light: #e8dcc8;
+  --color-sand-dark: #a3814f;
+  /* Same gold hue, darkened for use as readable text: sand-dark only hits
+     ~3.4:1 against the paper/white backgrounds (fine for large bold text,
+     fails WCAG AA's 4.5:1 for the small uppercase labels it's actually used
+     for here) — gold-text hits ~4.7:1, verified against both backgrounds. */
+  --color-gold-text: #8a6a35;
+
+  --font-display: "Fraunces Variable", "Markazi Text Variable", serif;
+  --font-body: "Inter Variable", "Noto Sans Arabic Variable", system-ui, sans-serif;
+}
+
+html[lang="ar"] {
+  --font-display: "Markazi Text Variable", "Fraunces Variable", serif;
+  --font-body: "Noto Sans Arabic Variable", "Inter Variable", system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+/*
+  Baseline focus visibility for every interactive element, so accessibility
+  doesn't depend on remembering to add focus-visible: utility classes to
+  each individual link/button by hand — components can still override this
+  for a more tailored ring, but nothing is ever left with no visible focus
+  state, which is a hard WCAG 2.4.7 requirement, not a nice-to-have.
+*/
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-royal);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+  Logical properties only (ps-/pe-/ms-/me- via Tailwind's built-in support,
+  text-start/text-end) instead of pl-/pr-/text-left/text-right anywhere
+  direction-sensitive — this is what lets the exact same component markup
+  flip correctly between the LTR English site and the RTL Arabic site with
+  zero RTL-specific component variants.
+*/
+
+/*
+  Article body typography. Hand-written rather than @tailwindcss/typography:
+  this is a small, fully-known set of rules using only logical properties
+  (margin-block, padding-inline-start), so it's guaranteed correct in RTL
+  without auditing a third-party plugin's CSS for direction-sensitive values.
+*/
+.prose-content {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.prose-content > * + * {
+  margin-block-start: 1.25em;
+}
+.prose-content h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-block-start: 2em;
+  color: var(--color-ink);
+}
+.prose-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  margin-block-start: 1.75em;
+  color: var(--color-ink);
+}
+.prose-content p {
+  color: color-mix(in srgb, var(--color-ink) 85%, transparent);
+}
+.prose-content a {
+  color: var(--color-royal);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-royal) 35%, transparent);
+}
+.prose-content ul,
+.prose-content ol {
+  padding-inline-start: 1.5em;
+}
+.prose-content ul {
+  list-style-type: disc;
+}
+.prose-content ol {
+  list-style-type: decimal;
+}
+.prose-content blockquote {
+  border-inline-start: 3px solid var(--color-sand);
+  padding-inline-start: 1em;
+  font-style: italic;
+  color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+}
+.prose-content code {
+  background-color: var(--color-sand-light);
+  border-radius: 0.25em;
+  padding: 0.15em 0.4em;
+  font-size: 0.9em;
+}
+.prose-content img {
+  border-radius: 1rem;
+}

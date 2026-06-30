@@ -1,0 +1,35 @@
+---
+import { t, localizedPath, type Locale } from "../utils/i18n";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  locale: Locale;
+  previous: CollectionEntry<"blog"> | null;
+  next: CollectionEntry<"blog"> | null;
+}
+const { locale, previous, next } = Astro.props;
+const strings = t(locale);
+---
+
+<nav aria-label={`${strings.blog.previousArticle} / ${strings.blog.nextArticle}`} class="grid gap-4 border-t border-sand-light pt-8 sm:grid-cols-2">
+  <div class="text-start">
+    {
+      previous && (
+        <a href={localizedPath(locale, `/blog/${previous.data.slug}/`)} class="group block rounded-xl border border-sand-light p-4 hover:border-royal">
+          <p class="text-xs font-semibold uppercase tracking-wide text-ink/50">{strings.blog.previousArticle}</p>
+          <p class="mt-1 font-display text-base text-ink group-hover:text-royal">{previous.data.title}</p>
+        </a>
+      )
+    }
+  </div>
+  <div class="text-end">
+    {
+      next && (
+        <a href={localizedPath(locale, `/blog/${next.data.slug}/`)} class="group block rounded-xl border border-sand-light p-4 hover:border-royal">
+          <p class="text-xs font-semibold uppercase tracking-wide text-ink/50">{strings.blog.nextArticle}</p>
+          <p class="mt-1 font-display text-base text-ink group-hover:text-royal">{next.data.title}</p>
+        </a>
+      )
+    }
+  </div>
+</nav>

@@ -1,0 +1,34 @@
+---
+import { locales, localeMeta, type Locale } from "../utils/i18n";
+
+interface Props {
+  currentLocale: Locale;
+  /** Map of locale -> the equivalent URL in that locale, e.g. { en: "/", ar: "/ar/" } */
+  alternateUrls: Partial<Record<Locale, string>>;
+}
+const { currentLocale, alternateUrls } = Astro.props;
+---
+
+<div class="flex items-center gap-1 text-sm">
+  {
+    locales.map((locale) => {
+      const href = alternateUrls[locale];
+      const isCurrent = locale === currentLocale;
+      if (!href) return null;
+      return (
+        <a
+          href={href}
+          aria-current={isCurrent ? "page" : undefined}
+          class:list={[
+            "rounded-full px-2.5 py-1 transition-colors",
+            isCurrent
+              ? "bg-royal text-paper"
+              : "text-ink/70 hover:bg-sand-light hover:text-ink",
+          ]}
+        >
+          {localeMeta[locale].label}
+        </a>
+      );
+    })
+  }
+</div>

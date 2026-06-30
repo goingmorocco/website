@@ -1,0 +1,139 @@
+---
+title: "Moroccan Lamb Tagine Easy Recipe"
+description: "Today, we'll learn how to cook the lamb tagine. Table of content: <uInroduction</u <uIngredients of Moroccan Lamb Tagine</u These dishes are part of the broa..."
+locale: "en"
+slug: "moroccan-lamb-tagine-easy-recipe"
+publishDate: 2024-08-03
+author: "Waleed Taklite"
+category: "recipes"
+tags: ["Food & Recipes"]
+featuredImage: "./images/moroccan-lamb-tagine-easy-recipe.webp"
+featuredImageAlt: "Moroccan Lamb Tagine Easy Recipe"
+---
+
+Table of content:
+
+<u>Inroduction</u>
+
+<u>Ingredients of Moroccan Lamb Tagine</u> These dishes are part of the broader tradition of [Moroccan cuisine](https://en.wikipedia.org/wiki/Moroccan_cuisine), which blends Berber, Arab, and Mediterranean influences.
+
+<u>Cooking The Lamb Tagine Step By Step</u>
+
+- <u>Marinate the Lamb</u>
+- <u>Prepare the Ingredients</u>
+- <u>Start Cooking The Tagine</u>
+- <u>Brown the Lamb</u>
+- <u>Add Liquids and Spices.</u>
+- <u>Simmer the Tagine</u>
+- <u>Add Fruits, Olives, And Herbs</u>
+- <u>Serve The Tagine</u>
+
+<u>Click here to skip to recipe</u>
+
+Moroccan lamb tagine is a popular food in Morocco, especially during Eid Al-Adha when lamb is abundant. It is a dish that combines lamb with vegetables or just onions, herbs, and spices, all slowly cooked in a clay pot called a "tagine," which gives the dish its name.
+
+Actually, In Morocco, any meal cooked in a tagine pot is automatically called a tagine. To distinguish between different types of this dish, Moroccans name the tagine after the used meat, such as lamb tagine, chicken tagine, or sardine tagine. Today, we’ll learn how to prepare a traditional lamb tagine.
+
+Typically, this tagine is prepared with lamb, vegetables, and a variety of spices. However, if you’re making it for the first time, we recommend a simpler version using just lamb and onions. This easy option requires less effort and is sure to be a hit with kids.
+
+By the way! for the best results when making lamb tagine or any tagine, it would be ideal to use a clay tagine. These pots distribute heat evenly and retain moisture, which allows the flavors to develop slowly. The porous clay also absorbs and releases spices over time, adding a unique depth to your cooking.
+
+But don’t worry if you don’t have a clay tagine. Metal tagine pots work well too. They conduct heat efficiently and can still produce a delicious, aromatic lamb tagine, so you’ll be in good hands either way. Here's a good option on amazon:
+
+## Ingredients of Moroccan Lamb Tagine
+
+To cook the lamb tagine, you'll need to gather the following ingredients. We will be using each set of ingredients during different steps to finally assemble the tagine at the end.
+
+- 2 lbs (900g) lamb shoulder or leg, cut into chunks
+- 2 onions, finely chopped
+- 3 cloves garlic, minced
+- 2 tablespoons olive oil
+- 1 teaspoon ground cumin
+- 1 teaspoon ground coriander
+- 1 teaspoon ground ginger
+- 1 teaspoon ground cinnamon
+- 1 teaspoon ground turmeric
+- 1 teaspoon paprika
+- 1 teaspoon salt
+- 1/2 teaspoon black pepper
+- 1/2 teaspoon saffron threads (optional)
+- 1 cup (240ml) water
+- 1 cup dried apricots, halved
+- 1/2 cup pitted green olives
+- 1/4 cup chopped fresh cilantro
+- 1/4 cup chopped fresh parsley
+- 1 preserved lemon, cut into quarters (optional)
+- 1/4 cup slivered almonds, toasted (for garnish)
+
+## Cooking The Lamb Tagine Step By Step
+
+After gathering all the ingredients, it's now time to start cooking our lamb tagine. We will help you learn the way step by step. Please make sure you're using a clay tagine pot and not a metal one. The taste of tagines cooked in clay pot are much better than those cooked in metal pots.
+
+### Marinate the Lamb
+
+Marinating the lamb is crucial for infusing it with the robust flavors of Moroccan spices. This is an important and it only takes two steps. If you want, you can leave the meat marinate overnight. But since we're already started preparing for cooking the tagine, let's let it marinate for 1 hour.
+
+- Step 1: In a large bowl, combine the lamb chunks with cumin, coriander, ginger, cinnamon, turmeric, paprika, salt, and pepper.
+- Step 2: Mix well to ensure each piece of lamb is coated evenly. For the best results, cover and let the lamb marinate for at least 1 hour. If possible, marinate overnight in the refrigerator to allow the spices to penetrate the meat deeply.
+
+### Prepare the Ingredients
+
+Before diving into cooking, it's essential to have all ingredients prepped and ready. Cooking any tagine requires some time and preparation. It's part of the fun, so take your time with each step because it's worth it.
+
+- Step 1: Cut the lamb into chunks. Aim for uniform pieces to ensure even cooking. It's okay to add boney pieces, especially those that contain bone marrow.
+- Step 2: Finely chop the onions. This will help them cook down and blend seamlessly into the sauce.
+- Step 3: Mince the garlic. Fresh garlic will infuse the dish with its pungent aroma. Don't put much though. Two cloves would be enough.
+- Step 4: Halve the dried apricots. These will add a touch of sweetness to balance the savory elements.
+- Step 5: Quarter the preserved lemon (if using). This will bring a unique tangy flavor.
+- Step 6: Chop the fresh cilantro and parsley. These herbs will provide a fresh finish to the dish.
+
+### Start Cooking The Tagine
+
+Building the flavor base starts with cooking the aromatics. Here's how to do it step by step:
+
+- Step 1: In a large tagine or heavy-bottomed pot, heat the olive oil over medium heat. Remember, clay tagines are always the best option. You can also use natural butter instead of olive oil.
+- Step 2: Add the chopped onions and cook until they become soft and translucent. This will usually takes between 5 to 7 minutes. Close the lid, but come back to stir frequently to prevent the onions from burning.
+- Step 3: Add the minced garlic and cook for another 1-2 minutes, until <u>fragrant.</u> Be careful not to burn the garlic as it can turn bitter.
+
+### Brown the Lamb
+
+Browning the lamb will add depth and complexity to the dish:
+
+- Step 1: Add the marinated lamb to the pot and cook until browned on all sides, about 5-7 minutes. Do not overcrowd the pot, you'll still need space for all the other ingredients.
+
+### Add Liquids and Spices.
+
+Now it's time to add the liquids and additional spices to create the sauce.
+
+- Step 1: Pour in the water and saffron threads (if using) to the pot. Stir well to combine all the ingredients. If you have saffron threads, soak them in a bit of warm water before adding to release their full flavor.
+
+### Simmer the Tagine
+
+Slow cooking is key to achieving tender lamb and a rich sauce:
+
+- Step 1: Reduce the heat to low, cover the tagine or pot with a lid, and let it simmer for about 1.5 to 2 hours. Stir occasionally to ensure nothing sticks to the bottom and to meld the flavors together. The lamb should become tender and the sauce should thicken as it simmers.
+
+### Add Fruits, Olives, And Herbs
+
+Adding fruits and olives gives the tagine its characteristic sweet and savory balance:
+
+- Step 1: About 30 minutes before the tagine is done, add the dried apricots, green olives, and preserved lemon (if using). Make sure the apricots are evenly distributed to ensure they plump up and infuse the dish with their sweetness. Continue to simmer until the lamb is very tender and the apricots are plump.
+- Step 2: Finish with Herbs. Stir in the chopped cilantro and parsley just before serving. Taste and adjust the seasoning with salt and pepper if needed.
+
+### Serve The Tagine
+
+Transfer the tagine to a serving dish if desired. If you're already using a clay pot to cook your lamb tagine, then it's perfectly fine to serve it directly in its original pot, which is what we actually recommend. For the final touch, you can garnish with toasted slivered almonds for a crunchy texture contrast. We recommend serving your tagine with side small plates of salads, hot chilli sauce, and olives. Be creative, you might discover other flavors that goes with the lamb tagine.
+
+There you have it! This was a step-by-step guide to creating a delicious Moroccan Lamb Tagine. This dish not only showcases the rich culinary traditions of Morocco but also offers a delightful experience for the senses. The combination of tender lamb, fragrant spices, sweet apricots, and tangy preserved lemons creates a meal that is both comforting and exotic. Enjoy this delicious journey with your family and friends, and savor the vibrant flavors of Morocco right at your dining table. Bon appétit!
+
+### Related Guides
+
+- [Easy Soup Recipe: Moroccan Bissara](https://www.goingmorocco.com/post/easy-soup-recipe-moroccan-bissara)
+- [Moroccan Harira Simple Recipe to Warm Up Your Winter](https://www.goingmorocco.com/post/moroccan-harira-simple-recipe)
+- [Moroccan Tanjia Recipe with Lamb or Beef](https://www.goingmorocco.com/post/moroccan-tanjia-recipe-with-lamb-or-beef)
+- [Moroccan Rfissa Recipe Step by Step](https://www.goingmorocco.com/post/moroccan-rfissa-recipe-step-by-step)
+
+### Helpful Resources
+
+- [Moroccan Cuisine – Wikipedia](https://en.wikipedia.org/wiki/Moroccan_cuisine)
+

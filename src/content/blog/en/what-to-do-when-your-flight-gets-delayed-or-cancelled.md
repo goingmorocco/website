@@ -1,0 +1,246 @@
+---
+title: "What to Do When Your Flight Gets Delayed or Cancelled"
+description: "If your flight is delayed or cancelled, you should first check your options with the airline, keep proof of expenses, and use services like AirHelp or Compen..."
+locale: "en"
+slug: "what-to-do-when-your-flight-gets-delayed-or-cancelled"
+publishDate: 2026-02-12
+author: "Waleed Taklite"
+category: "tourism"
+tags: ["Transport & Getting Around"]
+featuredImage: "./images/what-to-do-when-your-flight-gets-delayed-or-cancelled.webp"
+featuredImageAlt: "What to Do When Your Flight Gets Delayed or Cancelled"
+---
+
+If your flight is delayed or cancelled, you should first check your options with the airline, keep proof of expenses, and use services like [<u>**AirHelp**</u>](https://airhelp.tpk.ro/ZYTz1PNl) or [<u>**Compensair**</u>](https://compensair.tpk.ro/R3zj4nW7) to claim compensation. Let me explain more in details.
+
+Flight delays and cancellations are part of modern travel. No matter how well you plan your trip, things can still go wrong at the airport. Weather, technical problems, staff shortages, or air traffic control issues can all affect your flight. When this happens, many travelers feel confused and stressed because they don’t know what their rights are or what steps to take.
+
+The first thing to understand is that you are not powerless. In many cases, airlines are legally required to help you when your flight is delayed or cancelled. This can include meals, hotel stays, rebooking, refunds, and sometimes even financial compensation. The problem is that most people don’t know these rules, and airlines don’t always explain them clearly at the airport.
+
+That’s why it’s important to learn what to do step by step. If you know your rights and act calmly and smartly, you can protect your time, your money, and your travel plans. This guide will walk you through everything: what to do at the airport, how to deal with airlines, when you may get compensation, and how services like AirHelp can help you later.
+
+As a Moroccan, I can tell you delays and last-minute changes on domestic and regional routes are something locals deal with regularly, especially around Royal Air Maroc's busier connections through Casablanca.
+
+## Step 1: Stay Calm and Get the Facts from the Airline
+
+When you see “Delayed” or “Cancelled” on the screen, your first job is to get clear information. Go to the airline desk or gate staff and ask simple questions:
+
+1. Is the flight delayed or cancelled?
+2. Why did this happen?
+3. How long is the delay?
+4. What are my options now?
+
+Always try to get the reason for the disruption in writing if possible (for example, by email, app notification, or printed paper). This reason matters later if you want to ask for compensation. Some reasons give you rights to money, and others don’t. Knowing this early helps you make better decisions.
+
+Also, take screenshots of the flight status, your boarding pass, and any messages from the airline. Keep everything. These small things become important proof if you need to make a claim later.
+
+## Step 2: Know Your Basic Rights as a Passenger
+
+In many parts of the world, especially in Europe, there are strong laws that protect air passengers. One of the most important is EU Regulation EC 261/2004. This law applies if:
+
+1. Your flight leaves from an EU airport (even if the airline is not European).
+2. Or , your flight arrives in the EU with a European airline.
+
+Under this law, if your flight is delayed by 3 hours or more, cancelled, or if you are denied boarding, you may have the right to compensation. The amount can be up to €600 per person, depending on the distance of the flight and the delay time.
+
+On top of that, airlines must take care of you while you wait. This can include food, drinks, hotel accommodation (if you stay overnight), and transport to the hotel. Many travelers don’t ask for this, but they should. It is your right in many cases.
+
+## Step 3: Rebooking, Refunds, and What You Should Choose
+
+When your flight is cancelled, the airline must usually offer you a choice:
+
+Rebooking on the next available flight, or a full refund for the unused ticket.
+
+If you still want to travel, rebooking is often the best option. But sometimes the next flight is many hours or even days later. In that case, a refund might make more sense, especially if you can find another airline yourself.
+
+Always ask what the airline is offering. Do not assume. Some people wait quietly and lose time. Others speak up and get better options. Being polite but firm works best.
+
+Also, if you pay for food, transport, or hotels because the airline didn’t help you, keep the receipts. You may be able to get this money back later.
+
+## Step 4: When You May Be Entitled to Compensation
+
+Not every delay or cancellation gives you the right to money. Airlines don’t have to pay compensation if the problem was caused by “extraordinary circumstances.” This usually means things like:
+
+- Bad weather
+- Airport strikes
+- Air traffic control problems
+- Security issues
+
+But if the delay or cancellation was caused by technical problems, staff issues, or overbooking, then you often _do_ have the right to compensation under EU law.
+
+This is where many travelers get confused. Airlines sometimes say “it was not our fault,” but that is not always true. You don’t have to accept their first answer. You have the right to check and challenge it.
+
+## Step 5: Claiming Compensation on Your Own vs. Using a Service
+
+You can always try to claim compensation yourself by contacting the airline directly. Some people succeed, especially if they understand the law and are patient. But many airlines delay, reject claims, or make the process very slow and stressful.
+
+This is why many travelers use services that specialize in flight compensation claims. These companies know the rules, deal with airlines every day, and handle the legal side for you.
+
+You don’t pay them upfront. Most of them work on a “no win, no fee” basis. This means they only take a percentage if they win your case. If they don’t win, you pay nothing.
+
+## Introducing [<u>AirHelp</u>](https://airhelp.tpk.ro/ZYTz1PNl) and [<u>Compensair</u>](https://compensair.tpk.ro/R3zj4nW7): What They Are and What They Do
+
+[<u>**AirHelp**</u>](https://airhelp.tpk.ro/ZYTz1PNl) and [<u>**Compensair**</u>](https://compensair.tpk.ro/R3zj4nW7) are two well-known companies that help airline passengers get compensation when flights go wrong. Their main job is simple: they check if your delay, cancellation, or boarding problem qualifies for compensation, and if it does, they handle the whole claim process for you.
+
+You give them your flight details, and they analyze the case. If you are eligible, they contact the airline, negotiate on your behalf, and if needed, take legal action. Most travelers like using services like [<u>AirHelp</u>](https://airhelp.tpk.ro/ZYTz1PNl) or [<u>Compensair</u>](https://compensair.tpk.ro/R3zj4nW7) because they don’t have to deal with long emails, legal language, or slow airline replies.
+
+AirHelp and Compensair also offer online tools that make things easier. AirHelp has features like flight tracking and delay alerts, while Compensair focuses mainly on the claims process itself. For many travelers, both services are useful because they save time, reduce stress, and improve your chances of actually getting the money you are owed.
+
+## How [<u>AirHelp</u>](https://airhelp.tpk.ro/ZYTz1PNl) and [<u>Compensair</u>](https://compensair.tpk.ro/R3zj4nW7) Can Save You Time and Stress
+
+Many people underestimate how difficult it can be to deal with airlines after a delay or cancellation. You send emails, wait for weeks, receive automatic replies, and sometimes your claim gets rejected without a clear explanation. This process can be frustrating, especially if you are not familiar with passenger rights or legal terms.
+
+This is where companies like<u> </u>[<u>**AirHelp**</u>](https://airhelp.tpk.ro/ZYTz1PNl) and [<u>**Compensair**</u>](https://compensair.tpk.ro/R3zj4nW7) can make things easier. They understand the laws, know how airlines usually respond, and have experience handling thousands of claims. Instead of going back and forth with the airline yourself, they manage the communication and, if necessary, take legal steps on your behalf.
+
+Yes, they charge a fee if they successfully win your case. But for many travelers, that fee is worth it. You save time, avoid stress, and still receive compensation that you might not have managed to get on your own.
+
+### AirHelp vs Compensair – Quick Comparison
+
+[<u>**AirHelp**</u>](https://airhelp.tpk.ro/ZYTz1PNl) and [<u>**Compensair**</u>](https://compensair.tpk.ro/R3zj4nW7) offer very similar services, but there are some small differences between them. Both work on a “no win, no fee” basis and both focus mainly on compensation under EU passenger rights laws. However, AirHelp is a larger global company and offers extra features like a mobile app, flight tracking, and optional travel protection services. 
+
+Compensair focuses more strictly on the claims process itself and often advertises slightly lower success fees. In simple terms, both can help you get compensation, but AirHelp offers more extra tools, while Compensair may sometimes charge a lower percentage.
+
+## [<u>**AirHelp Services and Subscriptions Explained**</u>](https://airhelp.tpk.ro/ZYTz1PNl)
+
+Before talking about paid plans, it’s important to know that AirHelp also offers **free tools** that any traveler can use. One of the main free features is the **compensation checker**, where you enter your flight details and AirHelp tells you if you may be entitled to money. They also offer basic **flight tracking and delay alerts**, so you can see in real time if your flight is delayed, cancelled, or changed. These tools are useful even if you don’t buy anything, and they help travelers understand their situation before they decide what to do next.
+
+### AirHelp+ Subscription
+
+[<u>AirHelp+ is AirHelp’s main </u>](https://airhelp.tpk.ro/Mr4B8uyB)[<u>**premium membership**</u>](https://airhelp.tpk.ro/Mr4B8uyB). It’s designed for travelers who want more than just help with compensation after something goes wrong. With AirHelp+, you get extra protection before and during your trip, not only after. This can include faster claim handling, priority support, real-time flight monitoring, and travel protection benefits like help with long delays, missed flights, and baggage problems. In simple terms, AirHelp+ is for people who travel often and want peace of mind in case something goes wrong on the road.
+
+### Missed Connection Insurance
+
+Missed Connection Insurance is a specific service that focuses on one very stressful problem: [<u>**missing your next flight because your first flight was late**</u>](https://airhelp.tpk.ro/u1WUWDg4). If your first flight arrives late and you miss your connection, this service can help cover costs like hotel stays, meals, and new tickets. It’s especially useful for long trips with multiple stops. Instead of paying everything out of your own pocket, this insurance helps protect your budget when delays cause a chain reaction in your travel plans.
+
+### AirHelp+ US
+
+[<u>**AirHelp+ US is a version of the AirHelp+ subscription**</u>](https://airhelp.tpk.ro/OIm5CWnx) made for travelers based in or traveling through the United States. It offers similar benefits to the main AirHelp+ plan, but adjusted to U.S. travel rules and protections. This can include help with delays, cancellations, missed connections, and baggage issues on flights involving the U.S. It’s meant for travelers who fly often in or from the U.S. and want extra support beyond basic compensation claims.
+
+## How Compensair Works: Easy Flight Compensation
+
+Compensair is a simple and direct way to claim compensation for delayed, cancelled, or overbooked flights. They don’t offer subscriptions like Airhelp, but they make the process super easy for the clients. You only need to fill in a form online, and you only pay if your claim is successful.
+
+Here’s how to use Compensair:
+
+1. **Enter your flight details** – provide information about your flight and what happened.
+2. **Check eligibility** – Compensair quickly checks if your flight qualifies under rules like EU 261.
+3. **Submit the claim** – if eligible, they handle all the paperwork and communicate with the airline for you.
+4. **Receive compensation** – once the claim is approved, you get your money, and Compensair takes a small success fee.
+
+It’s a stress-free way to get what you’re owed without dealing with the airline yourself.
+
+## Flights to and from Morocco: Why This Matters Even More
+
+Morocco is strongly connected to Europe by air. Many flights go every day between Morocco and countries like France, Spain, Italy, Belgium, and Germany. These routes often fall under [<u>**EU passenger rights rules**</u>](https://europa.eu/youreurope/citizens/travel/passenger-rights/air/index_en.htm), especially if the flight leaves from Europe or uses a European airline. For more official travel inspiration, check out the [Moroccan National Tourist Office](https://www.visitmorocco.com/en).
+
+That means if you are flying from Paris to Marrakech, or from Brussels to Casablanca, EU law usually applies. If your flight is delayed or cancelled in those cases, you may be entitled to compensation.
+
+Even for flights leaving Morocco, some protections still apply if the airline is European. This is why tourists coming to or leaving Morocco should understand these rules.
+
+## Common Scenarios for Travelers in Morocco
+
+Tourists flying to Morocco sometimes face:
+
+- Delays on departure from Europe
+- Missed connections
+- Cancellations during busy travel seasons
+- Long waits in airports
+
+When this happens, many people don’t know what to do. They just accept the situation and move on. But in many cases, they could have received money or better care from the airline.
+
+Using a service like AirHelp can be especially helpful for travelers who don’t speak the airline’s language well or who don’t want to deal with legal details. You travel, enjoy your trip, and let professionals handle the claim.
+
+## What If It’s a Moroccan Airline Flying From Morocco?
+
+**Local Tip:** If you are delayed on a Royal Air Maroc flight, head straight to the RAM service desk rather than waiting in the general queue. They can usually rebook you directly, and it tends to be faster than calling the helpline from the airport.
+
+Many travelers ask this question, and it’s an important one. If your flight **starts in Morocco and is operated by a Moroccan airline** (like Royal Air Maroc), then the European passenger rights law (EC 261/2004) usually does **not** apply. This means you normally don’t get the automatic EU-style cash compensation just because your flight was delayed or cancelled.
+
+In this situation, your rights come mainly from the airline’s own policy and from international rules like the Montreal Convention. The airline still has to take care of you in basic ways. This can include rebooking you on another flight, giving you a refund if the flight is cancelled, and helping with food, hotels, and transport during long delays. So even if there is no extra cash compensation, the airline still has responsibilities toward you.
+
+The big difference is this: you may not get money just for the delay itself. But you still have the right to reach your destination or get your money back, and you still deserve care while you wait. This is why it’s important to know where your flight starts and which airline is operating it. That small detail can completely change your rights as a passenger.
+
+### Here's a detailed explanation:
+
+If you are flying from Morocco with a Moroccan airline (for example Royal Air Maroc) to a non-EU country, then EU passenger rights[<u> (EC 261/2004)</u>](https://en.wikipedia.org/wiki/Air_Passengers_Rights_Regulation) do NOT apply.
+
+That means:
+
+- You usually **do not get automatic EU-style compensation** (€250–€600) for delays or cancellations.
+- Your rights depend on:
+
+**In simple words**: If the flight starts in Morocco and the airline is Moroccan, you normally **don’t get EU cash compensation** just because your flight was delayed or cancelled. But you still have rights.
+
+## What Rights You Still Have
+
+Even without EU law, you are _not without protection_. Under international rules and airline policies, you usually have rights to:
+
+- Rebooking on another flight
+- A refund if the flight is cancelled
+- Care during long delays (food, hotel if overnight, transport)
+- Compensation for lost or damaged baggage (under the Montreal Convention)
+
+So while you may not get **extra cash for the delay**, the airline still has to take care of you and get you to your destination or refund you.
+
+## When EU Rules _DO_ Apply (Even with a Moroccan Airline)
+
+EU law applies if **either** of these is true:
+
+1. Your flight **departs from the EU** (even if the airline is Moroccan)
+2. OR your flight arrives in the EU with an **EU airline only.**
+
+**So for example:**
+
+Paris → Casablanca (EU airline) → **EU law applies **✅
+
+Casablanca  → Paris (EU airline) → **law applies **✅
+
+Casablanca  → Paris (Not EU airline) → **EU law does NOT apply **❌
+
+Casablanca → Istanbul (doesn't matter) → **EU law does NOT apply **❌
+
+Casablanca → New York (doesn't mater) → **EU law does NOT apply **❌
+
+So bbasically, EU law applies if the flight **departs from the EU** no matter what airline it is, and if  the flight **arrives in the EU with an EU airline specifically (if it's not an EU airline, then no).**
+
+## Can AirHelp and Compensair Still Help on Moroccan Flights?
+
+AirHelp and Compensair are strongest with **EU-law cases**. That’s where they can often get you money.
+
+If your flight:
+
+1. Left from Morocco
+2. Was with a Moroccan airline or other non EU airline
+
+👉 Then AirHelp usually **cannot get EU compensation**, but they may still:
+
+- Check if baggage claims apply
+- Help with refunds
+- Tell you what you’re entitled to under international rules
+
+So AirHelp and Compensair are most useful when your trip:
+
+- Starts in the EU
+- Ends in the EU
+- Or uses an EU airline
+
+## So, What to Do When Your Flight Gets Delayed or Cancelled
+
+Flight problems are annoying, but they don’t have to ruin your whole trip. If you know your rights, act smartly at the airport, and keep your documents, you are already in a strong position.
+
+You can always try to claim compensation yourself. But if you want a simpler way, AirHelp and compensair are two options that many travelers use to save time and reduce stress.
+
+For anyone coming to Morocco or leaving Morocco by plane, this knowledge is important. A delayed or cancelled flight doesn’t just mean lost time, it can also mean that you are owed help or even money. And now, you know exactly what to do.
+
+
+### Related Guides
+
+- [How to Find & Compare Cheapest Flights to Morocco in Seconds](https://www.goingmorocco.com/post/how-to-find-compare-the-cheapest-flights-to-morocco-and-the-world)
+- [Is Morocco Worth Visiting in 2026? The Answer Is "Yes"](https://www.goingmorocco.com/post/is-morocco-worth-visiting)
+- [Everything You Need to Know Before Visiting Morocco (Q&A)](https://www.goingmorocco.com/post/top-q-a-everything-you-need-to-know-before-visiting-morocco)
+- [Things to Do in Morocco for Tourists and Travellers](https://www.goingmorocco.com/post/things-to-do-in-morocco-for-tourists-and-travellers)
+
+### Helpful Resources
+
+- [Moroccan National Tourist Office](https://www.visitmorocco.com/en)
+

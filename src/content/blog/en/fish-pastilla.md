@@ -1,0 +1,121 @@
+---
+title: "Moroccan Fish/Seafood Pastilla Recipe Step By Step"
+description: "Table of content: Introduction Ingredients for Fish Pastilla Ingredients For the Fish Filling Ingredients For the Almond Mixture Ingredients For the Pastry S..."
+locale: "en"
+slug: "fish-pastilla"
+publishDate: 2024-07-27
+author: "Waleed Taklite"
+category: "recipes"
+tags: ["Food & Recipes"]
+featuredImage: "./images/fish-pastilla.webp"
+featuredImageAlt: "Moroccan Fish/Seafood Pastilla Recipe Step By Step"
+---
+
+Table of content:
+
+<u>Introduction</u>
+
+<u>Ingredients for Fish Pastilla</u>
+
+- <u>Ingredients For the Fish Filling</u>
+- <u>Ingredients For the Almond Mixture</u>
+- <u>Ingredients For the Pastry</u>
+
+<u>Steps to Make the Fish Pastilla</u>
+
+<u>Assembling the Pastilla</u>
+
+Moroccan fish pastilla is a delicious type of pie filled with fish and other seafood ingredients. This post will offer you the recipe to make this dish step by step. Pastilla can also be made with different fillings, including chicken. If you're not a fan of seafood, check out this recipe for [<u>chicken pastilla.</u>](https://www.goingmorocco.com/post/moroccan-chicken-pastilla-recipe-in-simple-steps) These dishes are part of the broader tradition of [Moroccan cuisine](https://en.wikipedia.org/wiki/Moroccan_cuisine), which blends Berber, Arab, and Mediterranean influences.
+
+⚠️ NOTE!  This recipe has nuts in the ingredients ⚠️
+
+In Morocco, fish pastilla and most other pastillas usually have nuts for that extra crunch. But if you're allergic to nuts, it's best to leave them out when making your pastilla. When you're in Morocco, always check that your pastilla doesn’t come with nuts, and make sure to ask the host or restaurant staff to confirm. It’s better to be safe, so don’t be shy about asking for a nut-free version.
+
+Without further ado, let's start making our fish/seafood pastilla, or as the Moroccans spell it: bastilla.
+
+## Ingredients for Fish Pastilla
+
+Let's begin by gathering all the necessary ingredients. You’ll need distinct ingredients for the filling, almond mixture, and pastry. It's best to gather everything before you start to avoid interruptions,. This way, you’ll have everything on hand and won't waste time searching for forgotten ingredients.
+
+Here is the full lists for all ingredients:
+
+### For the Fish Filling:
+
+- 1 lb (450 g) white fish fillets (such as cod or haddock), cut into chunks
+- 1/2 lb (225 g) shrimp, peeled and deveined
+- 1/2 lb (225 g) calamari, cleaned and cut into rings
+- 2 large onions, finely chopped
+- 3 cloves garlic, minced
+- 1/4 cup chopped fresh parsley
+- 1/4 cup chopped fresh cilantro
+- 1 teaspoon ground ginger
+- 1 teaspoon ground cumin
+- 1 teaspoon paprika
+- 1/2 teaspoon ground turmeric
+- 1/2 teaspoon ground black pepper
+- 1/4 teaspoon cayenne pepper (optional)
+- 1 teaspoon salt
+- 1/2 cup water or fish stock
+- 1/4 cup olive oil
+- Juice of 1 lemon
+
+### For the Almond Mixture:
+
+- 1/2 cup blanched almonds, toasted and chopped
+- 1/4 cup powdered sugar
+- 2 teaspoons ground cinnamon
+
+### For the Pastry:
+
+- 1 package of phyllo dough (about 16 sheets)
+- 1 cup melted butter
+- 1 egg yolk, lightly beaten
+
+## Steps to Make the Fish Pastilla
+
+To create the fish pastilla, we will start by preparing the fish filling. This is a crucial step that sets the foundation for the dish. Begin by cooking a blend of aromatic ingredients and spices to build a rich, flavorful base. Next, incorporate your seafood, allowing it to absorb all the flavors as it cooks. Finally, add fresh herbs and a splash of lemon juice to brighten up the filling. Here are the steps in details:
+
+### Prepare the Fish Filling:
+
+- Step 1: In a large pan, heat the olive oil over medium heat. Add the onions and garlic, and sauté until soft and translucent, about 5-7 minutes. Make sure the onions are finely chopped to ensure even cooking and a smooth texture in the filling.
+- Step 2: Add the ground ginger, cumin, paprika, turmeric, black pepper, cayenne pepper (if using), and salt. Stir to combine and cook for a minute until<u> </u>fragrant. Cooking the spices in oil helps release their flavors more effectively.
+- Step 3: Add the fish chunks, shrimp, and calamari to the pan. Cook for about 5-7 minutes, or until the seafood is just cooked through. Stir gently to avoid breaking up the fish chunks. Seafood cooks quickly, so watch it closely.
+- Step 4: Once the seafood is cooked, add the parsley, cilantro, lemon juice, and water or fish stock. Stir to combine and cook for an additional 2-3 minutes. Adding fresh herbs at the end helps preserve their bright flavors.
+- Step 5: Remove from heat and let it cool slightly. Cover the pan with a lid to keep it warm while you prepare the other components.
+
+### Prepare the Almond Mixture:
+
+The almond mixture in pastilla is important for its unique texture. It adds a layer of sweetness and crunch that contrasts nicely with the savory filling. Here is how to make this easy mixture (it only requiers one step):
+
+- Step1: In a small bowl, combine the toasted almonds, powdered sugar, and ground cinnamon. Toasting the almonds enhances their flavor and adds a nice crunch to the pastilla.
+
+## Assembling the Pastilla
+
+Once you’ve prepared the fish filling, it’s time to assemble your pastilla. This part involves layering phyllo dough, adding the almond mixture and fish filling, and carefully folding the dough to create a perfectly sealed pastry. You’ll build a crispy, golden crust that gathers a flavorful mix inside. These are the steps in details:
+
+- Step 1: Preheat your oven to 350°F (175°C).
+- Step 2: Grease a large round baking dish or pie dish with melted butter or a mixture of butter and egg yolks. By the way, a springform pan can make it easier to remove the pastilla after baking.
+- Step 3: Lay a sheet of phyllo dough in the dish, allowing the excess to hang over the edges. Brush the dough with melted butter. Keep the phyllo sheets covered with a damp cloth to prevent them from drying out while you work on next steps.
+- Step4: Continue layering and buttering sheets of phyllo, using about 8 sheets in total, arranging them in a circular pattern to fully cover the base and sides of the dish. Overlapping the sheets in different directions helps create a sturdy crust.
+- Step 5: Spread half of the almond mixture evenly over the phyllo. This will give the bottom layer of he pastila a sweet flavor and crispy texture.
+- Step 6: Spread the fish filling evenly over the almond mixture.
+- Step 7: Sprinkle the remaining almond mixture over the fish filling. Reserve some almond mixture for topping if you want.
+- Step 8: Fold the overhanging phyllo dough over the filling, brushing with butter as you go. Make sure the filling is completely enclosed by the phyllo dough.
+- Step 9: Layer and butter additional sheets of phyllo on top, tucking the edges into the sides of the dish, using about 8 more sheets. Use scissors to trim any excess phyllo for a neat finish.
+- Step 10: Brush the top with melted butter and the beaten egg yolk for a golden finish. After this, the pastilla is ready to be baked in the preheated oven for about 30-40 minutes, or until the pastry is golden brown and crispy. Don't forget to rotate the dish halfway through baking to ensure even browning.
+
+Here you go! this is how you make the Moroccan fish pastilla. Once it's cooked, simply allow it to cool for a few minutes before slicing and serving. You can also garnish with a sprinkle of powdered sugar and ground cinnamon on top for an authentic Moroccan touch.
+
+Bon Appétit. Let us know how it went in the comments section below 👇
+
+### Related Guides
+
+- [Easy Soup Recipe: Moroccan Bissara](https://www.goingmorocco.com/post/easy-soup-recipe-moroccan-bissara)
+- [Moroccan Harira Simple Recipe to Warm Up Your Winter](https://www.goingmorocco.com/post/moroccan-harira-simple-recipe)
+- [Moroccan Tanjia Recipe with Lamb or Beef](https://www.goingmorocco.com/post/moroccan-tanjia-recipe-with-lamb-or-beef)
+- [Moroccan Rfissa Recipe Step by Step](https://www.goingmorocco.com/post/moroccan-rfissa-recipe-step-by-step)
+
+### Helpful Resources
+
+- [Moroccan Cuisine – Wikipedia](https://en.wikipedia.org/wiki/Moroccan_cuisine)
+

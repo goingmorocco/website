@@ -1,0 +1,62 @@
+---
+import { Image } from "astro:assets";
+import { t, formatDate, localizedPath, type Locale } from "../utils/i18n";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+  categoryName?: string;
+}
+const { post, categoryName } = Astro.props;
+const locale = post.data.locale as Locale;
+const strings = t(locale);
+const href = localizedPath(locale, `/blog/${post.data.slug}/`);
+const isRemoteImage = typeof post.data.featuredImage === "string";
+---
+
+<article class="group overflow-hidden rounded-2xl border border-sand-light bg-white transition-shadow hover:shadow-lg">
+  <a href={href} class="block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal">
+    {isRemoteImage ? (
+      <img
+        src={post.data.featuredImage as string}
+        alt={post.data.featuredImageAlt}
+        width="640"
+        height="420"
+        class="h-48 w-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    ) : (
+      <Image
+        src={post.data.featuredImage as ImageMetadata}
+        alt={post.data.featuredImageAlt}
+        width={640}
+        height={420}
+        class="h-48 w-full object-cover"
+        loading="lazy"
+      />
+    )}
+  </a>
+  <div class="p-5">
+    {
+      categoryName && (
+        <p class="text-xs font-semibold uppercase tracking-wide text-gold-text">{categoryName}</p>
+      )
+    }
+    <h3 class="mt-1.5 font-display text-lg leading-snug text-ink">
+      <a href={href} class="hover:text-royal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal">
+        {post.data.title}
+      </a>
+    </h3>
+    <p class="mt-2 text-sm text-ink/70 line-clamp-2">{post.data.description}</p>
+    <div class="mt-4 flex items-center gap-3 text-xs text-ink/60">
+      <time datetime={post.data.publishDate.toISOString()}>{formatDate(post.data.publishDate, locale)}</time>
+      {post.data.readingTimeMinutes && (
+        <>
+          <span aria-hidden="true">·</span>
+          <span>{strings.blog.readingTime(post.data.readingTimeMinutes)}</span>
+        </>
+      )}
+    </div>
+  </div>
+</article>

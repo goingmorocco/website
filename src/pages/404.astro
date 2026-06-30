@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import RouteMark from "../components/RouteMark.astro";
+
+// GitHub Pages only supports one 404.html for the whole site (it can't know
+// which locale folder the missing URL belonged to), so this page shows both
+// languages rather than picking one and leaving Arabic visitors guessing.
+const locale = "en" as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Page Not Found — GoingMorocco"
+  description="The page you're looking for doesn't exist."
+  alternateUrls={{}}
+>
+  <Container class="flex flex-col items-center justify-center py-24 text-center">
+    <RouteMark size={36} />
+    <h1 class="mt-6 font-display text-3xl text-ink sm:text-4xl">Page not found</h1>
+    <p class="mt-3 max-w-md text-ink/70">
+      We couldn't find that page. It may have moved, or the link might be outdated.
+    </p>
+    <div class="mt-6 flex flex-wrap justify-center gap-4">
+      <a href="/" class="rounded-full bg-royal px-6 py-2.5 text-sm font-semibold text-paper hover:bg-royal-dark">
+        Back to homepage
+      </a>
+      <a href="/blog/" class="rounded-full border border-sand-light px-6 py-2.5 text-sm font-semibold text-ink hover:bg-sand-light">
+        Browse the blog
+      </a>
+    </div>
+
+    <div class="mt-14 border-t border-sand-light pt-10 text-center" dir="rtl" lang="ar">
+      <h2 class="font-display text-2xl text-ink">الصفحة غير موجودة</h2>
+      <p class="mt-3 max-w-md text-ink/70 mx-auto">
+        لم نتمكن من العثور على هذه الصفحة. قد تكون قد انتقلت، أو أن الرابط لم يعد صالحاً.
+      </p>
+      <div class="mt-6 flex flex-wrap justify-center gap-4">
+        <a href="/ar/" class="rounded-full bg-royal px-6 py-2.5 text-sm font-semibold text-paper hover:bg-royal-dark">
+          العودة للصفحة الرئيسية
+        </a>
+        <a href="/ar/blog/" class="rounded-full border border-sand-light px-6 py-2.5 text-sm font-semibold text-ink hover:bg-sand-light">
+          تصفح المدونة
+        </a>
+      </div>
+    </div>
+  </Container>
+</BaseLayout>

@@ -1,0 +1,53 @@
+---
+title: "Is Morocco Safe to Visit After the Gen Z Protests?"
+description: "If you’ve seen the news recently, you probably heard about the Gen Z protests in Morocco. These demonstrations were led mostly by young Moroccans who wanted..."
+locale: "en"
+slug: "is-morocco-safe-to-visit-after-the-gen-z-protests"
+publishDate: 2025-10-07
+author: "Waleed Taklite"
+category: "tourism"
+tags: ["Safety & Solo Travel"]
+featuredImage: "./images/is-morocco-safe-to-visit-after-the-gen-z-protests.webp"
+featuredImageAlt: "Is Morocco Safe to Visit After the Gen Z Protests?"
+---
+
+If you’ve seen the news recently, you probably heard about the Gen Z protests in Morocco. These demonstrations were led mostly by young Moroccans who wanted better education, healthcare, and job opportunities.
+
+The protests started on September 27, 2025, with the most intense period of demonstrations lasting until mid-October. They took place in cities including Casablanca, Rabat, Agadir, and Marrakech. Most demonstrations were peaceful, though some turned violent, leading to arrests and a number of deaths in clashes with security forces.
+
+By the end of October 2025, the large daily protests had mostly stopped, though smaller, lower-turnout demonstrations and legal proceedings connected to the movement have continued on and off into 2026. None of this has affected daily life for visitors. Shops, cafes, and tourist attractions are open as always, and airports, trains, and hotels are working normally. For the latest official guidance, see the UK government's travel advice for Morocco.
+
+If you’re planning a trip soon, you’ll likely not see any sign of these events. The demonstrations were short-lived and focused on local issues, not tourists. Morocco remains one of the safest and most welcoming countries in North Africa. The country depends a lot on tourism, so both locals and authorities work hard to keep visitors comfortable and safe.
+
+A lot of tourists ask me about this directly, and I always tell them the same thing: the protests were about local economic and political issues, healthcare and education spending specifically, and were never aimed at or connected to visitors in any way.
+
+You may still wonder:
+
+### Can protests start again?
+
+It's always possible, as in any country, and smaller demonstrations connected to the same movement have continued on and off since late 2025. So far, none of this has disrupted tourism or daily life in the cities travelers typically visit.
+
+### Are tourists targeted?
+
+No. The protests were about social and economic reforms and had nothing to do with foreigners or travelers.
+
+### Is it safe to move around cities like Marrakech or Casablanca?
+
+Yes. You can walk around the Medina, visit museums, or travel between cities without problems. Just follow normal travel common sense, like you would anywhere else.
+
+In short, Morocco is open, welcoming, and safe to visit. If you’ve been dreaming about wandering through Marrakech’s souks, relaxing in Essaouira, or spending a night under the stars in the Sahara, there’s no reason to change your plans. The Gen Z protests are now part of recent news, not daily life.
+
+Check out the following tours:
+
+### Related Guides
+
+- [Common Scams in Morocco And How to Avoid Them](https://www.goingmorocco.com/post/common-scams-in-morocco-and-how-to-avoid-them)
+- [Solo Female Travel in Morocco? Read This First](https://www.goingmorocco.com/post/morocco-solo-female-travel-guide)
+- [Traveling to Morocco as an American: Is it Safe?](https://www.goingmorocco.com/post/traveling-to-morocco-as-an-american-what-you-should-know-before-you-go)
+- [Essential Travel Safety Tips for Morocco](https://www.goingmorocco.com/post/essential-travel-safety-tips-for-morocco)
+
+### Helpful Resources
+
+- [UK FCDO Travel Advice for Morocco](https://www.gov.uk/foreign-travel-advice/morocco)
+- [Practical Travel Information – ONMT](https://www.visitmorocco.com/en/useful-information)
+

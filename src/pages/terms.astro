@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import { buildBreadcrumbSchema, type BreadcrumbItem } from "../utils/seo";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+
+const locale = "en" as const;
+const lastUpdated = "June 29, 2026";
+
+const breadcrumbItems: BreadcrumbItem[] = [
+  { label: "Home", href: "/" },
+  { label: "Terms & Conditions" },
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title="Terms & Conditions — GoingMorocco"
+  description="The terms that apply when you use GoingMorocco.com."
+  alternateUrls={{ en: "/terms/", ar: "/ar/terms/" }}
+  structuredData={buildBreadcrumbSchema(breadcrumbItems)}
+>
+  <Container class="py-12">
+    <Breadcrumbs items={breadcrumbItems} />
+  </Container>
+
+  <Container class="max-w-2xl pb-20">
+    <h1 class="font-display text-3xl text-ink sm:text-4xl">Terms & Conditions</h1>
+    <p class="mt-2 text-sm text-ink/60">Last updated: {lastUpdated}</p>
+
+    <div class="prose-content mt-8 max-w-none">
+      <p>
+        By using GoingMorocco.com ("the site", "we", "us"), you agree to these terms. If you don't agree,
+        please don't use the site.
+      </p>
+
+      <h2>The information on this site</h2>
+      <p>
+        Our guides are based on personal experience and research, and we do our best to keep them accurate.
+        Morocco changes — prices, opening hours, visa rules, and on-the-ground conditions can shift after we
+        publish. Always verify anything time-sensitive or safety-related (visa requirements, transport
+        schedules, official guidance) with an authoritative source before you travel. We don't guarantee the
+        site's content is complete, current, or error-free, and we're not liable for decisions made based on
+        it.
+      </p>
+
+      <h2>Affiliate links and commissions</h2>
+      <p>
+        Some links on this site (to tours, hotels, flights, and other travel services) are affiliate links.
+        If you book through them, we may earn a commission at no extra cost to you. This never affects what
+        we recommend — we link to things we'd genuinely suggest to a friend, commission or not.
+      </p>
+
+      <h2>Our content</h2>
+      <p>
+        Unless otherwise noted, the text, photos, and design on this site belong to GoingMorocco.com. You're
+        welcome to share links to our pages. Please don't republish, copy, or redistribute our content
+        elsewhere without asking us first — email <a href="mailto:goingmorocco@gmail.com">goingmorocco@gmail.com</a>
+        and we're usually happy to work something out.
+      </p>
+
+      <h2>Store purchases</h2>
+      <p>
+        If you buy something from our store, that purchase is also governed by the order details, pricing,
+        and shipping/return information shown at checkout at the time of purchase. Payment is processed
+        securely by a third-party payment provider; we don't store your full card details.
+      </p>
+
+      <h2>Comments and submissions</h2>
+      <p>
+        If we open up comments, guest posts, or other public submissions, you're responsible for what you
+        post. Don't post anything unlawful, defamatory, or that you don't have the rights to share. We can
+        remove anything that breaks these terms.
+      </p>
+
+      <h2>Links to other sites</h2>
+      <p>
+        We link to external sites (booking partners, official tourism resources, and others) for your
+        convenience. We don't control those sites and aren't responsible for their content or how they handle
+        your data — check their own terms and privacy policies.
+      </p>
+
+      <h2>Changes to these terms</h2>
+      <p>
+        We may update these terms occasionally. The "Last updated" date above reflects the latest revision.
+        Continuing to use the site after a change means you accept the update.
+      </p>
+
+      <h2>Contact us</h2>
+      <p>
+        Questions about these terms? Email <a href="mailto:goingmorocco@gmail.com">goingmorocco@gmail.com</a>
+        or use our <a href="/contact/">contact page</a>.
+      </p>
+
+      <p class="text-sm text-ink/60">
+        <strong>Note:</strong> this page is provided for general transparency and is not a substitute for
+        legal advice. Have it reviewed by a qualified professional for your specific situation and
+        jurisdiction.
+      </p>
+    </div>
+  </Container>
+</BaseLayout>

@@ -1,0 +1,164 @@
+---
+title: "Fried Sardines Recipe from Morocco with Tomato Sauce & Harissa"
+description: "Table of content: Introduction Fried Moroccan Sardines Recipe: Ingredients These dishes are part of the broader tradition of Moroccan cuisine, which blends B..."
+locale: "en"
+slug: "fried-sardines-recipe-from-morocco"
+publishDate: 2024-08-24
+author: "Waleed Taklite"
+category: "recipes"
+tags: ["Food & Recipes"]
+featuredImage: "./images/fried-sardines-recipe-from-morocco.webp"
+featuredImageAlt: "Fried Sardines Recipe from Morocco with Tomato Sauce & Harissa"
+---
+
+Table of content:
+
+<u>Introduction</u>
+
+<u>Fried Moroccan Sardines Recipe: Ingredients</u> These dishes are part of the broader tradition of [Moroccan cuisine](https://en.wikipedia.org/wiki/Moroccan_cuisine), which blends Berber, Arab, and Mediterranean influences.
+
+<u>Instructions</u>
+
+<u>Making The Tomato Sauce for The Fried Sardines</u>
+
+<u>Making The Moroccan Harissa</u>
+
+<u>Serving The Fried Sardines with The Sauce or The Harissa</u>
+
+<u>Summary</u>
+
+Click here to jump directly to the recipe
+
+Sardines are often underrated. Many people consider them a cheap, smelly fish that isn’t worth eating. However, sardines are actually one of the most delicious and healthiest fish available. You just need to learn how to cook them the right way, as Moroccans do. This post provides you with a recipe for Moroccan fried sardines.
+
+Sardines are a staple seafood in Morocco. These healthy, omega-3-rich fish are the most consumed fish in Morocco due to their relatively low price and abundance in local markets. There are many ways to cook sardines in Morocco, but frying is the most popular method.
+
+Fried sardines are well-known in Moroccan cities such as Casablanca, Tangier, and Essaouira. In Casablanca, street vendors serve them sandwiches with spicy harissa and pickles. Tangier is also famous for its fried sardines. locals there enjoy them as a quick and tasty snack. However, the freshest fried sardines are a specialty of Essaouira, where they are served with salads, traditional Moroccan bread, and other side dishes.
+
+Let's jump in to discover the complete recipe for Moroccan fried sardines, including ingredients, cooking instructions, and recipes for hot tomato sauce, harissa paste, and salad.
+
+## Fried Moroccan Sardines Recipe: Ingredients
+
+This is the list of ingredients that you need to make the Moroccan fried sardines dish. This quanity is suitable for 2 to 4 people.
+
+- 1 kg fresh sardines, cleaned and gutted
+- 2 tablespoons ground cumin
+- 2 tablespoons paprika
+- 4 cloves garlic, minced
+- 1 tablespoon ground coriander
+- 1 teaspoon salt
+- 1 teaspoon black pepper
+- Juice of 1 lemon
+- 1/2 cup chopped fresh parsley and cilantro (mixed)
+- 1 cup flour (for coating)
+- Vegetable oil (for frying)
+
+## Instructions
+
+### Step 1: Process the Sardines
+
+The first step is of course to process the sardines. Remove the head, internal organs, and side bones along with the spines if you want. Put the processed sardines aside so you can work on the Marinade, which is a mix of spices and commong herbs plus other simple ingredients.
+
+### Step 2: Prepare the Marinade (Chermoula)
+
+Chermoula is the Moroccan name for a marinade used for different types of fish, including sardines. It is a mixture of spices and herbs that gives fish dishes in Morocco their extra Mediterranean flavor. It is also an easy-to-make marinade with popular ingredients. Here's how to make chermoula: In a large bowl, mix the cumin, paprika, minced garlic, coriander, salt, pepper, chopped parsley, and cilantro. Add the lemon juice and stir to combine into a thick marinade.
+
+### Step 3: Marinate the Sardines
+
+Place the cleaned sardines in the bowl with the marinade. Make sure each sardine is well coated. Cover the bowl with plastic wrap and let it marinate in the refrigerator for at least 1 hour. If you are not in a hurry, it would be worth keeping the sardines marinating for up to 3 hours.
+
+### Step 4: Coat & Fry the Sardines
+
+After marinating, take each sardine and coat it lightly with flour. If you removed the spines, then join two sardines together as I explained earlier. Shake off any excess flour then continue to frying. In a large frying pan, heat enough vegetable oil to cover the sardines over medium-high heat. Once the oil is hot, carefully place the sardines in the pan and make sure not to overcrowd them.
+
+Fry each side for about 2-3 minutes, or until they are golden brown and crispy. Use a slotted spoon to transfer the fried sardines to a plate lined with paper towels to drain excess oil. Please be careful when dealing with hot oil.
+
+## Making The Tomato Sauce for The Fried Sardines
+
+The Moroccan tomato sauce is a flavorful, spiced tomato sauce that complements the taste of grilled or fried sardines. It is simple to make and doesn't require a lot of time to be cooked. It is also made with simple ingredients. Here’s a simple recipe:
+
+### Ingredients of tomato sauce for sardines
+
+- 4 large ripe tomatoes, peeled and chopped
+- 1 onion, finely chopped
+- 3 cloves garlic, minced
+- 2 tablespoons olive oil
+- 1 tablespoon paprika
+- 1 tablespoon ground cumin
+- 1 teaspoon ground coriander
+- 1 teaspoon ground cinnamon
+- 1 teaspoon salt
+- 1/2 teaspoon black pepper
+- 1/2 teaspoon sugar (optional, to balance acidity)
+- 1/4 cup chopped fresh parsley and cilantro (mixed)
+- Juice of 1/2 lemon
+
+### How to Make Tomato Sauce
+
+First, heat the olive oil in a large pan over medium heat. Add the chopped onion and cook for about 5 minutes until softened and translucent. After those 5 minutes, add the minced garlic to the pan and cook for another minute until fragrant.
+
+Second step is to combine all ingredients: Stir in the chopped tomatoes, paprika, cumin, coriander, cinnamon, salt, pepper, and sugar (if using) and mix until all ingredients blend well. Reduce the heat to low and let the sauce simmer for about 15-20 minutes. Keep stirring occasionally until the mixture thickens and the flavors meld together.
+
+Add the chopped parsley and cilantro, and the lemon juice. Stir well and cook for another 2-3 minutes. This is the last step in making the tomato sauce for the fried sardines. After you have done cooking it, spoon the sauce over fried sardines. You can also garnish with extra fresh herbs if you want.
+
+## Making The Moroccan Harissa
+
+Harissa is a spicy chili paste commonly used in Moroccan cuisine. Moroccan harissa is typically made from a blend of hot chili peppers, garlic, olive oil, and various spices like cumin, coriander, and caraway. It's often used to add heat and flavor to dishes like tagines, couscous, and grilled meats, or as a condiment on the side. Moroccan harissa can vary in heat level and consistency, depending on the type of peppers used and personal preferences. It's a staple in many Moroccan households and adds a distinct, fiery kick to meals.
+
+### Ingredients of Harissa
+
+200g dried red chili peppers (a mix of mild and hot peppers for a balanced flavor)
+
+4 cloves garlic, peeled
+
+1 teaspoon ground cumin
+
+1 teaspoon ground coriander
+
+1 teaspoon ground caraway seeds
+
+1 teaspoon salt
+
+3 tablespoons olive oil (plus more for storing)
+
+2 tablespoons lemon juice
+
+1 tablespoon white vinegar (optional for extra tang)
+
+### How to Make Harissa
+
+First, prepare the chili peppers by removing the stems and seeds from the dried peppers. If you like extra heat, you can leave some seeds in. Soak the chili peppers in warm water for about 30 minutes until they become soft. After soaking, drain the peppers and pat them dry.
+
+Next, blend the ingredients by placing the softened chili peppers, garlic, cumin, coriander, caraway, and salt into a food processor or blender. Add olive oil and lemon juice, then blend until you achieve a smooth paste. If needed, add more olive oil to reach your desired consistency.
+
+Once blended, taste the harissa and adjust the seasoning if necessary. For a tangier flavor, you can add white vinegar. If the harissa is too thick, thin it out with a little more olive oil.
+
+To store the harissa, transfer it to a sterilized jar and pour a thin layer of olive oil on top to help preserve it. Seal the jar and keep it in the refrigerator. Properly stored with the olive oil layer, it can last up to a month.
+
+Harissa can be used as a marinade for meats or vegetables. It’s also great stirred into soups, stews, or couscous for an added kick. Additionally, you can serve it as a condiment alongside bread, grilled meats, or tagines.
+
+## Serving The Fried Sardines with The Sauce or The Harissa
+
+Here you go! Serve your fried sardines Moroccan-style: hot, with lemon wedges on the side and accompanied by tomato sauce or harissa. You can also include olives, a drizzle of olive oil, and a fresh salad. Soda drinks are also an option, though we don't recommend them for health and dietary reasons (too much sugar). By the way, fried sardines can be enjoyed as part of a meal with bread, or rice, or simply as a flavorful snack.
+
+## Summary
+
+Fried sardines are one of the most popular seafood dishes in Morocco. They are flavorful, crispy, and easy to make. The process begins by preparing the sardines, which involves removing excess bones. If you're concerned about bones, the best approach is to entirely remove the spines along with the side bones from the sardines.
+
+After marinating the sardines, lightly coat each one with flour. This step is essential if you decide to keep the spine while preparing the sardines. However, if you've removed the spines, which I recommend, place two sardines together like a sandwich before coating them with flour. This technique creates a thicker, meatier piece to fry. Shake off any excess flour and fry the sardines in batches until they turn golden brown and crispy.
+
+Once the sardines are brown and crispy, remove them from the pan and let them drain on the side. Now it's time to make a simple salad to serve as a side appetizer. A classic Moroccan salad is straightforward and easy to prepare. Simply cut tomatoes, onions, cucumbers, and lettuce into small square pieces. Add vinegar and salt, then mix everything in a large bowl. You can let the salad cool before serving it alongside the sardines.
+
+By the way, fried Moroccan sardines also go well with a cold soda, especially with a Hawaii or Fanta.
+
+### Related Guides
+
+- [Easy Soup Recipe: Moroccan Bissara](https://www.goingmorocco.com/post/easy-soup-recipe-moroccan-bissara)
+- [Moroccan Harira Simple Recipe to Warm Up Your Winter](https://www.goingmorocco.com/post/moroccan-harira-simple-recipe)
+- [Moroccan Tanjia Recipe with Lamb or Beef](https://www.goingmorocco.com/post/moroccan-tanjia-recipe-with-lamb-or-beef)
+- [Moroccan Rfissa Recipe Step by Step](https://www.goingmorocco.com/post/moroccan-rfissa-recipe-step-by-step)
+
+### Helpful Resources
+
+- [Moroccan Cuisine – Wikipedia](https://en.wikipedia.org/wiki/Moroccan_cuisine)
+

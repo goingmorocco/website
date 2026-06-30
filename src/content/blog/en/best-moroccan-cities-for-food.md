@@ -1,0 +1,82 @@
+---
+title: "Moroccan Food: The Best Moroccan Cities for Foodies"
+description: "These are the best cities to try Moroccan food while in Morocco. Discover what each city has to offer, and learn about famous dishes."
+locale: "en"
+slug: "best-moroccan-cities-for-food"
+publishDate: 2024-06-16
+author: "Waleed Taklite"
+category: "tourism"
+tags: ["Food & Recipes"]
+featuredImage: "./images/best-moroccan-cities-for-food.webp"
+featuredImageAlt: "Moroccan Food: The Best Moroccan Cities for Foodies"
+---
+
+Morocco is renowned for its diverse and flavorful cuisine. Some tourists visit the country just to have a taste of its famous dishes and sweets. This post is here to tell you about some great food options in Morocco and where to find them. So whether you're planning to visit Morocco soon, or you're already here, we'll help you get some yummy Moroccan food. These dishes are part of the broader tradition of [Moroccan cuisine](https://en.wikipedia.org/wiki/Moroccan_cuisine), which blends Berber, Arab, and Mediterranean influences.
+
+Heads up! If you're a foodie, then you'd love taking a tour through souks and alleys where the aroma of Moroccan food will have you drooling. These areas exist famously in Fez and Marrakech. However, there are some other locations where you'd find some unique traditional Moroccan food.
+
+By the way, please always remember to tell people about the food you have allergies from. Usually, local restaurants in Morocco won't ask you about your food allergies, so it's wise to learn about the dish you're ordering just in case. Moroccan food combines a lot of ingredients from herbs to nuts. If you're allergic to something, there's a big chance Moroccan food may contain it.
+
+Alright, let's talk with full mouths. It's acceptable in Morocco, so don't worry.
+
+## Marrakech: Fresh Juices And Meaty Bites
+
+First on the list, we have Marrakech. Small local restaurants are everywhere in Marrakech, and they offer some good options. From the soup called Harira and various tagines to Moroccan-style BBQ. Just find a seat and ask for the menu. What we recommend is to have filled msemmen with a bowl of Harira soup. It's a greasy meal but definitely delicious. This option is suitable for Kaskrout time.
+
+"Kaskrout" refers to any light meal between lunch and dinner, usually served at sunset. If you're suffering from GERD or stomach issues, then neither the msemmen nor the harira are good options for you.
+
+Not into greasy meals? Why not refresh with some high-quality fresh juices?
+
+For us, nothing is better than a fresh, cold orange juice on a hot, sunny day. Marrakech gets scorchingly hot sometimes. Fortunately, the juices there are always fresh, cold, and super flavorful to help you cool down and recharge your energy. If you're not a fan of oranges, then you can simply try other options; we personally recommend pomegranate juice.
+
+You might come across sugarcane juice. It's sugary and very laxative! so maybe skip that one.
+
+Along with fresh juices, Marrakech has some of the best small restaurants for traditional food. Beef tajines, Tanjias, meat stews, and fried sardines with French fries are just a few of the options you can try there. While you're there, ask for "Al kharouf al malaki" or "The royal sheep". It's a roasted or grilled sheep meat made by a man who was once a chef for the king.
+
+## Casablanca: The City That Has It All
+
+Casablanca is the economic capital of Morocco, but that doesn't mean it lacks cultural richness. Casa, as Moroccans call it for short, has some top-notch restaurants where you can enjoy traditional food of all kinds. Those restaurants are fancy, so if you're on budget, it's better to discover cheaper locations.
+
+There are no special dishes that are exclusive to Casablanca as in the case of other cities. Casablanca, however, gives you the opportunity to taste all the Moroccan food in one place, and in a fancy manner.
+
+Along with Moroccan food, you can find almost all other types of food in Casablanca. If for some reason you didn't like traditional Moroccan food, you could always find restaurants that offer some international options. Italian, Chinese, or even Japanese... Casablanca has it all.
+
+## Fez Is Where Food Hides in Alleys
+
+Fez is well known for its medieval architecture, but the cuisine there will blow your mind. After a tour around the historical spots in the city, you can recharge your energy with some amazing dishes and traditional sweets.
+
+A must-try dish there is called Pastilla pie, or bastilla, which is a sweet and savory pastry filled with a variety of flavorful ingredients such as chicken meat, pigeons, or fish. Fez is also a great place to get some Moroccan sweets. Ramadan would be a great time to visit fez if you're a foodie. There're simply so much options to try.
+
+Fez is also home to some great travel agencies that offer food tours. We recommend using their services. Navigating the city of Fez could be challenging, especially the old medina. It's there in those old alleys where you could find some small local restaurants with great food.
+
+## Chefchaouen Is More Than Just Blue
+
+Chefchaouen combines delicious food with beauty. The blue city is well known for its relaxing atmosphere, but it also has some great restaurants that offer tasty traditional dishes like "Loubia", which is a Moroccan bean dish. Loubia is sometimes prepared with sheep meat and guts.
+
+What makes the blue city special is the natural scenery around it and its blue-colored houses that will, somehow, improve your appetite. So what you get in Chefchaouen is delicious food with a view. The breakfast, in particular, is great, with oranges, black olives, fresh Moroccan olive oil, "khlea" and different types of bread, etc.
+
+"Khlea" or "khlii", refers to a traditional preserved meat recipe from Morocco and Algeria, is typically prepared using beef or lamb. The process involves slicing the meat into strips, marinating it in a blend of garlic, coriander, and cumin, and then allowing it to dry under the sun. Subsequently, the meat is cooked in a combination of water, oil, and animal fat. usuallu used in omlets with eggs. Try it in Chafchaouen someday.
+
+## Akhfennir: Moroccan Food From Sea To Plate
+
+Akhfennir is a very small town by the ocean in the south. With only one main street, this tiny town is primarily for travelers. There is not much to say about the town itself. The beach is not suitable for swimming, and the infrastructure is not well developed. Akhfennir specializes in fish dishes.
+
+Although the restaurants there look very modest, the food is actually good. Those restaurants offer many types of fresh grilled or fried fish with local tomato sauce and regular salads. So if you are planning to visit the cities in the south, Akhfennir should be on your map as well.
+
+Drivers, especially truck drivers, use Akhfennir as a resting station. You should do the same as well because the distance between cities in the south is larger compared to the north of Morocco. You may not come across other towns and cities until you reach Laayoune. So we advise you to have some rest at Akhfennir, try some traditional fish with tomato sauce before hitting the road again.
+
+Conclusion:
+
+You can find delicious Moroccan food everywhere you go in Morocco. But the cities we just introduced either offer a wide range of options for you or some unique dishes with nice experiences. If you're willing to combine the excitement of travel with the joy of food, then it would be great to explore deeper areas. If food is everything to you, then Casablanca, Marrakech or Fez alone can satisfy your desires.
+
+### Related Guides
+
+- [Is Morocco Worth Visiting in 2026? The Answer Is "Yes"](https://www.goingmorocco.com/post/is-morocco-worth-visiting)
+- [Everything You Need to Know Before Visiting Morocco (Q&A)](https://www.goingmorocco.com/post/top-q-a-everything-you-need-to-know-before-visiting-morocco)
+- [Things to Do in Morocco for Tourists and Travellers](https://www.goingmorocco.com/post/things-to-do-in-morocco-for-tourists-and-travellers)
+- [Top Spots in Morocco for Outdoor Activities](https://www.goingmorocco.com/post/spots-in-morocco-for-outdoor-activities)
+
+### Helpful Resources
+
+- [Moroccan Cuisine – Wikipedia](https://en.wikipedia.org/wiki/Moroccan_cuisine)
+

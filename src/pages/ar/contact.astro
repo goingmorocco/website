@@ -1,0 +1,100 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+import { buildBreadcrumbSchema, type BreadcrumbItem } from "../../utils/seo";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+
+const locale = "ar" as const;
+
+const breadcrumbItems: BreadcrumbItem[] = [
+  { label: "الرئيسية", href: "/ar/" },
+  { label: "تواصل معنا" },
+];
+
+const socialLinks = [
+  { label: "إنستغرام", href: "https://www.instagram.com/goingmorocco/" },
+  { label: "إكس", href: "https://x.com/GoingMorocco" },
+  { label: "فيسبوك", href: "https://www.facebook.com/profile.php?id=61561027915599" },
+  { label: "بينتيريست", href: "https://www.pinterest.com/goingmorocco/" },
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title="تواصل معنا — غوينغ موروكو"
+  description="أسئلة حول تخطيط رحلتك إلى المغرب؟ تواصل مع غوينغ موروكو."
+  alternateUrls={{ en: "/contact/", ar: "/ar/contact/" }}
+  structuredData={buildBreadcrumbSchema(breadcrumbItems)}
+>
+  <Container class="py-12">
+    <Breadcrumbs items={breadcrumbItems} />
+  </Container>
+
+  <Container class="max-w-2xl pb-20">
+    <h1 class="font-display text-3xl text-ink sm:text-4xl">تواصل معنا</h1>
+    <p class="mt-3 text-ink/70">
+      تخطط لرحلة ولديك سؤال، أو تريد التواصل بخصوص شراكة؟ أرسل لنا رسالة وسنرد عليك — عادة في غضون يومين.
+    </p>
+
+    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="mt-8 space-y-5">
+      <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <div>
+        <label for="name" class="block text-sm font-medium text-ink">الاسم</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          class="mt-1.5 w-full rounded-md border border-sand-light bg-white px-3 py-2 text-ink focus:border-royal focus:outline-none focus-visible:ring-2 focus-visible:ring-royal"
+        />
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-ink">البريد الإلكتروني</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          class="mt-1.5 w-full rounded-md border border-sand-light bg-white px-3 py-2 text-ink focus:border-royal focus:outline-none focus-visible:ring-2 focus-visible:ring-royal"
+        />
+      </div>
+
+      <div>
+        <label for="message" class="block text-sm font-medium text-ink">الرسالة</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          required
+          class="mt-1.5 w-full rounded-md border border-sand-light bg-white px-3 py-2 text-ink focus:border-royal focus:outline-none focus-visible:ring-2 focus-visible:ring-royal"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="rounded-full bg-royal px-6 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-royal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal"
+      >
+        إرسال الرسالة
+      </button>
+    </form>
+
+    <div class="mt-12 border-t border-sand-light pt-8 text-sm text-ink/70">
+      <p>
+        تفضل البريد الإلكتروني؟ تواصل معنا مباشرة على
+        <a class="text-royal underline" href="mailto:goingmorocco@gmail.com">goingmorocco@gmail.com</a>.
+      </p>
+      <p class="mt-3">
+        أو تابعنا على
+        {socialLinks.map((link, i) => (
+          <>
+            <a class="text-royal underline" href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+            {i < socialLinks.length - 1 ? " · " : ""}
+          </>
+        ))}
+        .
+      </p>
+    </div>
+  </Container>
+</BaseLayout>

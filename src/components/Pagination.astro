@@ -1,0 +1,41 @@
+---
+interface PageLink {
+  url: string;
+}
+interface Props {
+  prevUrl?: PageLink["url"];
+  nextUrl?: PageLink["url"];
+  currentPage: number;
+  lastPage: number;
+  labels: { previous: string; next: string };
+}
+const { prevUrl, nextUrl, currentPage, lastPage, labels } = Astro.props;
+---
+
+{
+  lastPage > 1 && (
+    <nav aria-label="Pagination" class="mt-10 flex items-center justify-between border-t border-sand-light pt-6">
+      <a
+        href={prevUrl ?? "#"}
+        aria-disabled={!prevUrl}
+        class:list={[
+          "rounded-md px-3 py-2 text-sm font-medium",
+          prevUrl ? "text-royal hover:bg-sand-light" : "pointer-events-none text-ink/30",
+        ]}
+      >
+        <span class="rtl:hidden">←</span><span class="hidden rtl:inline">→</span> {labels.previous}
+      </a>
+      <p class="text-sm text-ink/60">{currentPage} / {lastPage}</p>
+      <a
+        href={nextUrl ?? "#"}
+        aria-disabled={!nextUrl}
+        class:list={[
+          "rounded-md px-3 py-2 text-sm font-medium",
+          nextUrl ? "text-royal hover:bg-sand-light" : "pointer-events-none text-ink/30",
+        ]}
+      >
+        {labels.next} <span class="rtl:hidden">→</span><span class="hidden rtl:inline">←</span>
+      </a>
+    </nav>
+  )
+}

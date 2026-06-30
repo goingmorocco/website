@@ -1,0 +1,95 @@
+---
+title: "inDrive in Morocco: Safety, Legal Status, and Prices"
+description: "inDrive is a popular ridehailing app in Morocco. Uber stopped operating in the country in 2018 and only relaunched in a limited way in late 2025, currently a..."
+locale: "en"
+translationId: "7a6236fc-4441-4485-95a4-b42629cbc705"
+slug: "indrive-alternative-to-uber-and-taxis-in-morocco"
+publishDate: 2025-12-13
+author: "Waleed Taklite"
+category: "tourism"
+tags: ["Safety & Solo Travel","Transport & Getting Around"]
+featuredImage: "./images/indrive-alternative-to-uber-and-taxis-in-morocco.jpg"
+featuredImageAlt: "inDrive in Morocco: Safety, Legal Status, and Prices"
+---
+
+inDrive is a popular ride-hailing app in Morocco. Uber stopped operating in the country in 2018 and only relaunched in a limited way in late 2025, currently available just in Casablanca and Marrakech. Outside those two cities, inDrive remains the main app-based alternative for getting around. inDrive has become one of the most popular ride-hailing options in the country.
+
+One of the main differences between inDrive and other ride apps is that passengers can suggest their own price for a trip, and drivers can accept it or offer another price. This system feels like bargaining and gives users more control over how much they pay.  You can read more about how the app works on its [Wikipedia page](https://en.wikipedia.org/wiki/InDrive).
+
+Many stories I have with friends visiting from abroad start the same way: they land, open their Uber app out of habit, and nothing happens. Once I explain inDrive, most people switch over within their first day and don't look back.
+
+As of December 2025, inDrive is widely used in many Moroccan cities, despite not being regulated by the government.
+
+## Is inDrive Available in Morocco?
+
+Yes, inDrive is available in Morocco and works mainly in large cities where demand is high. You can choose to use the app in places such as Casablanca, Marrakech, Rabat, Tangier, Agadir, and Fes.
+
+To use inDrive, you can choose to download the app on your smartphone, enter your pickup location and destination, and then suggest a price for the ride. After that, nearby drivers can respond to your request.
+
+The service works well in urban areas, but it may not be reliable in small towns or rural regions where fewer drivers are available.
+
+## Is inDrive Legal in Morocco?
+
+At the moment, inDrive is not officially legal in Morocco because it does not have a government license to operate. This means that drivers and users can sometimes face fines, even though many people still use the app every day. In fact, the app is gaining more popularity amongst tourists and locals.
+
+Traditional taxi drivers often complain about inDrive because they believe it takes away their work. The Moroccan government has not made a final decision yet, but there are discussions about new transport rules.
+
+Uber has now returned to Morocco in a limited way, currently operating in Casablanca and Marrakech with licensed drivers. Outside those two cities, inDrive remains the only app-based option, and authorities are still working out how ride-hailing apps like it should be regulated going forward.
+
+## Is inDrive Safe to Use in Morocco?
+
+inDrive is generally safe to use in Morocco (if we exclude the legal part), but, as in any other country, users should always take basic safety precautions.
+
+The app provides important information such as the driver’s name, photo, car details, and user ratings, which helps passengers feel more secure. You can also share your trip with a friend or family member. Most rides go smoothly, but some drivers may cancel a trip if they think the price is too low. 
+
+Women, especially those traveling alone at night, should be extra careful. Because the service is not legal, support may be limited if a serious problem happens. It is always a good idea to check that the car plate matches the app, sit in the back seat, and avoid unsafe areas. 
+
+In rare cases, there can be conflicts between inDrive drivers and taxi drivers.
+
+## Is inDrive Cheaper Than Taxis in Morocco?
+
+In many cases, inDrive is cheaper than regular taxis in Morocco, especially for short and medium-distance trips. Since passengers choose the price, they often pay between 20 and 50 percent less than taxi fares. 
+
+For example, a short city ride may cost between 40 and 100 Moroccan dirhams on inDrive, while a taxi may charge more for the same route. Prices can increase during busy hours or high demand, but users still have more price control than with taxis. 
+
+**Local Tip:** Try to have small bills ready, 20s and 50s, when paying an inDrive driver. Negotiated fares are often round numbers like 30 or 50 MAD, and drivers don't always carry change for a 200 MAD note.
+
+Payment is usually possible in cash or by card, which also helps avoid price arguments that sometimes happen with taxi drivers.
+
+## inDrive vs Taxis and Buses for Travel Between Cities
+
+For travel between cities in Morocco, inDrive is often more comfortable than public taxis and buses. Buses are usually the cheapest option, but they are slow, make many stops, and can be crowded, especially in hot weather. 
+
+Shared public taxis are faster than buses, but they are often full and do not offer much personal space.
+
+inDrive, on the other hand, provides a private car that takes you directly from your pickup point to your destination. Although it costs more than buses, many travelers find the extra comfort, speed, and privacy worth the price. 
+
+In very rural areas, however, buses may still be the only practical choice.
+
+## Final Thoughts on Using inDrive in Morocco
+
+inDrive can be a useful transport option in Morocco, especially during busy periods and major events such as the 2030 world cup.
+
+It's important to stay updated on the legal situation before using any ride app. With good planning and basic safety awareness, inDrive can be a convenient and affordable way to travel around Moroccan cities, but, legally speaking, inDrive isn't allowed yet to operate in Morocco, so you, and the driver, both might get legal fines for using the service.
+
+---
+
+## Find a Hotel in Your Destination
+
+After you plan how to move around with inDrive, the next step is choosing where to stay. Morocco has many good hotels, riads, apartments, and guesthouses in almost every major city. To make things easier, you can use the interactive map below to search for accommodation in your destination. 
+
+Just type the city name, zoom in on the area you prefer, and compare prices and locations in seconds. This helps you pick a place that is close to the areas you want to visit and makes your daily trips much more convenient.
+
+
+### Related Guides
+
+- [Uber Alternative in Morocco: inDrive App](https://www.goingmorocco.com/post/uber-alternative-in-morocco-indrive-app)
+- [inDrive in Morocco: Everything You Need to Know](https://www.goingmorocco.com/post/indrive-in-morocco-everything-you-need-to-know)
+- [Is Morocco Worth Visiting in 2026? The Answer Is "Yes"](https://www.goingmorocco.com/post/is-morocco-worth-visiting)
+- [Everything You Need to Know Before Visiting Morocco (Q&A)](https://www.goingmorocco.com/post/top-q-a-everything-you-need-to-know-before-visiting-morocco)
+
+### Helpful Resources
+
+- [inDrive Official Site](https://indrive.com)
+- [inDrive – Wikipedia](https://en.wikipedia.org/wiki/InDrive)
+

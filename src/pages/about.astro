@@ -1,0 +1,89 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import RouteDivider from "../components/RouteDivider.astro";
+import { buildBreadcrumbSchema, type BreadcrumbItem } from "../utils/seo";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+
+const locale = "en" as const;
+
+const breadcrumbItems: BreadcrumbItem[] = [
+  { label: "Home", href: "/" },
+  { label: "About" },
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title="About GoingMorocco.com"
+  description="GoingMorocco.com is a place for travelers to learn about Morocco, straight from a native Moroccan — honest information, no tourist traps, no sugar-coating."
+  alternateUrls={{ en: "/about/", ar: "/ar/about/" }}
+  structuredData={buildBreadcrumbSchema(breadcrumbItems)}
+>
+  <Container class="py-12">
+    <Breadcrumbs items={breadcrumbItems} />
+  </Container>
+
+  <Container class="max-w-2xl pb-20">
+    <h1 class="font-display text-3xl text-ink sm:text-4xl">About GoingMorocco.com</h1>
+    <RouteDivider class="my-6" />
+
+    <div class="prose-content max-w-none">
+      <p>
+        GoingMorocco.com is a place for travelers to learn about Morocco, straight from a native Moroccan.
+      </p>
+      <p>
+        Here, you will find real and honest information about what this North African country has to offer.
+        No tourist traps, no fake promises, and no sugar-coating.
+      </p>
+      <p>
+        Like every country, Morocco has its strengths and its challenges. We share both — the good things
+        you will enjoy and the things you might want to avoid. Our goal is simple: to help you have the best
+        possible experience when you visit.
+      </p>
+      <p>
+        We believe Morocco has far more good than bad to offer, and we are sure you will love it here once
+        you know how to make the most of your trip.
+      </p>
+
+      <h2>What We Offer</h2>
+
+      <h3>1. Knowledge</h3>
+      <p>
+        We believe knowledge is power, and that is exactly what we share. Our blog posts give you useful
+        information to prepare for your trip, along with tips and tricks to stay safe, save money, and enjoy
+        more. You can use our guides to plan your trip based on your interests, or simply read to get inspired
+        for your next adventure.
+      </p>
+      <p>
+        Whether you are exploring cities, mountains, or the desert, we will be here to help you learn more
+        about Morocco.
+      </p>
+
+      <h3>2. Consultation</h3>
+      <p>
+        While it is not our main service right now, we do offer free travel advice. You can reach us through
+        our <a href="/contact/">contact page</a> or on social media, and we will do our best to answer your
+        questions and help you plan.
+      </p>
+      <p>
+        We also connect travelers with trusted local service providers so you can enjoy great hospitality from
+        people we know and recommend. It all starts with a chat — contact us through our form, or message us
+        on Instagram, X, or Facebook. TikTok and YouTube are coming soon.
+      </p>
+
+      <h3>3. Store</h3>
+      <p>
+        GoingMorocco.com is also building a store where you'll be able to buy rugs and other Moroccan
+        products — each item carefully selected to bring you authentic Moroccan craftsmanship, from beautiful
+        handmade rugs to unique souvenirs and digital travel guides. This section is on its way; check back
+        soon.
+      </p>
+
+      <p class="text-sm text-ink/60">
+        <strong>Disclaimer:</strong> Our travel tips and recommendations are based on personal experience and
+        research. Conditions in Morocco can change, so always double-check important details before you travel.
+      </p>
+    </div>
+  </Container>
+</BaseLayout>

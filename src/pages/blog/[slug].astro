@@ -1,0 +1,156 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, render } from "astro:content";
+import { Image, getImage } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import TableOfContents from "../../components/TableOfContents.astro";
+import PostNav from "../../components/PostNav.astro";
+import RelatedPosts from "../../components/RelatedPosts.astro";
+import { t, formatDate, localizedPath } from "../../utils/i18n";
+import { sortByDateDesc, getAdjacentPosts, getRelatedPosts } from "../../utils/posts";
+import { getReadingTime } from "../../utils/reading-time";
+import { buildBlogPostingSchema, buildBreadcrumbSchema, type BreadcrumbItem } from "../../utils/seo";
+
+const locale = "en" as const;
+const strings = t(locale);
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("blog", (p) => p.data.locale === "en" && !p.data.draft);
+  return posts.map((post) => ({ params: { slug: post.data.slug }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props as Awaited<ReturnType<typeof getStaticPaths>>[number]["props"];
+const { Content, headings } = await render(post);
+
+const allPosts = await getCollection("blog", (p) => p.data.locale === "en" && !p.data.draft);
+const categories = await getCollection("categories", (c) => c.data.locale === locale);
+const categoryEntry = categories.find((c) => c.data.id === post.data.category);
+
+const sorted = sortByDateDesc(allPosts);
+const { previous, next } = getAdjacentPosts(sorted, post.data.slug);
+const related = getRelatedPosts(allPosts, post, 3);
+const categoryName = (id: string) => categories.find((c) => c.data.id === id)?.data.name;
+
+const readingTime = post.data.readingTimeMinutes ?? getReadingTime(post.body ?? "", locale);
+
+const postUrl = localizedPath("en", `/blog/${post.data.slug}/`);
+
+// OG image export via getImage() only works for local files processed by
+// astro:assets. Migrated posts with a remote (Wix-hosted) featuredImage use
+// that URL directly for OG/Twitter instead -- it's already close to a
+// 1200-wide image in most cases, just not re-cropped to an exact 1200x630.
+const isRemoteImage = typeof post.data.featuredImage === "string";
+const ogImageSrc = isRemoteImage
+  ? (post.data.featuredImage as string)
+  : (await getImage({ src: post.data.featuredImage as ImageMetadata, width: 1200, height: 630 })).src;
+
+const breadcrumbItems: BreadcrumbItem[] = [
+  { label: strings.nav.home, href: "/" },
+  { label: strings.nav.blog, href: "/blog/" },
+  ...(categoryEntry ? [{ label: categoryEntry.data.name, href: `/categories/${categoryEntry.data.id}/` }] : []),
+  { label: post.data.title },
+];
+
+const structuredData = [
+  buildBlogPostingSchema({
+    title: post.data.title,
+    description: post.data.description,
+    imageUrl: ogImageSrc,
+    publishDate: post.data.publishDate,
+    updatedDate: post.data.updatedDate,
+    author: post.data.author,
+    url: postUrl,
+    locale,
+  }),
+  buildBreadcrumbSchema(breadcrumbItems),
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${post.data.title} — GoingMorocco`}
+  description={post.data.description}
+  alternateUrls={{ en: postUrl }}
+  image={ogImageSrc}
+  ogType="article"
+  structuredData={structuredData}
+>
+  <Container class="py-8">
+    <Breadcrumbs items={breadcrumbItems} />
+  </Container>
+
+  <Container class="grid gap-10 pb-16 lg:grid-cols-[minmax(0,1fr)_280px]">
+    <article>
+      <header class="mb-6">
+        {categoryEntry && (
+          <a href={`/categories/${categoryEntry.data.id}/`} class="text-xs font-semibold uppercase tracking-wide text-gold-text">
+            {categoryEntry.data.name}
+          </a>
+        )}
+        <h1 class="mt-2 font-display text-3xl leading-tight text-ink sm:text-4xl">{post.data.title}</h1>
+        <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-ink/60">
+          <span>{post.data.author}</span>
+          <span aria-hidden="true">·</span>
+          <time datetime={post.data.publishDate.toISOString()}>
+            {strings.blog.publishedOn} {formatDate(post.data.publishDate, locale)}
+          </time>
+          {post.data.updatedDate && (
+            <>
+              <span aria-hidden="true">·</span>
+              <time datetime={post.data.updatedDate.toISOString()}>
+                {strings.blog.updatedOn} {formatDate(post.data.updatedDate, locale)}
+              </time>
+            </>
+          )}
+          <span aria-hidden="true">·</span>
+          <span>{strings.blog.readingTime(readingTime)}</span>
+        </div>
+      </header>
+
+      {isRemoteImage ? (
+        <img
+          src={post.data.featuredImage as string}
+          alt={post.data.featuredImageAlt}
+          width="1200"
+          height="675"
+          class="w-full rounded-2xl object-cover"
+          loading="eager"
+          decoding="async"
+        />
+      ) : (
+        <Image
+          src={post.data.featuredImage as ImageMetadata}
+          alt={post.data.featuredImageAlt}
+          width={1200}
+          height={675}
+          class="w-full rounded-2xl object-cover"
+          priority
+        />
+      )}
+
+      <div class="prose-content mt-8 max-w-none">
+        <Content />
+      </div>
+
+      <div class="mt-8 flex flex-wrap gap-2">
+        {post.data.tags.map((tag) => (
+          <span class="rounded-full bg-sand-light px-3 py-1 text-xs text-ink/70">#{tag}</span>
+        ))}
+      </div>
+
+      <div class="mt-10">
+        <PostNav locale={locale} previous={previous} next={next} />
+      </div>
+    </article>
+
+    <aside class="lg:sticky lg:top-20 lg:self-start">
+      <TableOfContents headings={headings} locale={locale} />
+    </aside>
+  </Container>
+
+  <Container class="pb-16">
+    <RelatedPosts locale={locale} posts={related} categoryName={categoryName} />
+  </Container>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+// The site's one signature element: a waypoint marked on a route line.
+// Used in the logo and as a section divider — nowhere else — so it stays
+// meaningful rather than becoming wallpaper. See README "Signature element".
+interface Props {
+  size?: number;
+  class?: string;
+}
+const { size = 28, class: className = "" } = Astro.props;
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 28 28"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  class={className}
+  aria-hidden="true"
+>
+  <path d="M3 21 C 9 21, 11 9, 17 9 S 23 5, 25 4" stroke="var(--color-royal)" stroke-width="1.6" stroke-linecap="round" />
+  <circle cx="25" cy="4" r="2.6" fill="var(--color-sand)" />
+</svg>

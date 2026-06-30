@@ -1,0 +1,71 @@
+---
+import Container from "./Container.astro";
+import RouteMark from "./RouteMark.astro";
+import { t, localizedPath, type Locale } from "../utils/i18n";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const strings = t(locale);
+const year = new Date().getFullYear();
+
+const quickLinks = [
+  { href: localizedPath(locale, "/"), label: strings.nav.home },
+  { href: localizedPath(locale, "/about/"), label: strings.nav.about },
+  { href: localizedPath(locale, "/blog/"), label: strings.nav.blog },
+  { href: localizedPath(locale, "/categories/"), label: strings.nav.categories },
+  { href: localizedPath(locale, "/contact/"), label: strings.nav.contact },
+];
+
+const legalLinks =
+  locale === "ar"
+    ? [
+        { href: "/ar/privacy/", label: "سياسة الخصوصية" },
+        { href: "/ar/terms/", label: "الشروط والأحكام" },
+      ]
+    : [
+        { href: "/privacy/", label: "Privacy Policy" },
+        { href: "/terms/", label: "Terms & Conditions" },
+      ];
+---
+
+<footer class="mt-20 border-t border-sand-light bg-sand-light/40">
+  <Container class="grid gap-10 py-12 sm:grid-cols-3">
+    <div>
+      <div class="flex items-center gap-2 font-display text-lg text-ink">
+        <RouteMark size={20} />
+        <span>GoingMorocco</span>
+      </div>
+      <p class="mt-3 max-w-xs text-sm text-ink/70">
+        {locale === "ar"
+          ? "دليل سفر مستقل إلى المغرب، مكتوب بمعرفة محلية حقيقية."
+          : "Independent Morocco travel guidance, written from real local knowledge."}
+      </p>
+    </div>
+
+    <div>
+      <h2 class="font-display text-sm uppercase tracking-wide text-ink/60">{strings.nav.blog}</h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        {quickLinks.map((l) => (
+          <li><a class="text-ink/80 hover:text-royal" href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-display text-sm uppercase tracking-wide text-ink/60">
+        {locale === "ar" ? "قانوني" : "Legal"}
+      </h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        {legalLinks.map((l) => (
+          <li><a class="text-ink/80 hover:text-royal" href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </Container>
+
+  <Container class="border-t border-sand-light py-5 text-xs text-ink/60">
+    © {year} GoingMorocco. {strings.footer.rights}
+  </Container>
+</footer>

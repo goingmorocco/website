@@ -1,0 +1,72 @@
+---
+title: "Moroccan Snails Soup (Babbouche) Recipe: Dare to Try It?"
+description: "Snails soup in a bowl If you’ve ever wandered the streets of Marrakech or Fes at night, you’ve probably seen big steaming pots with tiny snails peeking out...."
+locale: "en"
+slug: "moroccan-snails-soup-babbouche-recipe-dare-to-try-it"
+publishDate: 2025-02-12
+author: "Waleed Taklite"
+category: "recipes"
+tags: ["Food & Recipes"]
+featuredImage: "./images/moroccan-snails-soup-babbouche-recipe-dare-to-try-it.jpg"
+featuredImageAlt: "Moroccan Snails Soup (Babbouche) Recipe: Dare to Try It?"
+---
+
+If you’ve ever wandered the streets of Marrakech or Fes at night, you’ve probably seen big steaming pots with tiny snails peeking out. That, my friend, is babbouche—Moroccan snail soup! It’s a street food classic, loved by locals and adventurous travelers alike.
+
+Now, I know what you’re thinking: "Snails? Really?" Yes, really. And before you run away, hear me out. These little guys are simmered in a crazy flavorful broth packed with warm spices like anise, thyme, fennel, and cloves. It’s not just food; it’s an experience. You pick the snails out with a toothpick, sip the broth like it’s a magic potion, and suddenly—boom! You’re a local. These dishes are part of the broader tradition of [Moroccan cuisine](https://en.wikipedia.org/wiki/Moroccan_cuisine), which blends Berber, Arab, and Mediterranean influences.
+
+Some say babbouche is great for digestion, others claim it’s the ultimate cold remedy. But honestly? It’s just delicious. Ready to try it at home? Let’s go!
+
+## Moroccan Snails Soup Recipe Ingredients
+
+**For the Snails:**
+
+- 1 kg fresh snails (cleaned thoroughly – no one likes gritty snails!)
+- Water (enough to cover the snails)
+
+**For the Magical Broth:**
+
+- 2 liters water
+- 1 onion, finely chopped
+- 4 cloves garlic, minced
+- 2 bay leaves
+- 1 tablespoon thyme
+- 1 teaspoon fennel seeds
+- 1 teaspoon anise seeds
+- 1 teaspoon ground black pepper
+- 1 teaspoon salt (or to taste)
+- 1/2 teaspoon licorice powder (optional but gives an authentic touch)
+- 1 cinnamon stick
+- 5 cloves
+- 1 dried chili (for a slight kick – optional)
+
+## How to Make It
+
+1. **The Great Snail Clean-Up**
+If your snails are fresh, soak them in water for a few hours, changing the water a couple of times. This helps them, well… clean themselves out. Rinse them thoroughly to remove any leftover dirt or slime. (Yes, this part is a little weird, but trust the process.)
+2. **Boil the Snails**
+In a large pot, bring water to a boil and add the snails. Let them cook for 10 minutes, then drain and rinse them again.
+3. **Create the Magic Broth**
+In a big pot, heat 2 liters of water and add all the spices, onion, garlic, and bay leaves. Bring it to a boil and let those flavors blend together for 10 minutes.
+4. **The Grand Snail Reunion**
+Add the cleaned snails back into the pot and let everything simmer for 1 to 1.5 hours. Stir occasionally and let the snails soak up all that herby, spicy goodness.
+5. **Serve Like a Street Vendor**
+Scoop the snails into small bowls with some of the broth. Serve with toothpicks (to fish them out like a pro) and a cup of the warm broth on the side.
+
+## Dare to Try It?
+
+So, will you be the brave foodie who dives into a bowl of Moroccan snails? Or will you just sip the broth and pretend you’re a snail expert? Either way, babbouche is a one-of-a-kind dish that’s worth trying at least once in your life.
+
+If you do make it, let me know how it turns out! Did you love it? Did you freak out? No judgment here—I just want the full story. Tag me if you post your babbouche adventure!
+
+### Related Guides
+
+- [Moroccan Tagine Cooking Class is a Must-Do](https://www.goingmorocco.com/post/unlock-tagine-secrets-moroccan-cooking-class)
+- [Discovering the Heart of Moroccan Hospitality: Mint Tea](https://www.goingmorocco.com/post/moroccan-mint-tea-recipe-step-by-step)
+- [Moroccan Loubia Recipe Step by Step](https://www.goingmorocco.com/post/moroccan-loubia-recipe-step-by-step)
+- [How to Make Medfouna: Recipe for The Moroccan Berber Pizza](https://www.goingmorocco.com/post/how-to-make-medfouna-recipe-for-the-moroccan-berber-pizza)
+
+### Helpful Resources
+
+- [Moroccan Cuisine – Wikipedia](https://en.wikipedia.org/wiki/Moroccan_cuisine)
+
