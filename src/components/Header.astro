@@ -17,6 +17,10 @@ const navItems = [
   { href: localizedPath(locale, "/about/"), label: strings.nav.about },
   { href: localizedPath(locale, "/post/"), label: strings.nav.blog },
   { href: localizedPath(locale, "/categories/"), label: strings.nav.categories },
+  // External subdomains — not part of Astro's i18n routing, so plain
+  // absolute URLs rather than localizedPath().
+  { href: "https://booking.goingmorocco.com", label: strings.nav.flights, external: true },
+  { href: "https://planner.goingmorocco.com", label: strings.nav.itineraries, external: true },
   { href: localizedPath(locale, "/contact/"), label: strings.nav.contact },
 ];
 ---
@@ -33,6 +37,8 @@ const navItems = [
       {navItems.map((item) => (
         <a
           href={item.href}
+          target={item.external ? "_blank" : undefined}
+          rel={item.external ? "noopener" : undefined}
           class="text-sm font-medium text-ink/80 transition-colors hover:text-royal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal"
         >
           {item.label}
@@ -47,6 +53,7 @@ const navItems = [
         placeholder={strings.search.placeholder}
         noResults={strings.search.noResults}
         label={strings.search.label}
+        instanceId="desktop"
       />
       <LanguageSwitcher currentLocale={locale} alternateUrls={alternateUrls} />
     </div>
@@ -79,10 +86,16 @@ const navItems = [
           placeholder={strings.search.placeholder}
           noResults={strings.search.noResults}
           label={strings.search.label}
+          instanceId="mobile"
         />
       </div>
       {navItems.map((item) => (
-        <a href={item.href} class="rounded-md px-2 py-2.5 text-base font-medium text-ink/80 hover:bg-sand-light hover:text-ink">
+        <a
+          href={item.href}
+          target={item.external ? "_blank" : undefined}
+          rel={item.external ? "noopener" : undefined}
+          class="rounded-md px-2 py-2.5 text-base font-medium text-ink/80 hover:bg-sand-light hover:text-ink"
+        >
           {item.label}
         </a>
       ))}
@@ -114,3 +127,4 @@ const navItems = [
     if (!panel.contains(e.target as Node) && !trigger.contains(e.target as Node)) setOpen(false);
   });
 </script>
+
