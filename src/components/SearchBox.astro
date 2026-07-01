@@ -6,12 +6,19 @@ interface Props {
   placeholder: string;
   noResults: string;
   label: string;
+  /** Unique suffix so multiple SearchBox instances on one page (desktop nav +
+   * mobile nav) don't collide on id="site-search" — duplicate IDs meant the
+   * search script always bound to whichever instance appeared first in the
+   * DOM (desktop), leaving the mobile input completely unwired. */
+  instanceId: string;
 }
-const { locale, placeholder, noResults, label } = Astro.props;
+const { locale, placeholder, noResults, label, instanceId } = Astro.props;
+const inputId = `site-search-${instanceId}`;
+const resultsId = `search-results-${instanceId}`;
 ---
 
 <div class="relative" data-search-root>
-  <label for="site-search" class="sr-only">{label}</label>
+  <label for={inputId} class="sr-only">{label}</label>
   <div class="relative flex items-center">
     <svg
       class="pointer-events-none absolute start-3 h-4 w-4 text-ink/40"
@@ -22,7 +29,7 @@ const { locale, placeholder, noResults, label } = Astro.props;
       <path fill-rule="evenodd" d="M9 3a6 6 0 100 12A6 6 0 009 3zM1 9a8 8 0 1114.32 4.906l3.387 3.387a1 1 0 01-1.414 1.414l-3.387-3.387A8 8 0 011 9z" clip-rule="evenodd"/>
     </svg>
     <input
-      id="site-search"
+      id={inputId}
       type="search"
       autocomplete="off"
       spellcheck="false"
@@ -30,14 +37,14 @@ const { locale, placeholder, noResults, label } = Astro.props;
       data-locale={locale}
       class="w-full rounded-full border border-sand-light bg-white py-2 ps-9 pe-4 text-sm text-ink placeholder-ink/40 focus:border-royal focus:outline-none focus-visible:ring-2 focus-visible:ring-royal sm:w-56"
       aria-autocomplete="list"
-      aria-controls="search-results"
+      aria-controls={resultsId}
       aria-expanded="false"
     />
   </div>
 
   <!-- Dropdown -->
   <div
-    id="search-results"
+    id={resultsId}
     role="listbox"
     data-no-results={noResults}
     class="absolute start-0 top-full z-50 mt-1 hidden w-80 overflow-hidden rounded-xl border border-sand-light bg-white shadow-xl"
@@ -59,27 +66,24 @@ const { locale, placeholder, noResults, label } = Astro.props;
     tags: string[];
   }
 
+  // Shared across every instance on the page (desktop + mobile) so the
+  // /search.json index is only ever fetched once, no matter how many
+  // SearchBox instances are present.
   let index: PostEntry[] | null = null;
-  let activeIndex = -1;
-  let visibleResults: PostEntry[] = [];
-
-  const root = document.querySelector<HTMLElement>("[data-search-root]")!;
-  const input = root.querySelector<HTMLInputElement>("#site-search")!;
-  const dropdown = root.querySelector<HTMLElement>("#search-results")!;
-  const locale = input.dataset.locale ?? "en";
-  const noResultsLabel = dropdown.dataset.noResults ?? "No results found";
+  let indexPromise: Promise<void> | null = null;
 
   async function loadIndex() {
     if (index) return;
-    try {
-      const res = await fetch("/search.json");
-      index = await res.json();
-    } catch {
-      index = [];
+    if (!indexPromise) {
+      indexPromise = fetch("/search.json")
+        .then((res) => res.json())
+        .then((data) => { index = data; })
+        .catch(() => { index = []; });
     }
+    await indexPromise;
   }
 
-  function search(query: string): PostEntry[] {
+  function search(query: string, locale: string): PostEntry[] {
     if (!index || query.length < 2) return [];
     const q = query.toLowerCase();
     return index
@@ -98,69 +102,88 @@ const { locale, placeholder, noResults, label } = Astro.props;
     return text.replace(new RegExp(`(${escaped})`, "gi"), "<mark class='bg-sand-light rounded px-0.5'>$1</mark>");
   }
 
-  function renderResults(results: PostEntry[], query: string) {
-    activeIndex = -1;
-    if (results.length === 0) {
-      dropdown.innerHTML = `<p class="px-4 py-3 text-sm text-ink/60">${noResultsLabel}</p>`;
-    } else {
-      dropdown.innerHTML = results
-        .map(
-          (r, i) => `
-          <a
-            role="option"
-            href="${r.url}"
-            data-index="${i}"
-            class="flex flex-col gap-0.5 px-4 py-3 text-sm hover:bg-sand-light/60 focus:bg-sand-light/60 focus:outline-none border-b border-sand-light/60 last:border-0"
-          >
-            <span class="font-medium text-ink">${highlight(r.title, query)}</span>
-            <span class="text-xs text-ink/60 line-clamp-1">${highlight(r.description, query)}</span>
-          </a>`
-        )
-        .join("");
+  // Initializes one SearchBox instance (its own input + dropdown), fully
+  // scoped to that instance's root so multiple instances on the same page
+  // (desktop nav + mobile nav) never interfere with each other.
+  function initInstance(root: HTMLElement) {
+    const input = root.querySelector<HTMLInputElement>("input[type='search']");
+    const dropdown = root.querySelector<HTMLElement>("[role='listbox']");
+    if (!input || !dropdown) return;
+
+    const locale = input.dataset.locale ?? "en";
+    const noResultsLabel = dropdown.dataset.noResults ?? "No results found";
+    let activeIndex = -1;
+
+    function renderResults(results: PostEntry[], query: string) {
+      activeIndex = -1;
+      if (!dropdown) return;
+      if (results.length === 0) {
+        dropdown.innerHTML = `<p class="px-4 py-3 text-sm text-ink/60">${noResultsLabel}</p>`;
+      } else {
+        dropdown.innerHTML = results
+          .map(
+            (r, i) => `
+            <a
+              role="option"
+              href="${r.url}"
+              data-index="${i}"
+              class="flex flex-col gap-0.5 px-4 py-3 text-sm hover:bg-sand-light/60 focus:bg-sand-light/60 focus:outline-none border-b border-sand-light/60 last:border-0"
+            >
+              <span class="font-medium text-ink">${highlight(r.title, query)}</span>
+              <span class="text-xs text-ink/60 line-clamp-1">${highlight(r.description, query)}</span>
+            </a>`
+          )
+          .join("");
+      }
+      showDropdown();
     }
-    visibleResults = results;
-    showDropdown();
-  }
 
-  function showDropdown() {
-    dropdown.classList.remove("hidden");
-    input.setAttribute("aria-expanded", "true");
-  }
-
-  function hideDropdown() {
-    dropdown.classList.add("hidden");
-    input.setAttribute("aria-expanded", "false");
-    activeIndex = -1;
-  }
-
-  function setActive(i: number) {
-    const items = dropdown.querySelectorAll<HTMLElement>("[role='option']");
-    items.forEach((el) => el.classList.remove("bg-sand-light/60"));
-    activeIndex = Math.max(-1, Math.min(i, items.length - 1));
-    if (activeIndex >= 0) {
-      items[activeIndex].classList.add("bg-sand-light/60");
-      items[activeIndex].scrollIntoView({ block: "nearest" });
+    function showDropdown() {
+      if (!dropdown || !input) return;
+      dropdown.classList.remove("hidden");
+      input.setAttribute("aria-expanded", "true");
     }
+
+    function hideDropdown() {
+      if (!dropdown || !input) return;
+      dropdown.classList.add("hidden");
+      input.setAttribute("aria-expanded", "false");
+      activeIndex = -1;
+    }
+
+    function setActive(i: number) {
+      if (!dropdown) return;
+      const items = dropdown.querySelectorAll<HTMLElement>("[role='option']");
+      items.forEach((el) => el.classList.remove("bg-sand-light/60"));
+      activeIndex = Math.max(-1, Math.min(i, items.length - 1));
+      if (activeIndex >= 0) {
+        items[activeIndex].classList.add("bg-sand-light/60");
+        items[activeIndex].scrollIntoView({ block: "nearest" });
+      }
+    }
+
+    input.addEventListener("focus", loadIndex);
+
+    input.addEventListener("input", async () => {
+      const q = input.value.trim();
+      if (q.length < 2) { hideDropdown(); return; }
+      await loadIndex();
+      renderResults(search(q, locale), q);
+    });
+
+    input.addEventListener("keydown", (e) => {
+      if (!dropdown) return;
+      const items = dropdown.querySelectorAll<HTMLElement>("[role='option']");
+      if (e.key === "ArrowDown") { e.preventDefault(); setActive(activeIndex + 1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); setActive(activeIndex - 1); }
+      else if (e.key === "Enter" && activeIndex >= 0) { e.preventDefault(); items[activeIndex].click(); }
+      else if (e.key === "Escape") hideDropdown();
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!root.contains(e.target as Node)) hideDropdown();
+    });
   }
 
-  input.addEventListener("focus", loadIndex);
-
-  input.addEventListener("input", async () => {
-    const q = input.value.trim();
-    if (q.length < 2) { hideDropdown(); return; }
-    await loadIndex();
-    renderResults(search(q), q);
-  });
-
-  input.addEventListener("keydown", (e) => {
-    const items = dropdown.querySelectorAll<HTMLElement>("[role='option']");
-    if (e.key === "ArrowDown") { e.preventDefault(); setActive(activeIndex + 1); }
-    else if (e.key === "ArrowUp") { e.preventDefault(); setActive(activeIndex - 1); }
-    else if (e.key === "Enter" && activeIndex >= 0) { e.preventDefault(); items[activeIndex].click(); }
-    else if (e.key === "Escape") hideDropdown();
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!root.contains(e.target as Node)) hideDropdown();
-  });
+  document.querySelectorAll<HTMLElement>("[data-search-root]").forEach(initInstance);
 </script>
