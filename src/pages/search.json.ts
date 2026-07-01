@@ -18,7 +18,7 @@ export async function GET(_context: APIContext) {
   const index = posts.map((post) => ({
     title: post.data.title,
     description: post.data.description,
-    url: localizedPath(post.data.locale, `/blog/${post.data.slug}/`),
+    url: localizedPath(post.data.locale, `/post/${post.data.slug}/`),
     locale: post.data.locale,
     category: post.data.category,
     tags: post.data.tags,

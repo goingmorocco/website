@@ -1,6 +1,6 @@
 ---
 import Container from "./Container.astro";
-import RouteMark from "./RouteMark.astro";
+import Logo from "./Logo.astro";
 import { t, localizedPath, type Locale } from "../utils/i18n";
 
 interface Props {
@@ -13,7 +13,7 @@ const year = new Date().getFullYear();
 const quickLinks = [
   { href: localizedPath(locale, "/"), label: strings.nav.home },
   { href: localizedPath(locale, "/about/"), label: strings.nav.about },
-  { href: localizedPath(locale, "/blog/"), label: strings.nav.blog },
+  { href: localizedPath(locale, "/post/"), label: strings.nav.blog },
   { href: localizedPath(locale, "/categories/"), label: strings.nav.categories },
   { href: localizedPath(locale, "/contact/"), label: strings.nav.contact },
 ];
@@ -33,10 +33,9 @@ const legalLinks =
 <footer class="mt-20 border-t border-sand-light bg-sand-light/40">
   <Container class="grid gap-10 py-12 sm:grid-cols-3">
     <div>
-      <div class="flex items-center gap-2 font-display text-lg text-ink">
-        <RouteMark size={20} />
-        <span>GoingMorocco</span>
-      </div>
+      <a href={localizedPath(locale, "/")} aria-label="GoingMorocco home">
+        <Logo height={32} />
+      </a>
       <p class="mt-3 max-w-xs text-sm text-ink/70">
         {locale === "ar"
           ? "دليل سفر مستقل إلى المغرب، مكتوب بمعرفة محلية حقيقية."
@@ -66,6 +65,6 @@ const legalLinks =
   </Container>
 
   <Container class="border-t border-sand-light py-5 text-xs text-ink/60">
-    © {year} GoingMorocco. {strings.footer.rights}
+    © {year} GoingMorocco.com. {strings.footer.rights}
   </Container>
 </footer>

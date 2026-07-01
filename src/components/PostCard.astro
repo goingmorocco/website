@@ -10,7 +10,7 @@ interface Props {
 const { post, categoryName } = Astro.props;
 const locale = post.data.locale as Locale;
 const strings = t(locale);
-const href = localizedPath(locale, `/blog/${post.data.slug}/`);
+const href = localizedPath(locale, `/post/${post.data.slug}/`);
 const isRemoteImage = typeof post.data.featuredImage === "string";
 ---
 

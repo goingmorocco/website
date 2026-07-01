@@ -1,68 +1,23 @@
 ---
-// GoingMorocco.com logo — recreated as inline SVG from the brand asset.
-// The djellaba-robed figure with luggage sits between "GOING" and "MOROCCO".
-// Color tokens: --color-ink (#232017) for GOING/.com, --color-sand (#c9a876) for MOROCCO.
+// Uses the real GoingMorocco PNG logo (public/logo.png).
+// The original is 1774×887px. We display it at a controlled height
+// and let width scale proportionally (aspect ratio 2:1).
+// header: height 36px → width ~72px  (crisp on retina via srcset/2x)
+// footer: height 32px → width ~64px
 interface Props {
   height?: number;
   class?: string;
 }
-const { height = 48, class: className = "" } = Astro.props;
+const { height = 36, class: className = "" } = Astro.props;
+const width = Math.round(height * 2); // 1774/887 ≈ 2:1
 ---
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 520 100"
+<img
+  src="/logo.png"
+  alt="GoingMorocco.com"
+  width={width}
   height={height}
-  aria-label="GoingMorocco.com"
-  role="img"
   class={className}
->
-  <!-- GOING -->
-  <text
-    x="0" y="78"
-    font-family="'Arial Black','Impact','Haettenschweiler',sans-serif"
-    font-weight="900"
-    font-size="82"
-    fill="var(--color-ink,#232017)"
-    letter-spacing="-2"
-  >GOING</text>
-
-  <!-- Djellaba figure with luggage (simplified from brand mark) -->
-  <g transform="translate(254,10)">
-    <!-- robe / djellaba body -->
-    <path d="M14 18 C10 28 6 48 8 75 L22 75 C22 60 20 42 18 30 Z" fill="var(--color-ink,#232017)"/>
-    <!-- hood -->
-    <ellipse cx="15" cy="14" rx="7" ry="9" fill="var(--color-ink,#232017)"/>
-    <!-- pointing arm -->
-    <path d="M18 36 Q26 30 34 28" stroke="var(--color-ink,#232017)" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <!-- legs -->
-    <path d="M10 75 L8 88 M20 75 L22 86" stroke="var(--color-ink,#232017)" stroke-width="3.5" stroke-linecap="round"/>
-    <!-- luggage body -->
-    <rect x="25" y="68" width="14" height="18" rx="2" fill="var(--color-ink,#232017)"/>
-    <!-- luggage handle -->
-    <path d="M28 68 L28 63 Q32 60 36 63 L36 68" stroke="var(--color-ink,#232017)" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <!-- luggage wheels -->
-    <circle cx="27" cy="87" r="2" fill="var(--color-ink,#232017)"/>
-    <circle cx="37" cy="87" r="2" fill="var(--color-ink,#232017)"/>
-    <!-- luggage stripe -->
-    <line x1="25" y1="77" x2="39" y2="77" stroke="#fff" stroke-width="1.5"/>
-  </g>
-
-  <!-- MOROCCO -->
-  <text
-    x="298" y="78"
-    font-family="'Arial Black','Impact','Haettenschweiler',sans-serif"
-    font-weight="900"
-    font-size="82"
-    fill="var(--color-sand,#c9a876)"
-    letter-spacing="-2"
-  >MOROCCO</text>
-
-  <!-- .com — smaller, black, sits after MOROCCO -->
-  <text
-    x="490" y="78"
-    font-family="'Arial Black','Impact','Haettenschweiler',sans-serif"
-    font-weight="900"
-    font-size="40"
-    fill="var(--color-ink,#232017)"
-  >.com</text>
-</svg>
+  loading="eager"
+  decoding="async"
+  style="object-fit: contain;"
+/>

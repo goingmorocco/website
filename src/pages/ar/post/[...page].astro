@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Container from "../../../components/Container.astro";
+import PostCard from "../../../components/PostCard.astro";
+import Pagination from "../../../components/Pagination.astro";
+import { getCollection } from "astro:content";
+import { sortByDateDesc } from "../../../utils/posts";
+import { getReadingTime } from "../../../utils/reading-time";
+
+const locale = "ar" as const;
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getCollection("blog", (p) => p.data.locale === "ar" && !p.data.draft);
+  return paginate(sortByDateDesc(posts), { pageSize: 6 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props as Awaited<ReturnType<typeof getStaticPaths>>[number]["props"];
+
+const categories = await getCollection("categories", (c) => c.data.locale === locale);
+const categoryName = (id: string) => categories.find((c) => c.data.id === id)?.data.name;
+
+for (const post of page.data) {
+  post.data.readingTimeMinutes ??= getReadingTime(post.body ?? "", locale);
+}
+---
+
+<BaseLayout
+  locale={locale}
+  title={page.currentPage === 1 ? "المدونة — غوينغ موروكو" : `المدونة — صفحة ${page.currentPage} — غوينغ موروكو`}
+  description="جميع أدلة السفر إلى المغرب من غوينغ موروكو: الصحراء، جبال الأطلس، المدن العتيقة، الطعام، وتخطيط الرحلات."
+  alternateUrls={page.currentPage === 1 ? { en: "/post/", ar: "/ar/post/" } : {}}
+>
+  <Container class="py-12">
+    <h1 class="font-display text-3xl text-ink">المدونة</h1>
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {page.data.map((post) => (
+        <PostCard post={post} categoryName={categoryName(post.data.category)} />
+      ))}
+    </div>
+    <Pagination
+      prevUrl={page.url.prev}
+      nextUrl={page.url.next}
+      currentPage={page.currentPage}
+      lastPage={page.lastPage}
+      labels={{ previous: "السابق", next: "التالي" }}
+    />
+  </Container>
+</BaseLayout>

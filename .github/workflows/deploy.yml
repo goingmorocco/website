@@ -1,10 +1,24 @@
+# Deploys the GoingMorocco Astro site to GitHub Pages on every push to main,
+# and on manual trigger via the Actions tab (workflow_dispatch).
+#
+# Required repository settings (do these once, in order):
+#   1. Settings → Pages → Build and deployment → Source → GitHub Actions
+#   2. Settings → Actions → General → Workflow permissions → Read and write permissions
+#      (needed so the deploy job can write to the pages environment)
+#   3. If using a custom domain: Settings → Pages → Custom domain → goingmorocco.com
+#      GitHub will verify DNS and issue a TLS certificate automatically.
+#      The public/CNAME file in this repo handles this automatically — no extra
+#      config file is needed.
+
 name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches: [main]       # auto-deploy on every push to main
+  workflow_dispatch:       # allow manual trigger from the Actions tab
 
+# These three permissions are the minimum required by the deploy-pages action.
+# id-token: write is required for OIDC-based authentication to GitHub Pages.
 permissions:
   contents: read
   pages: write
@@ -12,28 +26,52 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  # false here is intentional: cancelling a deployment mid-flight can leave
+  # GitHub Pages in a broken state. With false, any new run waits for the
+  # current one to finish rather than killing it.
+  cancel-in-progress: false
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 22
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+          node-version: 22          # matches the engines.node field in package.json
+          cache: "npm"              # caches node_modules between runs — faster CI
+
+      - name: Configure GitHub Pages
+        # Sets the GITHUB_PAGES=true env var and the correct site URL in the
+        # runner environment. Astro reads this to ensure internal links and the
+        # sitemap use the right base URL. With a custom domain this is
+        # belt-and-suspenders (the site is already set in astro.config.mjs),
+        # but it's required by the deploy-pages action contract.
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        run: npm ci              # ci is stricter than install: fails on lockfile drift
+
+      - name: Build site
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./dist           # Astro writes the static output here
 
   deploy:
-    needs: build
+    name: Deploy
+    needs: build               # only runs if the build job succeeds
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}   # shown in the Actions UI
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4

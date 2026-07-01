@@ -15,7 +15,7 @@ const strings = t(locale);
   <div class="text-start">
     {
       previous && (
-        <a href={localizedPath(locale, `/blog/${previous.data.slug}/`)} class="group block rounded-xl border border-sand-light p-4 hover:border-royal">
+        <a href={localizedPath(locale, `/post/${previous.data.slug}/`)} class="group block rounded-xl border border-sand-light p-4 hover:border-royal">
           <p class="text-xs font-semibold uppercase tracking-wide text-ink/50">{strings.blog.previousArticle}</p>
           <p class="mt-1 font-display text-base text-ink group-hover:text-royal">{previous.data.title}</p>
         </a>
@@ -25,7 +25,7 @@ const strings = t(locale);
   <div class="text-end">
     {
       next && (
-        <a href={localizedPath(locale, `/blog/${next.data.slug}/`)} class="group block rounded-xl border border-sand-light p-4 hover:border-royal">
+        <a href={localizedPath(locale, `/post/${next.data.slug}/`)} class="group block rounded-xl border border-sand-light p-4 hover:border-royal">
           <p class="text-xs font-semibold uppercase tracking-wide text-ink/50">{strings.blog.nextArticle}</p>
           <p class="mt-1 font-display text-base text-ink group-hover:text-royal">{next.data.title}</p>
         </a>

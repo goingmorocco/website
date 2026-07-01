@@ -25,7 +25,7 @@ const display = featured.length >= 3 ? featured : latest;
 
 <BaseLayout
   locale={locale}
-  title="غوينغ موروكو — ذاهب المغرب؟ إكتشفه أولا!"
+  title="غوينغ موروكو — ذاهب للمغرب؟ إكتشفه أولا!"
   description="أدلة سفر عملية ومكتوبة محلياً عن المغرب: الصحراء، جبال الأطلس، المدن العتيقة، وكيف تخطط رحلة تناسب وقتك وميزانيتك فعلاً."
   alternateUrls={{ en: "/", ar: "/ar/" }}
   structuredData={buildOrganizationSchema(locale)}
@@ -33,7 +33,7 @@ const display = featured.length >= 3 ? featured : latest;
   <section class="border-b border-sand-light bg-gradient-to-b from-sand-light/50 to-paper py-16 sm:py-24">
     <Container class="max-w-3xl text-center">
       <h1 class="font-display text-4xl leading-tight text-ink sm:text-5xl">
-        ذاهب المغرب؟ إكتشفه أولا!
+        ذاهب للمغرب؟ إكتشفه أولا!
       </h1>
       <p class="mt-5 text-lg text-ink/70">
         أدلة عملية ومباشرة عن الصحراء وجبال الأطلس والمدن العتيقة — مكتوبة من خميسات، لا منقولة من قائمة عامة.
@@ -45,7 +45,7 @@ const display = featured.length >= 3 ? featured : latest;
     <Container>
       <div class="flex items-baseline justify-between">
         <h2 class="font-display text-2xl text-ink">{strings.home.latestPosts}</h2>
-        <a href="/ar/blog/" class="text-sm font-medium text-royal hover:underline">{strings.home.viewAll}</a>
+        <a href="/ar/post/" class="text-sm font-medium text-royal hover:underline">{strings.home.viewAll}</a>
       </div>
       <RouteDivider class="my-6" />
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
