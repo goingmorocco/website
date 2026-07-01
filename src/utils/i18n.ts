@@ -16,7 +16,7 @@ export const localeMeta: Record<Locale, { label: string; dir: "ltr" | "rtl"; htm
 // this dictionary is only for chrome around the content.
 export const ui = {
   en: {
-    nav: { home: "Home", about: "About", blog: "Blog", categories: "Categories", contact: "Contact" },
+    nav: { home: "Home", about: "About", blog: "Blog", categories: "Categories", contact: "Contact", flights: "Flights", itineraries: "Itineraries" },
     blog: {
       readingTime: (min: number) => `${min} min read`,
       relatedArticles: "Related Articles",
@@ -38,7 +38,7 @@ export const ui = {
     footer: { rights: "All rights reserved." },
   },
   ar: {
-    nav: { home: "الرئيسية", about: "من نحن", blog: "المدونة", categories: "الفئات", contact: "تواصل معنا" },
+    nav: { home: "الرئيسية", about: "من نحن", blog: "المدونة", categories: "الفئات", contact: "تواصل معنا", flights: "الرحلات الجوية", itineraries: "خطط الرحلات" },
     blog: {
       readingTime: (min: number) => `${min} دقيقة قراءة`,
       relatedArticles: "مقالات ذات صلة",
