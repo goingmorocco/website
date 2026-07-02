@@ -1,0 +1,80 @@
+---
+// Common first-time-visitor questions, gathered from what people actually
+// search before a Morocco trip. Answers are written short and casual on
+// purpose — this is a quick-scan section, not another full guide.
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+const faqs: FAQ[] = [
+  {
+    question: "Do I need a visa to visit Morocco?",
+    answer:
+      "If you're from the US, UK, EU, Canada, or Australia, no — you can stay up to 90 days without a visa. Just make sure your passport is valid for at least 6 months after your trip. Rules can change, so double check with your local Moroccan embassy before you book.",
+  },
+  {
+    question: "Is Morocco safe to visit?",
+    answer:
+      "Yes, overall Morocco is a safe country for travelers. Violent crime against tourists is rare. Like any busy destination, keep an eye on your bag in crowded souks and use official taxis or transport apps, and you'll be fine.",
+  },
+  {
+    question: "What language do people speak in Morocco?",
+    answer:
+      "Arabic and Berber (Amazigh) are the official languages, and French is spoken almost everywhere too. In touristy spots like Marrakech and Fez, you'll find plenty of English as well.",
+  },
+  {
+    question: "What currency should I bring?",
+    answer:
+      "The Moroccan Dirham (MAD) is the only currency used day-to-day, and you can't buy it before you arrive. Bring Euros, US Dollars, or British Pounds in cash and exchange them at the airport or a local bank, or just pull dirhams straight from an ATM.",
+  },
+  {
+    question: "Is Morocco safe for solo female travelers?",
+    answer:
+      "Many women travel solo in Morocco and have a great time. You may get more stares or comments than at home, especially in busy medinas — dressing modestly and walking with confidence helps a lot. Avoid empty alleys at night, same as you would anywhere.",
+  },
+  {
+    question: "When is the best time to visit Morocco?",
+    answer:
+      "Spring (March–May) and autumn (September–November) are the sweet spot — warm days, cool nights, and comfortable temperatures almost everywhere. Summer can be brutally hot inland (think 40°C+ in Marrakech), though the coast stays cooler.",
+  },
+  {
+    question: "Do I need to dress conservatively?",
+    answer:
+      "Morocco is fairly relaxed compared to some neighboring countries, but it's still respectful to cover your shoulders and knees in cities and medinas, especially for women. Swimwear is totally fine at pools and beaches.",
+  },
+  {
+    question: "Should I haggle when shopping in the souks?",
+    answer:
+      "Yes — haggling is expected and even part of the fun. Prices aren't fixed in most souks. A common approach: start well below the first price you're quoted, stay friendly, and meet somewhere in the middle.",
+  },
+];
+---
+
+<section class="py-16">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h2 class="font-display text-2xl text-ink sm:text-3xl">Morocco Travel: Quick Questions</h2>
+      <p class="mt-3 text-ink/70">The stuff most first-time visitors ask us before they go.</p>
+    </div>
+
+    <div class="mt-10 space-y-3">
+      {faqs.map((faq) => (
+        <details class="group rounded-xl border border-sand-light bg-white p-5 open:shadow-sm">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base text-ink marker:content-none">
+            {faq.question}
+            <svg
+              class="h-5 w-5 shrink-0 text-royal transition-transform group-open:rotate-180"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </summary>
+          <p class="mt-3 text-sm leading-relaxed text-ink/70">{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
