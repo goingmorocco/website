@@ -3,6 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Container from "../components/Container.astro";
 import RouteDivider from "../components/RouteDivider.astro";
 import PostCard from "../components/PostCard.astro";
+import AboutMoroccoSection from "../components/home/AboutMoroccoSection.astro";
+import ToolPromoSection from "../components/home/ToolPromoSection.astro";
+import FAQSection from "../components/home/FAQSection.astro";
 import { getCollection } from "astro:content";
 import { getReadingTime } from "../utils/reading-time";
 import { buildOrganizationSchema } from "../utils/seo";
@@ -25,7 +28,7 @@ const display = featured.length >= 3 ? featured : latest;
 
 <BaseLayout
   locale={locale}
-  title="GoingMorocco.com — Going Morocco? Explore it First!"
+  title="GoingMorocco.com â€” Going Morocco? Explore it First!"
   description="Practical, locally-written Morocco travel guides: the Sahara, the Atlas Mountains, the medinas, and how to plan a trip that actually fits your time and budget."
   alternateUrls={{ en: "/", ar: "/ar/" }}
   structuredData={buildOrganizationSchema(locale)}
@@ -36,10 +39,22 @@ const display = featured.length >= 3 ? featured : latest;
         Going Morocco? Explore it First!
       </h1>
       <p class="mt-5 text-lg text-ink/70">
-        Practical, first-hand guides to the Sahara, the Atlas Mountains, and the medinas — written from Khemisset, not assembled from someone else's listicle.
+        Practical, first-hand guides to the Sahara, the Atlas Mountains, and the medinas â€” written from Marrakech, not assembled from someone else's listicle.
       </p>
     </Container>
   </section>
+
+  <AboutMoroccoSection />
+
+  <ToolPromoSection
+    eyebrow="Flights"
+    title="Find Your Flight to Morocco"
+    description="Compare flights to Marrakech, Casablanca, Fez, and beyond in one search. Our flight tool pulls real prices from airlines so you can find the best deal and book with confidence."
+    ctaText="Search Flights"
+    ctaHref="https://booking.goingmorocco.com"
+    image="/images/home/flights.jpg"
+    imageAlt="Airplane flying in a clear sky over Morocco"
+  />
 
   <section class="py-16">
     <Container>
@@ -53,6 +68,27 @@ const display = featured.length >= 3 ? featured : latest;
           <PostCard post={post} categoryName={categoryName(post.data.category)} />
         ))}
       </div>
+      <div class="mt-10 text-center">
+        <a
+          href="/post/"
+          class="inline-flex items-center justify-center rounded-full border border-royal px-6 py-3 font-semibold text-royal transition-colors hover:bg-royal hover:text-white"
+        >
+          View More Posts
+        </a>
+      </div>
     </Container>
   </section>
+
+  <ToolPromoSection
+    eyebrow="Itinerary Planner"
+    title="Let Our AI Plan Your Trip"
+    description="Tell our AI planner how many days you have, your budget, and what you love â€” deserts, mountains, cities, or all three â€” and get a ready-made Morocco itinerary in minutes."
+    ctaText="Plan My Trip"
+    ctaHref="https://planner.goingmorocco.com"
+    image="/images/home/itinerary.jpg"
+    imageAlt="Map and travel planning notebook for a Morocco trip"
+    reverse
+  />
+
+  <FAQSection />
 </BaseLayout>
