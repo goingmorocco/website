@@ -1,0 +1,27 @@
+---
+// Renders an in-content call-to-action button. Replaces Wix's BUTTON rich-content
+// nodes, which don't survive plain Markdown (they're widget elements, not text).
+//
+// `color` is preserved from the original Wix post's per-provider brand color
+// (e.g. an affiliate partner's brand color) rather than hardcoded, since these
+// are deliberate visual choices tied to specific partners/CTAs.
+interface Props {
+  text: string;
+  url: string;
+  color?: string;
+  /** Affiliate/sponsored links should be marked as such for both users and search engines. */
+  sponsored?: boolean;
+}
+
+const { text, url, color = "#0F4C81", sponsored = true } = Astro.props;
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel={sponsored ? "sponsored noopener noreferrer" : "noopener noreferrer"}
+  class="not-prose my-4 inline-flex items-center justify-center rounded-full px-6 py-3 text-center font-semibold text-white shadow-sm transition-transform hover:scale-[1.02] hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+  style={`background-color: ${color}; outline-color: ${color};`}
+>
+  {text}
+</a>

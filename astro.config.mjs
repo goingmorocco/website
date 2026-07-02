@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
+import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
 
 // Update this once the custom domain is pointed at GitHub Pages.
@@ -30,6 +31,7 @@ export default defineConfig({
   },
 
   integrations: [
+    mdx(),
     sitemap({
       // Astro's i18n-aware sitemap automatically emits <xhtml:link rel="alternate">
       // hreflang entries for en/ar pairs once pages are built — this is the single

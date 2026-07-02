@@ -1,0 +1,19 @@
+---
+// Renders a raw HTML embed (map widgets, booking widgets, video embeds, etc.)
+// migrated from Wix's HTML rich-content nodes. This is the one deliberate,
+// scoped exception to "never render raw HTML" in this codebase: the source is
+// always the site owner's own Wix content, not user input, and it's isolated
+// to this single component rather than enabled globally for all Markdown.
+interface Props {
+  html: string;
+  /** Optional caption shown below the embed, e.g. attributing a widget provider. */
+  caption?: string;
+}
+
+const { html, caption } = Astro.props;
+---
+
+<div class="not-prose my-6 overflow-hidden rounded-2xl border border-sand-light">
+  <div class="[&_iframe]:w-full" set:html={html} />
+</div>
+{caption && <p class="mt-1 text-center text-xs text-ink/50">{caption}</p>}

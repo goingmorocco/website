@@ -17,7 +17,7 @@ const locale = z.enum(["en", "ar"]);
 // mechanical mapping exercise rather than a redesign: same translationId,
 // same slug-shape, different locale.
 const blog = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/blog" }),
   schema: ({ image }) =>
     z.object({
       // No max() enforced here — title length is an SEO guideline (search
