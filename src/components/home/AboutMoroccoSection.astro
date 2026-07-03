@@ -1,6 +1,11 @@
 ---
 // Quick, casual intro to Morocco for first-time visitors — sits between the
 // hero and the latest posts on the homepage.
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+
 interface InfoCard {
   title: string;
   text: string;
@@ -8,39 +13,77 @@ interface InfoCard {
   alt: string;
 }
 
-const cards: InfoCard[] = [
-  {
-    title: "The People",
-    text: "Moroccans are famous for being warm and welcoming. Don't be surprised if a shopkeeper invites you in for mint tea before you've bought a single thing — that's just how it works here.",
-    image: "/images/home/people.jpg",
-    alt: "Moroccan people in a busy market street",
+const content: Record<"en" | "ar", { heading: string; subheading: string; cards: InfoCard[] }> = {
+  en: {
+    heading: "A Quick Intro to Morocco",
+    subheading: "New to Morocco? Here's the short version before you dive into the guides.",
+    cards: [
+      {
+        title: "The People",
+        text: "Moroccans are famous for being warm and welcoming. Don't be surprised if a shopkeeper invites you in for mint tea before you've bought a single thing — that's just how it works here.",
+        image: "/images/home/people.jpg",
+        alt: "Moroccan people in a busy market street",
+      },
+      {
+        title: "The Language",
+        text: "Arabic and Berber (Amazigh) are the official languages, and French is widely spoken too. In tourist areas you'll get by just fine with English, but a friendly \"salam\" or \"shukran\" (thank you) goes a long way.",
+        image: "/images/home/language.jpg",
+        alt: "Arabic calligraphy sign in a Moroccan medina",
+      },
+      {
+        title: "The Currency",
+        text: "The Moroccan Dirham (MAD) is the local currency. You can't buy it before you arrive, so plan to grab cash at the airport or a local ATM. Cards work in bigger hotels and shops, but cash is still king in the souks.",
+        image: "/images/home/currency.jpg",
+        alt: "Moroccan Dirham banknotes and coins",
+      },
+      {
+        title: "The Nature",
+        text: "Morocco packs a lot into one country: snowy peaks in the Atlas Mountains, golden dunes in the Sahara, and beaches along two coastlines. You can genuinely ski and see camels in the same week.",
+        image: "/images/home/nature.jpg",
+        alt: "Sahara desert dunes at sunset in Morocco",
+      },
+    ],
   },
-  {
-    title: "The Language",
-    text: "Arabic and Berber (Amazigh) are the official languages, and French is widely spoken too. In tourist areas you'll get by just fine with English, but a friendly \"salam\" or \"shukran\" (thank you) goes a long way.",
-    image: "/images/home/language.jpg",
-    alt: "Arabic calligraphy sign in a Moroccan medina",
+  ar: {
+    heading: "نظرة سريعة على المغرب",
+    subheading: "جديد على المغرب؟ إليك الملخص السريع قبل أن تتعمق في الأدلة.",
+    cards: [
+      {
+        title: "الناس",
+        text: "المغاربة معروفون بكرمهم وترحيبهم الكبير بالضيوف. لا تتفاجأ إذا دعاك صاحب محل لكأس شاي بالنعناع قبل أن تشتري أي شيء — هكذا الأمور هنا.",
+        image: "/images/home/people.jpg",
+        alt: "أشخاص مغاربة في شارع سوق مزدحم",
+      },
+      {
+        title: "اللغة",
+        text: "العربية والأمازيغية هما اللغتان الرسميتان، والفرنسية منتشرة جداً أيضاً. في المناطق السياحية ستتدبر أمرك بالإنجليزية بسهولة، لكن كلمة \"سلام\" أو \"شكراً\" البسيطة تصنع فرقاً كبيراً.",
+        image: "/images/home/language.jpg",
+        alt: "لافتة بخط عربي في مدينة عتيقة مغربية",
+      },
+      {
+        title: "العملة",
+        text: "الدرهم المغربي (MAD) هو العملة المحلية. لا يمكنك شراؤه قبل وصولك، لذا خطط لسحب النقود من المطار أو من صراف آلي محلي. البطاقات تعمل في الفنادق والمحلات الكبيرة، لكن النقد يبقى الأساس في الأسواق.",
+        image: "/images/home/currency.jpg",
+        alt: "أوراق نقدية ومعدنية من الدرهم المغربي",
+      },
+      {
+        title: "الطبيعة",
+        text: "يجمع المغرب الكثير في بلد واحد: قمم مغطاة بالثلوج في جبال الأطلس، وكثبان ذهبية في الصحراء، وشواطئ على ساحلين. يمكنك فعلياً التزلج ومشاهدة الجمال في نفس الأسبوع.",
+        image: "/images/home/nature.jpg",
+        alt: "كثبان الصحراء الكبرى عند الغروب في المغرب",
+      },
+    ],
   },
-  {
-    title: "The Currency",
-    text: "The Moroccan Dirham (MAD) is the local currency. You can't buy it before you arrive, so plan to grab cash at the airport or a local ATM. Cards work in bigger hotels and shops, but cash is still king in the souks.",
-    image: "/images/home/currency.jpg",
-    alt: "Moroccan Dirham banknotes and coins",
-  },
-  {
-    title: "The Nature",
-    text: "Morocco packs a lot into one country: snowy peaks in the Atlas Mountains, golden dunes in the Sahara, and beaches along two coastlines. You can genuinely ski and see camels in the same week.",
-    image: "/images/home/nature.jpg",
-    alt: "Sahara desert dunes at sunset in Morocco",
-  },
-];
+};
+
+const { heading, subheading, cards } = content[locale];
 ---
 
 <section class="border-b border-sand-light bg-paper py-16">
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-2xl text-center">
-      <h2 class="font-display text-2xl text-ink sm:text-3xl">A Quick Intro to Morocco</h2>
-      <p class="mt-3 text-ink/70">New to Morocco? Here's the short version before you dive into the guides.</p>
+      <h2 class="font-display text-2xl text-ink sm:text-3xl">{heading}</h2>
+      <p class="mt-3 text-ink/70">{subheading}</p>
     </div>
 
     <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

@@ -2,60 +2,119 @@
 // Common first-time-visitor questions, gathered from what people actually
 // search before a Morocco trip. Answers are written short and casual on
 // purpose — this is a quick-scan section, not another full guide.
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+
 interface FAQ {
   question: string;
   answer: string;
 }
 
-const faqs: FAQ[] = [
-  {
-    question: "Do I need a visa to visit Morocco?",
-    answer:
-      "If you're from the US, UK, EU, Canada, or Australia, no — you can stay up to 90 days without a visa. Just make sure your passport is valid for at least 6 months after your trip. Rules can change, so double check with your local Moroccan embassy before you book.",
+const content: Record<"en" | "ar", { heading: string; subheading: string; faqs: FAQ[] }> = {
+  en: {
+    heading: "Morocco Travel: Quick Questions",
+    subheading: "The stuff most first-time visitors ask us before they go.",
+    faqs: [
+      {
+        question: "Do I need a visa to visit Morocco?",
+        answer:
+          "If you're from the US, UK, EU, Canada, or Australia, no — you can stay up to 90 days without a visa. Just make sure your passport is valid for at least 6 months after your trip. Rules can change, so double check with your local Moroccan embassy before you book.",
+      },
+      {
+        question: "Is Morocco safe to visit?",
+        answer:
+          "Yes, overall Morocco is a safe country for travelers. Violent crime against tourists is rare. Like any busy destination, keep an eye on your bag in crowded souks and use official taxis or transport apps, and you'll be fine.",
+      },
+      {
+        question: "What language do people speak in Morocco?",
+        answer:
+          "Arabic and Berber (Amazigh) are the official languages, and French is spoken almost everywhere too. In touristy spots like Marrakech and Fez, you'll find plenty of English as well.",
+      },
+      {
+        question: "What currency should I bring?",
+        answer:
+          "The Moroccan Dirham (MAD) is the only currency used day-to-day, and you can't buy it before you arrive. Bring Euros, US Dollars, or British Pounds in cash and exchange them at the airport or a local bank, or just pull dirhams straight from an ATM.",
+      },
+      {
+        question: "Is Morocco safe for solo female travelers?",
+        answer:
+          "Many women travel solo in Morocco and have a great time. You may get more stares or comments than at home, especially in busy medinas — dressing modestly and walking with confidence helps a lot. Avoid empty alleys at night, same as you would anywhere.",
+      },
+      {
+        question: "When is the best time to visit Morocco?",
+        answer:
+          "Spring (March–May) and autumn (September–November) are the sweet spot — warm days, cool nights, and comfortable temperatures almost everywhere. Summer can be brutally hot inland (think 40°C+ in Marrakech), though the coast stays cooler.",
+      },
+      {
+        question: "Do I need to dress conservatively?",
+        answer:
+          "Morocco is fairly relaxed compared to some neighboring countries, but it's still respectful to cover your shoulders and knees in cities and medinas, especially for women. Swimwear is totally fine at pools and beaches.",
+      },
+      {
+        question: "Should I haggle when shopping in the souks?",
+        answer:
+          "Yes — haggling is expected and even part of the fun. Prices aren't fixed in most souks. A common approach: start well below the first price you're quoted, stay friendly, and meet somewhere in the middle.",
+      },
+    ],
   },
-  {
-    question: "Is Morocco safe to visit?",
-    answer:
-      "Yes, overall Morocco is a safe country for travelers. Violent crime against tourists is rare. Like any busy destination, keep an eye on your bag in crowded souks and use official taxis or transport apps, and you'll be fine.",
+  ar: {
+    heading: "السفر إلى المغرب: أسئلة سريعة",
+    subheading: "الأشياء التي يسألنا عنها معظم الزوار لأول مرة قبل رحلتهم.",
+    faqs: [
+      {
+        question: "هل أحتاج تأشيرة لزيارة المغرب؟",
+        answer:
+          "إذا كنت من الولايات المتحدة أو بريطانيا أو الاتحاد الأوروبي أو كندا أو أستراليا، فلا — يمكنك البقاء حتى 90 يوماً بدون تأشيرة. فقط تأكد أن جواز سفرك صالح لمدة 6 أشهر على الأقل بعد رحلتك. القوانين قد تتغير، لذا تحقق دائماً من السفارة المغربية قبل الحجز.",
+      },
+      {
+        question: "هل المغرب آمن للزيارة؟",
+        answer:
+          "نعم، المغرب بشكل عام بلد آمن للمسافرين. الجرائم العنيفة ضد السياح نادرة جداً. مثل أي وجهة مزدحمة، انتبه لحقيبتك في الأسواق المزدحمة واستخدم سيارات الأجرة الرسمية أو تطبيقات النقل، وستكون بخير.",
+      },
+      {
+        question: "ما هي اللغة المستخدمة في المغرب؟",
+        answer:
+          "العربية والأمازيغية هما اللغتان الرسميتان، والفرنسية منتشرة في كل مكان تقريباً. في الأماكن السياحية مثل مراكش وفاس، ستجد الإنجليزية منتشرة أيضاً.",
+      },
+      {
+        question: "ما هي العملة التي يجب أن أحضرها؟",
+        answer:
+          "الدرهم المغربي (MAD) هو العملة المستخدمة يومياً، ولا يمكن شراؤه قبل الوصول. أحضر يورو أو دولاراً أمريكياً أو جنيهاً إسترلينياً نقداً واستبدلها في المطار أو بنك محلي، أو اسحب دراهم مباشرة من صراف آلي.",
+      },
+      {
+        question: "هل المغرب آمن للمسافرات بمفردهن؟",
+        answer:
+          "كثير من النساء يسافرن بمفردهن في المغرب ويقضين وقتاً رائعاً. قد تلاحظين نظرات أو تعليقات أكثر من بلدك، خاصة في المدن العتيقة المزدحمة — اللباس المحتشم والمشي بثقة يساعدان كثيراً. تجنبي الأزقة الفارغة ليلاً، تماماً كما تفعلين في أي مكان آخر.",
+      },
+      {
+        question: "ما هو أفضل وقت لزيارة المغرب؟",
+        answer:
+          "الربيع (مارس-مايو) والخريف (سبتمبر-نوفمبر) هما الأفضل — أيام دافئة وليالٍ باردة ودرجات حرارة مريحة في معظم الأماكن. الصيف يمكن أن يكون حاراً جداً في الداخل (أكثر من 40 درجة في مراكش)، لكن الساحل يبقى أبرد.",
+      },
+      {
+        question: "هل يجب أن ألبس بشكل محتشم؟",
+        answer:
+          "المغرب مريح نسبياً مقارنة ببعض الدول المجاورة، لكن يبقى من المحترم تغطية الكتفين والركبتين في المدن والمدن العتيقة، خاصة للنساء. ملابس السباحة مقبولة تماماً في المسابح والشواطئ.",
+      },
+      {
+        question: "هل يجب أن أساوم عند التسوق في الأسواق؟",
+        answer:
+          "نعم — المساومة متوقعة بل وجزء من المتعة. الأسعار غير ثابتة في معظم الأسواق. طريقة شائعة: ابدأ بسعر أقل بكثير من السعر الأول الذي يُعرض عليك، وابق ودوداً، والتقيا في مكان ما في المنتصف.",
+      },
+    ],
   },
-  {
-    question: "What language do people speak in Morocco?",
-    answer:
-      "Arabic and Berber (Amazigh) are the official languages, and French is spoken almost everywhere too. In touristy spots like Marrakech and Fez, you'll find plenty of English as well.",
-  },
-  {
-    question: "What currency should I bring?",
-    answer:
-      "The Moroccan Dirham (MAD) is the only currency used day-to-day, and you can't buy it before you arrive. Bring Euros, US Dollars, or British Pounds in cash and exchange them at the airport or a local bank, or just pull dirhams straight from an ATM.",
-  },
-  {
-    question: "Is Morocco safe for solo female travelers?",
-    answer:
-      "Many women travel solo in Morocco and have a great time. You may get more stares or comments than at home, especially in busy medinas — dressing modestly and walking with confidence helps a lot. Avoid empty alleys at night, same as you would anywhere.",
-  },
-  {
-    question: "When is the best time to visit Morocco?",
-    answer:
-      "Spring (March–May) and autumn (September–November) are the sweet spot — warm days, cool nights, and comfortable temperatures almost everywhere. Summer can be brutally hot inland (think 40°C+ in Marrakech), though the coast stays cooler.",
-  },
-  {
-    question: "Do I need to dress conservatively?",
-    answer:
-      "Morocco is fairly relaxed compared to some neighboring countries, but it's still respectful to cover your shoulders and knees in cities and medinas, especially for women. Swimwear is totally fine at pools and beaches.",
-  },
-  {
-    question: "Should I haggle when shopping in the souks?",
-    answer:
-      "Yes — haggling is expected and even part of the fun. Prices aren't fixed in most souks. A common approach: start well below the first price you're quoted, stay friendly, and meet somewhere in the middle.",
-  },
-];
+};
+
+const { heading, subheading, faqs } = content[locale];
 ---
 
 <section class="py-16">
   <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
     <div class="text-center">
-      <h2 class="font-display text-2xl text-ink sm:text-3xl">Morocco Travel: Quick Questions</h2>
-      <p class="mt-3 text-ink/70">The stuff most first-time visitors ask us before they go.</p>
+      <h2 class="font-display text-2xl text-ink sm:text-3xl">{heading}</h2>
+      <p class="mt-3 text-ink/70">{subheading}</p>
     </div>
 
     <div class="mt-10 space-y-3">

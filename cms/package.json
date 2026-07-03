@@ -1,0 +1,25 @@
+{
+  "name": "goingmorocco-cms",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cms": "node server/index.mjs",
+    "cms:client:dev": "cd client && npm run dev",
+    "cms:client:build": "cd client && npm run build",
+    "install:all": "npm install && cd client && npm install"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "gray-matter": "^4.0.3",
+    "multer": "^1.4.5-lts.1",
+    "simple-git": "^3.25.0",
+    "unified": "^11.0.4",
+    "remark-parse": "^11.0.0",
+    "remark-mdx": "^3.0.1",
+    "remark-gfm": "^4.0.0",
+    "mdast-util-to-string": "^4.0.0",
+    "uuid": "^9.0.1",
+    "cors": "^2.8.5"
+  }
+}

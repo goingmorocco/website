@@ -3,6 +3,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Container from "../../components/Container.astro";
 import RouteDivider from "../../components/RouteDivider.astro";
 import PostCard from "../../components/PostCard.astro";
+import AboutMoroccoSection from "../../components/home/AboutMoroccoSection.astro";
+import ToolPromoSection from "../../components/home/ToolPromoSection.astro";
+import FAQSection from "../../components/home/FAQSection.astro";
 import { getCollection } from "astro:content";
 import { getReadingTime } from "../../utils/reading-time";
 import { buildOrganizationSchema } from "../../utils/seo";
@@ -36,10 +39,22 @@ const display = featured.length >= 3 ? featured : latest;
         ذاهب للمغرب؟ إكتشفه أولا!
       </h1>
       <p class="mt-5 text-lg text-ink/70">
-        أدلة عملية ومباشرة عن الصحراء وجبال الأطلس والمدن العتيقة — مكتوبة من خميسات، لا منقولة من قائمة عامة.
+        أدلة عملية ومباشرة عن الصحراء وجبال الأطلس والمدن العتيقة — مكتوبة من مراكش، لا منقولة من قائمة عامة.
       </p>
     </Container>
   </section>
+
+  <AboutMoroccoSection locale="ar" />
+
+  <ToolPromoSection
+    eyebrow="الرحلات الجوية"
+    title="ابحث عن رحلتك إلى المغرب"
+    description="قارن رحلات الطيران إلى مراكش والدار البيضاء وفاس وغيرها في بحث واحد. أداة الرحلات لدينا تجلب أسعاراً حقيقية من شركات الطيران لتجد أفضل صفقة وتحجز بثقة."
+    ctaText="ابحث عن رحلات"
+    ctaHref="https://booking.goingmorocco.com"
+    image="/images/home/flights.jpg"
+    imageAlt="طائرة تحلق في سماء صافية فوق المغرب"
+  />
 
   <section class="py-16">
     <Container>
@@ -53,6 +68,27 @@ const display = featured.length >= 3 ? featured : latest;
           <PostCard post={post} categoryName={categoryName(post.data.category)} />
         ))}
       </div>
+      <div class="mt-10 text-center">
+        <a
+          href="/ar/post/"
+          class="inline-flex items-center justify-center rounded-full border border-royal px-6 py-3 font-semibold text-royal transition-colors hover:bg-royal hover:text-white"
+        >
+          المزيد من المقالات
+        </a>
+      </div>
     </Container>
   </section>
+
+  <ToolPromoSection
+    eyebrow="مخطط الرحلات"
+    title="دع الذكاء الاصطناعي يخطط رحلتك"
+    description="أخبر مخطط الذكاء الاصطناعي لدينا بعدد أيامك وميزانيتك وما تحب — الصحراء أو الجبال أو المدن أو الثلاثة معاً — واحصل على خطة رحلة جاهزة للمغرب خلال دقائق."
+    ctaText="خطط رحلتي"
+    ctaHref="https://planner.goingmorocco.com"
+    image="/images/home/itinerary.jpg"
+    imageAlt="خريطة ودفتر تخطيط لرحلة إلى المغرب"
+    reverse
+  />
+
+  <FAQSection locale="ar" />
 </BaseLayout>
