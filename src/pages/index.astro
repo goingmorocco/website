@@ -6,6 +6,7 @@ import PostCard from "../components/PostCard.astro";
 import AboutMoroccoSection from "../components/home/AboutMoroccoSection.astro";
 import ToolPromoSection from "../components/home/ToolPromoSection.astro";
 import FAQSection from "../components/home/FAQSection.astro";
+import Button from "../components/Button.astro";
 import { getCollection } from "astro:content";
 import { getReadingTime } from "../utils/reading-time";
 import { buildOrganizationSchema } from "../utils/seo";
@@ -28,7 +29,7 @@ const display = featured.length >= 3 ? featured : latest;
 
 <BaseLayout
   locale={locale}
-  title="GoingMorocco.com — Going Morocco? Explore it First!"
+  title="Explore Morocco Before Going"
   description="Practical, locally-written Morocco travel guides: the Sahara, the Atlas Mountains, the medinas, and how to plan a trip that actually fits your time and budget."
   alternateUrls={{ en: "/", ar: "/ar/" }}
   structuredData={buildOrganizationSchema(locale)}
@@ -69,12 +70,7 @@ const display = featured.length >= 3 ? featured : latest;
         ))}
       </div>
       <div class="mt-10 text-center">
-        <a
-          href="/post/"
-          class="inline-flex items-center justify-center rounded-full border border-royal px-6 py-3 font-semibold text-royal transition-colors hover:bg-royal hover:text-white"
-        >
-          View More Posts
-        </a>
+        <Button href="/post/" variant="outline">View More Posts</Button>
       </div>
     </Container>
   </section>

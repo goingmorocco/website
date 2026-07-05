@@ -26,7 +26,7 @@
   draws from the same palette instead of re-deciding colors per component.
 */
 @theme {
-  --color-paper: #faf7f1; /* page background: warm off-white, not stark white */
+  --color-paper: #ffffff; /* page background: pure white */
   --color-ink: #232017; /* primary text: warm near-black, not pure #000 */
   --color-royal: #1b3a5c; /* primary brand color: deep royal blue */
   --color-royal-dark: #122a44;

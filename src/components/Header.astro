@@ -26,10 +26,10 @@ const navItems = [
 ---
 
 <header class="sticky top-0 z-50 border-b border-sand-light bg-paper/90 backdrop-blur-sm">
-  <Container class="flex h-16 items-center justify-between gap-4">
+  <Container class="flex items-center justify-between gap-4 py-3">
     <!-- Logo -->
     <a href={localizedPath(locale, "/")} class="flex-shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal" aria-label="GoingMorocco home">
-      <Logo height={52} />
+      <Logo height={208} />
     </a>
 
     <!-- Desktop nav -->
@@ -127,4 +127,3 @@ const navItems = [
     if (!panel.contains(e.target as Node) && !trigger.contains(e.target as Node)) setOpen(false);
   });
 </script>
-
