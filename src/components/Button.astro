@@ -1,0 +1,34 @@
+---
+// Canonical button style for the whole site — matches the pill buttons
+// introduced in the homepage promo sections. Use this everywhere a CTA-style
+// button/link is needed instead of hand-writing button classes per page.
+interface Props {
+  href?: string;
+  type?: "button" | "submit";
+  variant?: "solid" | "outline";
+  external?: boolean;
+  class?: string;
+}
+
+const { href, type = "button", variant = "solid", external = false, class: className = "" } = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center rounded-full px-6 py-3 text-center font-semibold shadow-sm transition-transform hover:scale-[1.02] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal";
+
+const variants = {
+  solid: "bg-royal text-white hover:bg-royal-dark",
+  outline: "border border-royal text-royal transition-colors hover:bg-royal hover:text-white hover:scale-100 hover:shadow-none",
+};
+
+const classes = `${base} ${variants[variant]} ${className}`;
+---
+
+{href ? (
+  <a href={href} class={classes} target={external ? "_blank" : undefined} rel={external ? "noopener" : undefined}>
+    <slot />
+  </a>
+) : (
+  <button type={type} class={classes}>
+    <slot />
+  </button>
+)}
