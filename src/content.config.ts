@@ -53,6 +53,9 @@ const blog = defineCollection({
       // Optional manual override; otherwise computed from word count at build time.
       readingTimeMinutes: z.number().int().positive().optional(),
       draft: z.boolean().default(false),
+      // Set by the CMS's "Schedule" button; a daily GitHub Action flips
+      // draft to false automatically once this date arrives.
+      scheduledDate: z.string().nullable().optional(),
       featured: z.boolean().default(false),
     }),
 });

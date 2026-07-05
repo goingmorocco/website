@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TiptapEditor from "../editor/TiptapEditor";
+import ImageCropModal from "../editor/ImageCropModal";
+import PreviewPanel from "../editor/PreviewPanel";
+import SeoPanel from "../editor/SeoPanel";
 import { api } from "../api";
 
 const EMPTY_DOC = { type: "doc", content: [{ type: "paragraph", content: [] }] };
@@ -39,15 +42,28 @@ export default function Editor() {
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const [createBoth, setCreateBoth] = useState(false);
+  const [cropFile, setCropFile] = useState<File | null>(null);
+  const [focusKeyword, setFocusKeyword] = useState("");
+  const [showPreview, setShowPreview] = useState(false);
+  const [allPosts, setAllPosts] = useState<any[]>([]);
+  const [status, setStatus] = useState<"draft" | "published" | "scheduled">("draft");
+  const [scheduledDate, setScheduledDate] = useState("");
 
   useEffect(() => {
     api.listCategories().then(setCategories);
+    api.listPosts().then(setAllPosts);
     if (!isNew && routeLocale && routeFile) {
       api.readPost(routeLocale, routeFile).then(({ frontmatter, doc }) => {
         setFrontmatter(frontmatter);
         setDoc(doc);
         setLocale(routeLocale as "en" | "ar");
         setFile(routeFile);
+        if (frontmatter.scheduledDate) {
+          setStatus("scheduled");
+          setScheduledDate(frontmatter.scheduledDate);
+        } else {
+          setStatus(frontmatter.draft ? "draft" : "published");
+        }
       });
     }
   }, [routeLocale, routeFile]);
@@ -62,10 +78,23 @@ export default function Editor() {
     });
   }
 
-  async function handleFeaturedImageUpload(fileList: FileList | null) {
+  function handleFeaturedImageSelect(fileList: FileList | null) {
     if (!fileList?.length) return;
-    const [uploaded] = await api.uploadMedia(fileList);
+    setCropFile(fileList[0]);
+  }
+
+  async function handleCropConfirmed(blob: Blob) {
+    const uploaded = await api.uploadMediaBlob(blob, cropFile?.name || "featured.jpg");
     updateField("featuredImage", uploaded.url);
+    setCropFile(null);
+  }
+
+  function extractInternalLinks(node: any, links: string[] = []): string[] {
+    (node.marks ?? []).forEach((m: any) => {
+      if (m.type === "link" && m.attrs?.href?.startsWith("/")) links.push(m.attrs.href);
+    });
+    (node.content ?? []).forEach((child: any) => extractInternalLinks(child, links));
+    return links;
   }
 
   function validate(): string[] {
@@ -74,13 +103,33 @@ export default function Editor() {
     if (!frontmatter.description) warnings.push("Missing description");
     if (!frontmatter.featuredImage) warnings.push("Missing featured image");
     if (!frontmatter.category) warnings.push("Missing category");
+
+    // Broken internal links — check each /post/slug/ link against known posts
+    const knownPaths = new Set(allPosts.map((p) => `/${p.locale === "ar" ? "ar/post" : "post"}/${p.slug}/`));
+    const internalLinks = extractInternalLinks(doc);
+    const broken = internalLinks.filter((href) => href.startsWith("/post/") || href.startsWith("/ar/post/")).filter((href) => !knownPaths.has(href));
+    if (broken.length > 0) warnings.push(`Broken internal link(s): ${broken.join(", ")}`);
+
+    // Missing translation — if this post has a translationId, check the sibling exists
+    if (frontmatter.translationId) {
+      const otherLocale = locale === "en" ? "ar" : "en";
+      const hasSibling = allPosts.some((p) => p.locale === otherLocale && p.translationId === frontmatter.translationId);
+      if (!hasSibling) warnings.push(`No ${otherLocale.toUpperCase()} translation linked yet (translationId is set but no matching post found)`);
+    }
+
     return warnings;
   }
 
-  async function handleSave(publish: boolean) {
+  async function handleSave(targetStatus: "draft" | "published" | "scheduled") {
     setSaving(true);
     setSaveMessage(null);
     try {
+      if (targetStatus === "scheduled" && !scheduledDate) {
+        alert("Pick a scheduled date first.");
+        setSaving(false);
+        return;
+      }
+
       const warnings = validate();
       if (warnings.length > 0) {
         const proceed = confirm(`Heads up:\n\n${warnings.join("\n")}\n\nSave anyway?`);
@@ -96,13 +145,25 @@ export default function Editor() {
         translationId = id;
       }
 
-      const fm = { ...frontmatter, locale, draft: !publish, translationId };
+      // Scheduled posts stay draft:true on disk (so nothing else treats them
+      // as live) plus a scheduledDate the GitHub Action checks daily to
+      // auto-flip them to published and push, once that date arrives.
+      const fm = {
+        ...frontmatter,
+        locale,
+        draft: targetStatus !== "published",
+        scheduledDate: targetStatus === "scheduled" ? scheduledDate : null,
+        translationId,
+      };
+      setStatus(targetStatus);
       const targetFile = file || `${fm.slug}.mdx`;
 
       await api.savePost({ locale, file: targetFile, frontmatter: fm, doc });
       setFile(targetFile);
       setFrontmatter(fm);
-      setSaveMessage(publish ? "✅ Published." : "✅ Draft saved.");
+      setSaveMessage(
+        targetStatus === "published" ? "✅ Published." : targetStatus === "scheduled" ? `✅ Scheduled for ${scheduledDate}.` : "✅ Draft saved."
+      );
 
       // If creating both languages at once, also create a stub in the other locale.
       if (isNew && createBoth) {
@@ -112,6 +173,7 @@ export default function Editor() {
           locale: otherLocale,
           title: fm.title, // placeholder — user should translate
           draft: true,
+          scheduledDate: null,
         };
         await api.savePost({ locale: otherLocale, file: targetFile, frontmatter: otherFm, doc: EMPTY_DOC });
       }
@@ -137,15 +199,41 @@ export default function Editor() {
               <option value="en">English</option>
               <option value="ar">Arabic</option>
             </select>
-            <button onClick={() => handleSave(false)} disabled={saving} className="rounded-full border border-royal px-4 py-1.5 text-sm font-semibold text-royal hover:bg-royal hover:text-white disabled:opacity-50">
+            <button onClick={() => setShowPreview(true)} className="rounded-full border border-sand-light px-4 py-1.5 text-sm font-semibold text-ink/70 hover:border-royal hover:text-royal">
+              Preview
+            </button>
+            {status === "scheduled" && (
+              <input
+                type="date"
+                value={scheduledDate}
+                onChange={(e) => setScheduledDate(e.target.value)}
+                className="rounded-lg border border-sand-light px-2 py-1.5 text-sm"
+              />
+            )}
+            <button onClick={() => handleSave("draft")} disabled={saving} className="rounded-full border border-royal px-4 py-1.5 text-sm font-semibold text-royal hover:bg-royal hover:text-white disabled:opacity-50">
               Save Draft
             </button>
-            <button onClick={() => handleSave(true)} disabled={saving} className="rounded-full bg-royal px-4 py-1.5 text-sm font-semibold text-white hover:bg-royal-dark disabled:opacity-50">
+            <button
+              onClick={() => {
+                if (status !== "scheduled" && !scheduledDate) {
+                  setStatus("scheduled");
+                  return; // reveal the date picker first; click again once a date is set
+                }
+                handleSave("scheduled");
+              }}
+              disabled={saving}
+              className="rounded-full border border-blue-500 px-4 py-1.5 text-sm font-semibold text-blue-600 hover:bg-blue-500 hover:text-white disabled:opacity-50"
+            >
+              Schedule
+            </button>
+            <button onClick={() => handleSave("published")} disabled={saving} className="rounded-full bg-royal px-4 py-1.5 text-sm font-semibold text-white hover:bg-royal-dark disabled:opacity-50">
               Publish
             </button>
           </div>
         </div>
       </header>
+
+      {showPreview && <PreviewPanel doc={doc} frontmatter={frontmatter} onClose={() => setShowPreview(false)} />}
 
       <main className="mx-auto grid max-w-6xl grid-cols-3 gap-6 px-6 py-8">
         <div className="col-span-2">
@@ -198,7 +286,7 @@ export default function Editor() {
             )}
             <label className="block cursor-pointer rounded-full border border-royal px-3 py-1.5 text-center text-xs font-semibold text-royal hover:bg-royal hover:text-white">
               {frontmatter.featuredImage ? "Replace image" : "Upload image"}
-              <input type="file" accept="image/*" className="hidden" onChange={(e) => handleFeaturedImageUpload(e.target.files)} />
+              <input type="file" accept="image/*" className="hidden" onChange={(e) => handleFeaturedImageSelect(e.target.files)} />
             </label>
             <input
               value={frontmatter.featuredImageAlt || ""}
@@ -207,8 +295,19 @@ export default function Editor() {
               className="mt-2 w-full rounded border border-sand-light px-2 py-1.5 text-sm"
             />
           </div>
+
+          <SeoPanel frontmatter={frontmatter} doc={doc} focusKeyword={focusKeyword} onFocusKeywordChange={setFocusKeyword} />
         </aside>
       </main>
+
+      {cropFile && (
+        <ImageCropModal
+          file={cropFile}
+          aspect={16 / 9}
+          onCancel={() => setCropFile(null)}
+          onCropped={handleCropConfirmed}
+        />
+      )}
     </div>
   );
 }

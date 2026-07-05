@@ -70,6 +70,18 @@ export default function Dashboard() {
           <h1 className="font-semibold text-xl text-ink">GoingMorocco CMS</h1>
           <div className="flex gap-3">
             <button
+              onClick={() => navigate("/categories")}
+              className="rounded-full border border-sand-light px-5 py-2 text-sm font-semibold text-ink/70 hover:border-royal hover:text-royal"
+            >
+              Categories
+            </button>
+            <button
+              onClick={() => navigate("/media")}
+              className="rounded-full border border-sand-light px-5 py-2 text-sm font-semibold text-ink/70 hover:border-royal hover:text-royal"
+            >
+              Media Library
+            </button>
+            <button
               onClick={() => setCommitOpen(true)}
               className="rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-royal-dark"
             >
@@ -135,7 +147,12 @@ export default function Dashboard() {
                         {p.title}
                       </Link>
                     </td>
-                    <td className="px-4 py-3 uppercase text-ink/60">{p.locale}</td>
+                    <td className="px-4 py-3 uppercase text-ink/60">
+                      {p.locale}
+                      {p.misplacedFolder && (
+                        <span title={`File is physically in the ${p.misplacedFolder}/ folder but its locale field says ${p.locale}`} className="ml-1 text-yellow-600">⚠</span>
+                      )}
+                    </td>
                     <td className="px-4 py-3 text-ink/60">{p.category ?? "—"}</td>
                     <td className="px-4 py-3">
                       <span
@@ -150,7 +167,9 @@ export default function Dashboard() {
                         {p.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-ink/60">{p.publishDate ?? "—"}</td>
+                    <td className="px-4 py-3 text-ink/60">
+                      {p.status === "scheduled" ? `📅 ${p.scheduledDate}` : p.publishDate ?? "—"}
+                    </td>
                     <td className="px-4 py-3 text-right">
                       <button onClick={() => handleDuplicate(p)} className="mr-3 text-ink/50 hover:text-royal">Duplicate</button>
                       <button onClick={() => handleDelete(p)} className="text-ink/50 hover:text-red-600">Delete</button>

@@ -15,12 +15,14 @@ async function req(path: string, options: RequestInit = {}) {
 export interface PostSummary {
   id: string;
   locale: "en" | "ar";
+  misplacedFolder: "en" | "ar" | null;
   file: string;
   title: string;
   slug: string;
   category: string | null;
   tags: string[];
   status: "draft" | "published" | "scheduled";
+  scheduledDate: string | null;
   publishDate: string | null;
   featuredImage: string | null;
   translationId: string | null;
@@ -46,6 +48,14 @@ export const api = {
     const res = await fetch(`${BASE}/media/upload`, { method: "POST", body: formData });
     if (!res.ok) throw new Error("Upload failed");
     return res.json();
+  },
+  uploadMediaBlob: async (blob: Blob, filename = "cropped.jpg"): Promise<{ filename: string; url: string }> => {
+    const formData = new FormData();
+    formData.append("files", blob, filename);
+    const res = await fetch(`${BASE}/media/upload`, { method: "POST", body: formData });
+    if (!res.ok) throw new Error("Upload failed");
+    const [result] = await res.json();
+    return result;
   },
   gitStatus: () => req("/git/status"),
   gitCommit: (message: string, push: boolean) =>

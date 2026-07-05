@@ -19,6 +19,7 @@ const COMPONENT_IMPORT_PATHS = {
   CTAButton: "../../../components/content/CTAButton.astro",
   Gallery: "../../../components/content/Gallery.astro",
   HtmlEmbed: "../../../components/content/HtmlEmbed.astro",
+  YouTubeEmbed: "../../../components/content/YouTubeEmbed.astro",
 };
 
 // ---------- doc JSON -> MDX ----------
@@ -39,6 +40,7 @@ function marksToMd(text, marks = []) {
     if (m.type === "bold") core = `**${core}**`;
     else if (m.type === "italic") core = `_${core}_`;
     else if (m.type === "underline") core = `<u>${core}</u>`;
+    else if (m.type === "textStyle" && m.attrs?.color) core = `<span style={{color: "${m.attrs.color}"}}>${core}</span>`;
     else if (m.type === "link") core = `[${core}](${m.attrs?.href ?? "#"})`;
   }
   return leading + core + trailing;
@@ -54,7 +56,9 @@ function blockToMd(node) {
   switch (node.type) {
     case "paragraph": {
       const text = inlineToMd(node.content).trim();
-      return text ? `${text}\n\n` : "";
+      if (!text) return "";
+      if (node.attrs?.lineHeight) return `<p style={{lineHeight: "${node.attrs.lineHeight}"}}>${text}</p>\n\n`;
+      return `${text}\n\n`;
     }
     case "heading": {
       const level = node.attrs?.level ?? 2;
@@ -124,6 +128,10 @@ function blockToMd(node) {
       const caption = node.attrs?.caption;
       return `<HtmlEmbed html={\`${html}\`}${caption ? ` caption="${caption.replace(/"/g, "'")}"` : ""} />\n\n`;
     }
+    case "youtubeEmbed": {
+      usedComponents.add("YouTubeEmbed");
+      return `<YouTubeEmbed videoId="${node.attrs?.videoId ?? ""}" />\n\n`;
+    }
     default:
       return "";
   }
@@ -165,8 +173,16 @@ function mdastInlineToTiptap(children = [], marks = []) {
 
 function mdastBlockToTiptap(node) {
   switch (node.type) {
-    case "paragraph":
-      return { type: "paragraph", content: mdastInlineToTiptap(node.children) };
+    case "paragraph": {
+      const children = node.children ?? [];
+      // A standalone `![alt](src)` on its own line is parsed as a paragraph
+      // wrapping a single image node, not a top-level image node — this is
+      // the normal shape for body images, so treat it as a block image.
+      if (children.length === 1 && children[0].type === "image") {
+        return { type: "image", attrs: { src: children[0].url, alt: children[0].alt ?? "" } };
+      }
+      return { type: "paragraph", content: mdastInlineToTiptap(children) };
+    }
     case "heading":
       return { type: "heading", attrs: { level: node.depth }, content: mdastInlineToTiptap(node.children) };
     case "list":
@@ -220,6 +236,10 @@ function mdastBlockToTiptap(node) {
         }
         const columns = Number((colsAttr?.value?.value ?? "3").replace(/[{}]/g, "")) || 3;
         return { type: "gallery", attrs: { images, columns } };
+      }
+      if (node.name === "YouTubeEmbed") {
+        const idAttr = (node.attributes ?? []).find((a) => a.name === "videoId");
+        return { type: "youtubeEmbed", attrs: { videoId: idAttr?.value ?? null } };
       }
       if (node.name === "HtmlEmbed") {
         const htmlAttr = (node.attributes ?? []).find((a) => a.name === "html");

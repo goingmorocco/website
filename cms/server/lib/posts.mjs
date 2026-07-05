@@ -21,15 +21,21 @@ export async function listPosts() {
     for (const file of files) {
       const raw = await fs.readFile(path.join(BLOG_DIR[locale], file), "utf-8");
       const { data } = matter(raw);
+      // The live site filters posts by data.locale (frontmatter), not by
+      // which folder the file physically sits in — so report that as the
+      // real language, and flag it if a file is sitting in the wrong folder.
+      const realLocale = data.locale === "ar" ? "ar" : "en";
       results.push({
         id: `${locale}/${file}`,
-        locale,
+        locale: realLocale,
+        misplacedFolder: realLocale !== locale ? locale : null,
         file,
         title: data.title ?? "(untitled)",
         slug: data.slug ?? file.replace(/\.mdx?$/, ""),
         category: data.category ?? null,
         tags: data.tags ?? [],
-        status: data.draft ? "draft" : data.scheduledDate ? "scheduled" : "published",
+        status: data.scheduledDate ? "scheduled" : data.draft ? "draft" : "published",
+        scheduledDate: data.scheduledDate ?? null,
         publishDate: data.publishDate ?? null,
         featuredImage: data.featuredImage ?? null,
         translationId: data.translationId ?? null,

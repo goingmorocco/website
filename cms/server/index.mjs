@@ -168,8 +168,20 @@ app.post("/api/git/commit", async (req, res) => {
 
 const clientDist = path.join(__dirname, "..", "client", "dist");
 app.use(express.static(clientDist));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(clientDist, "index.html"));
+app.get("*", async (req, res) => {
+  const indexPath = path.join(clientDist, "index.html");
+  try {
+    await fs.access(indexPath);
+    res.sendFile(indexPath);
+  } catch {
+    res.status(200).send(`
+      <html><body style="font-family: sans-serif; padding: 3rem; max-width: 600px; margin: 0 auto;">
+        <h2>This is the CMS backend (API only)</h2>
+        <p>For day-to-day use, open <a href="http://localhost:5173">http://localhost:5173</a> instead — that's the actual editor, running via the Vite dev server.</p>
+        <p>This page only shows the real CMS UI after you've run <code>npm run cms:client:build</code> in the <code>cms/</code> folder.</p>
+      </body></html>
+    `);
+  }
 });
 
 app.listen(PORT, () => {

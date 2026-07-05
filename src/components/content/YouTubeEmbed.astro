@@ -1,0 +1,18 @@
+---
+// Renders an embedded YouTube video, responsive 16:9.
+interface Props {
+  videoId: string;
+}
+const { videoId } = Astro.props;
+---
+
+<div class="not-prose my-6 aspect-video w-full overflow-hidden rounded-2xl">
+  <iframe
+    class="h-full w-full"
+    src={`https://www.youtube.com/embed/${videoId}`}
+    title="YouTube video"
+    loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe>
+</div>

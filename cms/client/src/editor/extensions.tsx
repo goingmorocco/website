@@ -208,3 +208,60 @@ export const HtmlEmbed = Node.create({
     return ReactNodeViewRenderer(HtmlEmbedView);
   },
 });
+
+// ---------- YouTube Embed ----------
+
+function extractYouTubeId(url: string): string | null {
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+}
+
+function YouTubeEmbedView({ node, updateAttributes, deleteNode }: any) {
+  const { videoId } = node.attrs;
+  return (
+    <NodeViewWrapper className="my-3 rounded-xl border-2 border-dashed border-royal/40 bg-royal/5 p-4">
+      <div className="mb-2 flex items-center justify-between">
+        <span className="text-xs font-semibold uppercase tracking-wide text-royal">YouTube Video</span>
+        <button onClick={deleteNode} className="text-xs text-red-500 hover:underline">Remove</button>
+      </div>
+      <input
+        className="mb-2 w-full rounded border border-sand-light px-2 py-1 text-sm"
+        placeholder="Paste a YouTube URL…"
+        defaultValue={videoId ? `https://www.youtube.com/watch?v=${videoId}` : ""}
+        onBlur={(e) => {
+          const id = extractYouTubeId(e.target.value);
+          if (id) updateAttributes({ videoId: id });
+        }}
+      />
+      {videoId && (
+        <div className="aspect-video w-full overflow-hidden rounded-lg">
+          <iframe
+            className="h-full w-full"
+            src={`https://www.youtube.com/embed/${videoId}`}
+            title="YouTube video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      )}
+    </NodeViewWrapper>
+  );
+}
+
+export const YouTubeEmbed = Node.create({
+  name: "youtubeEmbed",
+  group: "block",
+  atom: true,
+  addAttributes() {
+    return { videoId: { default: null } };
+  },
+  parseHTML() {
+    return [{ tag: "div[data-youtube-embed]" }];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["div", mergeAttributes(HTMLAttributes, { "data-youtube-embed": "" })];
+  },
+  addNodeView() {
+    return ReactNodeViewRenderer(YouTubeEmbedView);
+  },
+});

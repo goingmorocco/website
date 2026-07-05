@@ -3,11 +3,14 @@ import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import Underline from "@tiptap/extension-underline";
+import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
 import Table from "@tiptap/extension-table";
 import TableRow from "@tiptap/extension-table-row";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
-import { CTAButton, Gallery, HtmlEmbed } from "./extensions";
+import { CTAButton, Gallery, HtmlEmbed, YouTubeEmbed } from "./extensions";
+import { LineHeight } from "./lineHeight";
 import { api } from "../api";
 import { useEffect } from "react";
 
@@ -30,6 +33,9 @@ export default function TiptapEditor({ content, onChange }: { content: any; onCh
     extensions: [
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
       Underline,
+      TextStyle,
+      Color,
+      LineHeight,
       Link.configure({ openOnClick: false }),
       Image,
       Table.configure({ resizable: true }),
@@ -39,6 +45,7 @@ export default function TiptapEditor({ content, onChange }: { content: any; onCh
       CTAButton,
       Gallery,
       HtmlEmbed,
+      YouTubeEmbed,
     ],
     content,
     onUpdate: ({ editor }) => onChange(editor.getJSON()),
@@ -96,6 +103,28 @@ export default function TiptapEditor({ content, onChange }: { content: any; onCh
         <ToolbarButton onClick={() => editor.chain().focus().insertContent({ type: "ctaButton", attrs: { text: "Check it out", url: "#", color: "#0F4C81", sponsored: true } }).run()} title="Insert CTA button">+ Button</ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().insertContent({ type: "gallery", attrs: { images: [], columns: 3 } }).run()} title="Insert gallery">+ Gallery</ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().insertContent({ type: "htmlEmbed", attrs: { html: "", caption: null } }).run()} title="Insert HTML embed">+ Embed</ToolbarButton>
+        <ToolbarButton onClick={() => editor.chain().focus().insertContent({ type: "youtubeEmbed", attrs: { videoId: null } }).run()} title="Insert YouTube video">▶ YouTube</ToolbarButton>
+        <span className="mx-1 w-px bg-sand-light" />
+        <label className="flex items-center gap-1 px-2 text-sm text-ink/70" title="Text color">
+          🎨
+          <input
+            type="color"
+            onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
+            className="h-6 w-6 cursor-pointer border-0 bg-transparent p-0"
+          />
+        </label>
+        <select
+          onChange={(e) => (editor.chain().focus() as any).setLineHeight(e.target.value).run()}
+          defaultValue=""
+          title="Line spacing"
+          className="rounded border border-sand-light px-1 py-1 text-xs text-ink/70"
+        >
+          <option value="" disabled>Line spacing</option>
+          <option value="1">1</option>
+          <option value="1.15">1.15</option>
+          <option value="1.5">1.5</option>
+          <option value="2">2</option>
+        </select>
       </div>
       <div className="px-4 py-3">
         <EditorContent editor={editor} />
