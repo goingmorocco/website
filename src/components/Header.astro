@@ -17,8 +17,6 @@ const navItems = [
   { href: localizedPath(locale, "/about/"), label: strings.nav.about },
   { href: localizedPath(locale, "/post/"), label: strings.nav.blog },
   { href: localizedPath(locale, "/categories/"), label: strings.nav.categories },
-  // External subdomains — not part of Astro's i18n routing, so plain
-  // absolute URLs rather than localizedPath().
   { href: "https://booking.goingmorocco.com", label: strings.nav.flights, external: true },
   { href: "https://planner.goingmorocco.com", label: strings.nav.itineraries, external: true },
   { href: localizedPath(locale, "/contact/"), label: strings.nav.contact },
@@ -26,10 +24,14 @@ const navItems = [
 ---
 
 <header class="sticky top-0 z-50 border-b border-sand-light bg-paper/90 backdrop-blur-sm">
-  <Container class="flex items-center justify-between gap-4 py-3">
+  <Container class="flex h-16 items-center justify-between gap-4">
     <!-- Logo -->
-    <a href={localizedPath(locale, "/")} class="flex-shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal" aria-label="GoingMorocco home">
-      <Logo height={208} />
+    <a
+      href={localizedPath(locale, "/")}
+      class="flex-shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal"
+      aria-label="GoingMorocco home"
+    >
+      <Logo height={40} />
     </a>
 
     <!-- Desktop nav -->
@@ -79,7 +81,6 @@ const navItems = [
   <!-- Mobile nav panel -->
   <nav id="mobile-nav" aria-label="Mobile navigation" class="hidden border-t border-sand-light bg-paper lg:hidden">
     <Container class="flex flex-col gap-1 py-3">
-      <!-- Mobile search -->
       <div class="pb-2 pt-1">
         <SearchBox
           locale={locale}
@@ -89,6 +90,7 @@ const navItems = [
           instanceId="mobile"
         />
       </div>
+
       {navItems.map((item) => (
         <a
           href={item.href}
@@ -99,6 +101,7 @@ const navItems = [
           {item.label}
         </a>
       ))}
+
       <div class="mt-2 border-t border-sand-light pt-3">
         <LanguageSwitcher currentLocale={locale} alternateUrls={alternateUrls} />
       </div>
@@ -121,7 +124,9 @@ const navItems = [
   }
 
   trigger?.addEventListener("click", () => setOpen(trigger.getAttribute("aria-expanded") !== "true"));
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setOpen(false);
+  });
   document.addEventListener("click", (e) => {
     if (!panel || !trigger) return;
     if (!panel.contains(e.target as Node) && !trigger.contains(e.target as Node)) setOpen(false);
