@@ -1,16 +1,22 @@
 ---
-// Uses the real GoingMorocco PNG logo (public/logo.png).
-// The original is 1774×887px. We display it at a controlled height
-// and let width scale proportionally (aspect ratio 2:1).
-// header: height 36px → width ~72px  (crisp on retina via srcset/2x)
-// footer: height 32px → width ~64px
+// Uses the GoingMorocco PNG logo (1774×887px).
+// Aspect ratio is preserved automatically.
+//
+// Default size:
+// - Header: 48px tall
+// - Footer: pass height={36} (or another value) when using the component.
+
 interface Props {
   height?: number;
   class?: string;
 }
-const { height = 36, class: className = "" } = Astro.props;
-const width = Math.round(height * 2); // 1774/887 ≈ 2:1
+
+const { height = 48, class: className = "" } = Astro.props;
+
+// Preserve the original aspect ratio (1774 ÷ 887)
+const width = Math.round(height * (1774 / 887));
 ---
+
 <img
   src="/logo.png"
   alt="GoingMorocco.com"
