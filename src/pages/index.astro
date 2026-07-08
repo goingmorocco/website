@@ -4,6 +4,14 @@ import Container from "../components/Container.astro";
 import RouteDivider from "../components/RouteDivider.astro";
 import PostCard from "../components/PostCard.astro";
 import AboutMoroccoSection from "../components/home/AboutMoroccoSection.astro";
+import DestinationsSection from "../components/home/DestinationsSection.astro";
+import PlanYourTripSection from "../components/home/PlanYourTripSection.astro";
+import ThingsToDoSection from "../components/home/ThingsToDoSection.astro";
+import ItinerariesSection from "../components/home/ItinerariesSection.astro";
+import StaySection from "../components/home/StaySection.astro";
+import FoodSection from "../components/home/FoodSection.astro";
+import TravelTipsSection from "../components/home/TravelTipsSection.astro";
+import AboutGoingMoroccoSection from "../components/home/AboutGoingMoroccoSection.astro";
 import ToolPromoSection from "../components/home/ToolPromoSection.astro";
 import FAQSection from "../components/home/FAQSection.astro";
 import Button from "../components/Button.astro";
@@ -46,6 +54,15 @@ const display = featured.length >= 3 ? featured : latest;
   </section>
 
   <AboutMoroccoSection />
+
+  <DestinationsSection />
+  <PlanYourTripSection />
+  <ThingsToDoSection />
+  <ItinerariesSection />
+  <StaySection />
+  <FoodSection />
+  <TravelTipsSection />
+  <AboutGoingMoroccoSection />
 
   <ToolPromoSection
     eyebrow="Flights"

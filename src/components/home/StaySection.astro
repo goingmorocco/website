@@ -1,0 +1,40 @@
+---
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+
+const content = {
+  en: {
+    heading: "Where to Stay",
+    intro: "Explore hotels and places to stay across Morocco on the interactive map below.",
+  },
+  ar: {
+    heading: "أين تقيم",
+    intro: "استكشف الفنادق وأماكن الإقامة في جميع أنحاء المغرب على الخريطة التفاعلية أدناه.",
+  },
+};
+
+const { heading, intro } = content[locale];
+---
+
+<section class="border-y border-sand-light bg-paper py-14">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="font-display text-2xl text-ink sm:text-3xl">{heading}</h2>
+      <p class="mt-3 text-ink/70">{intro}</p>
+    </div>
+    <div class="mt-10 overflow-hidden rounded-2xl border border-sand-light shadow-sm">
+      <iframe
+        id="stay22-widget"
+        title="Stay22 interactive hotel map"
+        width="100%"
+        height="428"
+        src="https://stay22.com/embed/6994116a9b53f8015d2ceb4e"
+        loading="lazy"
+        frameborder="0"
+        class="block w-full"
+      ></iframe>
+    </div>
+  </div>
+</section>

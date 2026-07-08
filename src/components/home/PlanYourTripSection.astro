@@ -1,0 +1,41 @@
+---
+import InfoCardGrid from "./InfoCardGrid.astro";
+
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+
+const content = {
+  en: {
+    heading: "Plan Your Trip",
+    intro: "The practical basics to sort out before you land.",
+    cards: [
+      { title: "Visa", description: "Find out if you need a visa and how long you can stay.", icon: "🛂" },
+      { title: "Best Time to Visit", description: "When to go depending on the region and season.", icon: "☀️" },
+      { title: "Transportation", description: "Trains, buses, grand taxis, and getting between cities.", icon: "🚌" },
+      { title: "Budget Guide", description: "What a trip to Morocco actually costs, day to day.", icon: "💰" },
+      { title: "Safety", description: "Practical, level-headed safety tips for travelers.", icon: "🛡️" },
+      { title: "Internet & SIM Cards", description: "Staying connected with a local eSIM or SIM card.", icon: "📶" },
+      { title: "Money & Currency", description: "Using the Dirham, cash vs. cards, and ATMs.", icon: "💵" },
+    ],
+  },
+  ar: {
+    heading: "خطط لرحلتك",
+    intro: "الأساسيات العملية التي يجب ترتيبها قبل وصولك.",
+    cards: [
+      { title: "التأشيرة", description: "تعرف على ما إذا كنت بحاجة إلى تأشيرة ومدة الإقامة المسموحة.", icon: "🛂" },
+      { title: "أفضل وقت للزيارة", description: "متى تذهب حسب المنطقة والفصل.", icon: "☀️" },
+      { title: "المواصلات", description: "القطارات والحافلات وسيارات الأجرة الكبيرة والتنقل بين المدن.", icon: "🚌" },
+      { title: "دليل الميزانية", description: "تكلفة رحلة إلى المغرب فعلياً، يوماً بيوم.", icon: "💰" },
+      { title: "السلامة", description: "نصائح سلامة عملية وواقعية للمسافرين.", icon: "🛡️" },
+      { title: "الإنترنت وبطاقات SIM", description: "البقاء متصلاً عبر eSIM أو بطاقة SIM محلية.", icon: "📶" },
+      { title: "المال والعملة", description: "استخدام الدرهم، النقد مقابل البطاقات، وأجهزة الصراف الآلي.", icon: "💵" },
+    ],
+  },
+};
+
+const { heading, intro, cards } = content[locale];
+---
+
+<InfoCardGrid heading={heading} intro={intro} cards={cards} columns={4} />

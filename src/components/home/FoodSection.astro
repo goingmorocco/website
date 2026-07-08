@@ -1,0 +1,39 @@
+---
+import PhotoCardGrid from "./PhotoCardGrid.astro";
+
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+
+const content = {
+  en: {
+    heading: "Moroccan Food",
+    intro: "A cuisine worth traveling for on its own — here's where to start.",
+    cards: [
+      { title: "Tagine", description: "Slow-cooked stews named after the clay pot they're made in.", image: "/images/home/food/tagine.jpg", imageAlt: "Moroccan tagine dish" },
+      { title: "Couscous", description: "The traditional Friday family meal, steamed and served with vegetables.", image: "/images/home/food/couscous.jpg", imageAlt: "Moroccan couscous dish" },
+      { title: "Pastilla", description: "A sweet-and-savory pastry, traditionally filled with pigeon or chicken.", image: "/images/home/food/pastilla.jpg", imageAlt: "Moroccan pastilla pastry" },
+      { title: "Harira", description: "A hearty tomato and lentil soup, especially popular during Ramadan.", image: "/images/home/food/harira.jpg", imageAlt: "Bowl of Moroccan harira soup" },
+      { title: "Mint Tea", description: "Morocco's signature drink — sweet, strong, and poured from a height.", image: "/images/home/food/mint-tea.jpg", imageAlt: "Moroccan mint tea being poured" },
+      { title: "Street Food", description: "From grilled skewers to msemen, the best bites are often on the street.", image: "/images/home/food/street-food.jpg", imageAlt: "Moroccan street food stall" },
+    ],
+  },
+  ar: {
+    heading: "الأكل المغربي",
+    intro: "مطبخ يستحق السفر من أجله وحده — إليك من أين تبدأ.",
+    cards: [
+      { title: "الطاجين", description: "يخنات تُطهى ببطء، سُميت باسم الإناء الفخاري الذي تُحضّر فيه.", image: "/images/home/food/tagine.jpg", imageAlt: "طبق طاجين مغربي" },
+      { title: "الكسكس", description: "وجبة العائلة التقليدية يوم الجمعة، تُطهى بالبخار وتُقدم مع الخضار.", image: "/images/home/food/couscous.jpg", imageAlt: "طبق كسكس مغربي" },
+      { title: "البسطيلة", description: "معجنات بين الحلو والمالح، تُحشى تقليدياً بالحمام أو الدجاج.", image: "/images/home/food/pastilla.jpg", imageAlt: "بسطيلة مغربية" },
+      { title: "الحريرة", description: "شوربة غنية بالطماطم والعدس، تحظى بشعبية خاصة في رمضان.", image: "/images/home/food/harira.jpg", imageAlt: "وعاء حريرة مغربية" },
+      { title: "أتاي (الشاي بالنعناع)", description: "مشروب المغرب المميز — حلو وقوي ويُصب من ارتفاع.", image: "/images/home/food/mint-tea.jpg", imageAlt: "صب الشاي المغربي بالنعناع" },
+      { title: "أكل الشارع", description: "من الأسياخ المشوية إلى المسمن، أشهى اللقيمات غالباً في الشارع.", image: "/images/home/food/street-food.jpg", imageAlt: "عربة أكل شارع مغربية" },
+    ],
+  },
+};
+
+const { heading, intro, cards } = content[locale];
+---
+
+<PhotoCardGrid heading={heading} intro={intro} cards={cards} columns={3} />

@@ -1,0 +1,38 @@
+---
+// Shared card used across all homepage content-grid sections. Deliberately
+// includes a reserved footer slot so a future CTA/Read More/Explore button
+// can be dropped in later without redesigning the card.
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  imageAlt?: string;
+  icon?: string;
+}
+
+const { title, description, image, imageAlt = "", icon } = Astro.props;
+---
+
+<article class="flex h-full flex-col overflow-hidden rounded-2xl border border-sand-light bg-white shadow-sm transition-shadow hover:shadow-md">
+  {image && (
+    <img
+      src={image}
+      alt={imageAlt}
+      width="600"
+      height="400"
+      loading="lazy"
+      decoding="async"
+      class="h-40 w-full object-cover"
+    />
+  )}
+  <div class="flex flex-1 flex-col p-5">
+    {icon && <span class="mb-2 text-2xl" aria-hidden="true">{icon}</span>}
+    <h3 class="font-display text-lg text-ink">{title}</h3>
+    <p class="mt-2 flex-1 text-sm leading-relaxed text-ink/70">{description}</p>
+    {/* Reserved space for a future CTA / Read More / Explore button or link
+        (to a category, blog post, or destination page). Intentionally left
+        empty for now so adding one later doesn't require touching this
+        component's layout. */}
+    <div class="mt-4 empty:hidden"></div>
+  </div>
+</article>

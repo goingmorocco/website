@@ -1,0 +1,34 @@
+---
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+
+const content = {
+  en: {
+    heading: "About GoingMorocco",
+    intro: "GoingMorocco is a travel guide built from real experience on the ground in Morocco, not recycled listicles.",
+    mission: "Our mission is simple: help you plan a trip that actually matches how Morocco really is — practical, detailed, and honest.",
+    trust: "Every guide is written and checked by people who've actually been there, so you can plan with confidence instead of guesswork.",
+  },
+  ar: {
+    heading: "عن GoingMorocco",
+    intro: "GoingMorocco دليل سفر مبني على تجربة حقيقية على أرض الواقع في المغرب، وليس مقالات منسوخة.",
+    mission: "مهمتنا بسيطة: مساعدتك في التخطيط لرحلة تعكس المغرب كما هو فعلاً — عملية ومفصلة وصادقة.",
+    trust: "كل دليل يُكتب ويُراجع من قِبل أشخاص زاروا هذه الأماكن فعلاً، لتخطط بثقة بدلاً من التخمين.",
+  },
+};
+
+const { heading, intro, mission, trust } = content[locale];
+---
+
+<section class="py-16">
+  <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+    <h2 class="font-display text-2xl text-ink sm:text-3xl">{heading}</h2>
+    <p class="mt-4 text-ink/70">{intro}</p>
+    <p class="mt-4 text-ink/70">{mission}</p>
+    <p class="mt-4 text-ink/70">{trust}</p>
+    {/* Reserved space for a future "Learn More" button linking to a full About page. */}
+    <div class="mt-6 empty:hidden"></div>
+  </div>
+</section>

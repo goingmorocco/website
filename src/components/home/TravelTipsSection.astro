@@ -1,0 +1,39 @@
+---
+import InfoCardGrid from "./InfoCardGrid.astro";
+
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+
+const content = {
+  en: {
+    heading: "Travel Tips",
+    intro: "Small things that make a real difference on the ground.",
+    cards: [
+      { title: "Local Customs", description: "Etiquette and everyday customs worth knowing before you go.", icon: "🤝" },
+      { title: "Tipping", description: "Who to tip, how much, and when it's expected.", icon: "🪙" },
+      { title: "Packing List", description: "What to actually bring, by season and region.", icon: "🧳" },
+      { title: "Language", description: "Key Arabic and French phrases that go a long way.", icon: "💬" },
+      { title: "Weather", description: "What to expect month to month, region by region.", icon: "🌤️" },
+      { title: "Emergency Information", description: "Useful numbers and what to do if something goes wrong.", icon: "🚨" },
+    ],
+  },
+  ar: {
+    heading: "نصائح للسفر",
+    intro: "أشياء صغيرة تصنع فرقاً حقيقياً على أرض الواقع.",
+    cards: [
+      { title: "العادات المحلية", description: "آداب وعادات يومية يستحق معرفتها قبل السفر.", icon: "🤝" },
+      { title: "الإكرامية (البقشيش)", description: "لمن تعطي البقشيش، وكم، ومتى يكون متوقعاً.", icon: "🪙" },
+      { title: "قائمة التحضير", description: "ماذا تحضر فعلياً، حسب الفصل والمنطقة.", icon: "🧳" },
+      { title: "اللغة", description: "عبارات أساسية بالعربية والفرنسية تُحدث فرقاً كبيراً.", icon: "💬" },
+      { title: "الطقس", description: "ماذا تتوقع شهراً بعد شهر، منطقة بمنطقة.", icon: "🌤️" },
+      { title: "معلومات الطوارئ", description: "أرقام مفيدة وما يجب فعله إذا حدث خطأ ما.", icon: "🚨" },
+    ],
+  },
+};
+
+const { heading, intro, cards } = content[locale];
+---
+
+<InfoCardGrid heading={heading} intro={intro} cards={cards} columns={3} />

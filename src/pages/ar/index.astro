@@ -4,8 +4,17 @@ import Container from "../../components/Container.astro";
 import RouteDivider from "../../components/RouteDivider.astro";
 import PostCard from "../../components/PostCard.astro";
 import AboutMoroccoSection from "../../components/home/AboutMoroccoSection.astro";
+import DestinationsSection from "../../components/home/DestinationsSection.astro";
+import PlanYourTripSection from "../../components/home/PlanYourTripSection.astro";
+import ThingsToDoSection from "../../components/home/ThingsToDoSection.astro";
+import ItinerariesSection from "../../components/home/ItinerariesSection.astro";
+import StaySection from "../../components/home/StaySection.astro";
+import FoodSection from "../../components/home/FoodSection.astro";
+import TravelTipsSection from "../../components/home/TravelTipsSection.astro";
+import AboutGoingMoroccoSection from "../../components/home/AboutGoingMoroccoSection.astro";
 import ToolPromoSection from "../../components/home/ToolPromoSection.astro";
 import FAQSection from "../../components/home/FAQSection.astro";
+import Button from "../../components/Button.astro";
 import { getCollection } from "astro:content";
 import { getReadingTime } from "../../utils/reading-time";
 import { buildOrganizationSchema } from "../../utils/seo";
@@ -46,6 +55,15 @@ const display = featured.length >= 3 ? featured : latest;
 
   <AboutMoroccoSection locale="ar" />
 
+  <DestinationsSection locale="ar" />
+  <PlanYourTripSection locale="ar" />
+  <ThingsToDoSection locale="ar" />
+  <ItinerariesSection locale="ar" />
+  <StaySection locale="ar" />
+  <FoodSection locale="ar" />
+  <TravelTipsSection locale="ar" />
+  <AboutGoingMoroccoSection locale="ar" />
+
   <ToolPromoSection
     eyebrow="الرحلات الجوية"
     title="ابحث عن رحلتك إلى المغرب"
@@ -69,12 +87,7 @@ const display = featured.length >= 3 ? featured : latest;
         ))}
       </div>
       <div class="mt-10 text-center">
-        <a
-          href="/ar/post/"
-          class="inline-flex items-center justify-center rounded-full border border-royal px-6 py-3 font-semibold text-royal transition-colors hover:bg-royal hover:text-white"
-        >
-          المزيد من المقالات
-        </a>
+        <Button href="/ar/post/" variant="outline">المزيد من المقالات</Button>
       </div>
     </Container>
   </section>

@@ -1,0 +1,37 @@
+---
+import PhotoCardGrid from "./PhotoCardGrid.astro";
+
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+
+const content = {
+  en: {
+    heading: "Featured Itineraries",
+    intro: "Ready-made routes to help you decide how long to stay and where to go.",
+    cards: [
+      { title: "3 Days", description: "A quick taste of Marrakech and the nearby Atlas Mountains.", image: "/images/home/itineraries/3-days.jpg", imageAlt: "Marrakech short trip itinerary" },
+      { title: "5 Days", description: "Marrakech, the desert, and back — a classic short loop.", image: "/images/home/itineraries/5-days.jpg", imageAlt: "5 day Morocco desert itinerary" },
+      { title: "7 Days", description: "Imperial cities plus a proper Sahara detour.", image: "/images/home/itineraries/7-days.jpg", imageAlt: "7 day Morocco imperial cities itinerary" },
+      { title: "10 Days", description: "A well-rounded loop covering cities, desert, and coast.", image: "/images/home/itineraries/10-days.jpg", imageAlt: "10 day Morocco itinerary" },
+      { title: "2 Weeks", description: "The full Morocco experience, at an unrushed pace.", image: "/images/home/itineraries/2-weeks.jpg", imageAlt: "2 week Morocco itinerary" },
+    ],
+  },
+  ar: {
+    heading: "خطط رحلات مقترحة",
+    intro: "مسارات جاهزة تساعدك على تحديد مدة إقامتك ووجهاتك.",
+    cards: [
+      { title: "3 أيام", description: "لمحة سريعة عن مراكش وجبال الأطلس القريبة.", image: "/images/home/itineraries/3-days.jpg", imageAlt: "خطة رحلة قصيرة إلى مراكش" },
+      { title: "5 أيام", description: "مراكش والصحراء والعودة — مسار كلاسيكي قصير.", image: "/images/home/itineraries/5-days.jpg", imageAlt: "خطة رحلة 5 أيام إلى الصحراء المغربية" },
+      { title: "7 أيام", description: "المدن الإمبراطورية مع جولة حقيقية في الصحراء الكبرى.", image: "/images/home/itineraries/7-days.jpg", imageAlt: "خطة رحلة 7 أيام للمدن الإمبراطورية المغربية" },
+      { title: "10 أيام", description: "مسار متكامل يغطي المدن والصحراء والساحل.", image: "/images/home/itineraries/10-days.jpg", imageAlt: "خطة رحلة 10 أيام في المغرب" },
+      { title: "أسبوعان", description: "تجربة المغرب الكاملة، بوتيرة هادئة دون استعجال.", image: "/images/home/itineraries/2-weeks.jpg", imageAlt: "خطة رحلة أسبوعين في المغرب" },
+    ],
+  },
+};
+
+const { heading, intro, cards } = content[locale];
+---
+
+<PhotoCardGrid heading={heading} intro={intro} cards={cards} columns={3} />

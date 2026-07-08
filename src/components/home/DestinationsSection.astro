@@ -1,0 +1,39 @@
+---
+import PhotoCardGrid from "./PhotoCardGrid.astro";
+
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+
+const content = {
+  en: {
+    heading: "Popular Destinations",
+    intro: "From red-walled cities to blue villages and golden dunes — here's where most travelers start.",
+    cards: [
+      { title: "Marrakech", description: "The buzzing heart of Morocco — souks, palaces, and the famous Jemaa el-Fnaa square.", image: "/images/home/destinations/marrakech.jpg", imageAlt: "Marrakech medina and rooftops" },
+      { title: "Fes", description: "Home to the world's oldest continuously used medina and centuries of history.", image: "/images/home/destinations/fes.jpg", imageAlt: "Fes old medina alleyways" },
+      { title: "Chefchaouen", description: "The famous blue city tucked into the Rif Mountains — Morocco's most photographed streets.", image: "/images/home/destinations/chefchaouen.jpg", imageAlt: "Blue-painted streets of Chefchaouen" },
+      { title: "Merzouga", description: "Your gateway to the Sahara — camel treks, desert camps, and endless golden dunes.", image: "/images/home/destinations/merzouga.jpg", imageAlt: "Sahara desert dunes near Merzouga" },
+      { title: "Essaouira", description: "A laid-back coastal town with sea breezes, fresh seafood, and a historic port.", image: "/images/home/destinations/essaouira.jpg", imageAlt: "Essaouira coastal ramparts" },
+      { title: "Casablanca", description: "Morocco's modern economic hub, home to the stunning Hassan II Mosque.", image: "/images/home/destinations/casablanca.jpg", imageAlt: "Hassan II Mosque in Casablanca" },
+    ],
+  },
+  ar: {
+    heading: "أشهر الوجهات السياحية",
+    intro: "من المدن ذات الأسوار الحمراء إلى القرى الزرقاء والكثبان الذهبية — هنا يبدأ معظم المسافرين رحلتهم.",
+    cards: [
+      { title: "مراكش", description: "القلب النابض للمغرب — الأسواق والقصور وساحة جامع الفنا الشهيرة.", image: "/images/home/destinations/marrakech.jpg", imageAlt: "مدينة مراكش القديمة والأسطح" },
+      { title: "فاس", description: "موطن أقدم مدينة عتيقة لا تزال مأهولة في العالم، وقرون من التاريخ.", image: "/images/home/destinations/fes.jpg", imageAlt: "أزقة مدينة فاس القديمة" },
+      { title: "شفشاون", description: "المدينة الزرقاء الشهيرة المتوارية بين جبال الريف — أكثر شوارع المغرب تصويراً.", image: "/images/home/destinations/chefchaouen.jpg", imageAlt: "شوارع شفشاون الزرقاء" },
+      { title: "مرزوكة", description: "بوابتك إلى الصحراء الكبرى — رحلات الجمال والمخيمات الصحراوية والكثبان الذهبية.", image: "/images/home/destinations/merzouga.jpg", imageAlt: "كثبان الصحراء قرب مرزوكة" },
+      { title: "الصويرة", description: "مدينة ساحلية هادئة بنسيم البحر والمأكولات البحرية الطازجة وميناء تاريخي.", image: "/images/home/destinations/essaouira.jpg", imageAlt: "أسوار الصويرة الساحلية" },
+      { title: "الدار البيضاء", description: "المركز الاقتصادي الحديث للمغرب، وموطن مسجد الحسن الثاني المذهل.", image: "/images/home/destinations/casablanca.jpg", imageAlt: "مسجد الحسن الثاني في الدار البيضاء" },
+    ],
+  },
+};
+
+const { heading, intro, cards } = content[locale];
+---
+
+<PhotoCardGrid heading={heading} intro={intro} cards={cards} columns={3} />

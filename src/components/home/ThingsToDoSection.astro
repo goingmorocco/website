@@ -1,0 +1,41 @@
+---
+import PhotoCardGrid from "./PhotoCardGrid.astro";
+
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+
+const content = {
+  en: {
+    heading: "Things to Do",
+    intro: "A taste of the experiences that make a Morocco trip unforgettable.",
+    cards: [
+      { title: "Desert Tours", description: "Multi-day trips into the Sahara, from Merzouga to Zagora.", image: "/images/home/activities/desert-tours.jpg", imageAlt: "Desert tour vehicle in the Sahara" },
+      { title: "Camel Rides", description: "Watch the sunset from the back of a camel over the dunes.", image: "/images/home/activities/camel-rides.jpg", imageAlt: "Camel caravan at sunset" },
+      { title: "Hiking", description: "Trek through the Atlas Mountains, including Toubkal, North Africa's highest peak.", image: "/images/home/activities/hiking.jpg", imageAlt: "Hikers in the Atlas Mountains" },
+      { title: "Surfing", description: "Ride the Atlantic swells at Taghazout and Essaouira.", image: "/images/home/activities/surfing.jpg", imageAlt: "Surfer on the Moroccan coast" },
+      { title: "Beaches", description: "Relax along Morocco's Atlantic and Mediterranean coastlines.", image: "/images/home/activities/beaches.jpg", imageAlt: "Moroccan coastline beach" },
+      { title: "Cooking Classes", description: "Learn to make tagine and couscous from local cooks.", image: "/images/home/activities/cooking-classes.jpg", imageAlt: "Traditional Moroccan cooking class" },
+      { title: "Hammams", description: "Try a traditional Moroccan bath and scrub for deep relaxation.", image: "/images/home/activities/hammams.jpg", imageAlt: "Traditional Moroccan hammam interior" },
+    ],
+  },
+  ar: {
+    heading: "أشياء يمكنك القيام بها",
+    intro: "لمحة عن التجارب التي تجعل رحلة المغرب لا تُنسى.",
+    cards: [
+      { title: "جولات صحراوية", description: "رحلات متعددة الأيام إلى الصحراء الكبرى، من مرزوكة إلى زاكورة.", image: "/images/home/activities/desert-tours.jpg", imageAlt: "مركبة جولة صحراوية في الصحراء" },
+      { title: "ركوب الجمال", description: "شاهد غروب الشمس فوق ظهر جمل بين الكثبان الرملية.", image: "/images/home/activities/camel-rides.jpg", imageAlt: "قافلة جمال عند الغروب" },
+      { title: "المشي لمسافات طويلة", description: "تجول في جبال الأطلس، بما في ذلك جبل توبقال أعلى قمة في شمال أفريقيا.", image: "/images/home/activities/hiking.jpg", imageAlt: "متنزهون في جبال الأطلس" },
+      { title: "ركوب الأمواج", description: "استمتع بأمواج المحيط الأطلسي في تاغازوت والصويرة.", image: "/images/home/activities/surfing.jpg", imageAlt: "راكب أمواج على الساحل المغربي" },
+      { title: "الشواطئ", description: "استرخِ على سواحل المغرب الأطلسية والمتوسطية.", image: "/images/home/activities/beaches.jpg", imageAlt: "شاطئ على الساحل المغربي" },
+      { title: "دروس الطبخ", description: "تعلم تحضير الطاجين والكسكس من طهاة محليين.", image: "/images/home/activities/cooking-classes.jpg", imageAlt: "درس طبخ مغربي تقليدي" },
+      { title: "الحمامات", description: "جرب حماماً مغربياً تقليدياً وتقشيراً للاسترخاء العميق.", image: "/images/home/activities/hammams.jpg", imageAlt: "داخل حمام مغربي تقليدي" },
+    ],
+  },
+};
+
+const { heading, intro, cards } = content[locale];
+---
+
+<PhotoCardGrid heading={heading} intro={intro} cards={cards} columns={3} />
