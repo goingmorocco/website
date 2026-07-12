@@ -23,12 +23,14 @@ const { heading, intro, mission, trust } = content[locale];
 ---
 
 <section class="py-16">
-  <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-    <h2 class="font-display text-2xl text-ink sm:text-3xl">{heading}</h2>
-    <p class="mt-4 text-ink/70">{intro}</p>
-    <p class="mt-4 text-ink/70">{mission}</p>
-    <p class="mt-4 text-ink/70">{trust}</p>
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <h2 class="text-center font-display text-2xl text-ink sm:text-3xl">{heading}</h2>
+    <div class={locale === "ar" ? "text-right" : "text-left"}>
+      <p class="mt-4 text-ink/70">{intro}</p>
+      <p class="mt-4 text-ink/70">{mission}</p>
+      <p class="mt-4 text-ink/70">{trust}</p>
+    </div>
     {/* Reserved space for a future "Learn More" button linking to a full About page. */}
-    <div class="mt-6 empty:hidden"></div>
+    <div class="mt-6 text-center empty:hidden"></div>
   </div>
 </section>
