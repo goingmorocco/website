@@ -1,0 +1,29 @@
+# GoingMorocco
+
+> Practical, first-hand Morocco travel guides — visas, budgeting, itineraries, desert tours, food, and city guides — written from Marrakech, available in English and Arabic.
+
+GoingMorocco.com publishes independently written, locally-sourced travel guides for people planning a trip to Morocco. Content covers trip planning basics, city and region guides, activities, Moroccan cuisine, and multi-day itineraries. The site also links to companion tools for flight search and AI-assisted itinerary planning.
+
+## Main sections
+
+- [Homepage](https://goingmorocco.com/): Overview of the site and its main guide categories.
+- [All Guides](https://goingmorocco.com/post/): Full archive of published travel guides.
+- [Going Morocco](https://goingmorocco.com/categories/tourism/): Practical trip-planning guides — visas, safety, budgeting, and what to expect on the ground.
+- [Tours & Itineraries](https://goingmorocco.com/categories/tours/): Multi-day itineraries connecting cities, mountains, and the Sahara.
+- [Moroccan Recipes](https://goingmorocco.com/categories/recipes/): Step-by-step Moroccan recipes, from tagine and couscous to mint tea.
+- [Handicrafts & Products](https://goingmorocco.com/categories/handicrafts-products/): Guides to authentic Moroccan rugs, argan oil, leather goods, and what to look for before buying.
+
+## Tools
+
+- [Flight Search](https://booking.goingmorocco.com/): Compare flights to Morocco.
+- [AI Itinerary Planner](https://planner.goingmorocco.com/): Generates a custom Morocco itinerary based on trip length, budget, and interests.
+
+## Languages
+
+- English: https://goingmorocco.com/
+- Arabic: https://goingmorocco.com/ar/
+
+## Other
+
+- [About](https://goingmorocco.com/about/): Who writes GoingMorocco and why.
+- [Contact](https://goingmorocco.com/contact/)

@@ -1,0 +1,21 @@
+{
+  "name": "GoingMorocco",
+  "short_name": "GoingMorocco",
+  "description": "Practical Morocco travel guides — visas, budgeting, itineraries, and city guides.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0F4C81",
+  "icons": [
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
