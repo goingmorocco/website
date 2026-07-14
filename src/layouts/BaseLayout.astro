@@ -53,19 +53,6 @@ const siteName = "GoingMorocco";
     <!-- Travelpayouts verification: add your token below when available -->
     <!-- <meta name="travelpayouts-domain-verification" content="REPLACE_WITH_YOUR_CODE" /> -->
 
-    <!-- Stay22 affiliate (head) -->
-    <script>
-      (function (s, t, a, y, twenty, two) {
-        s.Stay22 = s.Stay22 || {};
-        s.Stay22.params = { lmaID: '6993fc334cae3b9e41874695' };
-        twenty = t.createElement(a);
-        two = t.getElementsByTagName(a)[0];
-        twenty.async = 1;
-        twenty.src = y;
-        two.parentNode.insertBefore(twenty, two);
-      })(window, document, 'script', 'https://scripts.stay22.com/letmeallez.js');
-    </script>
-
     <!-- Canonical -->
     <link rel="canonical" href={canonicalUrl} />
 
@@ -102,6 +89,19 @@ const siteName = "GoingMorocco";
       <slot />
     </main>
     <Footer locale={locale} />
+
+    <!-- Stay22 affiliate widget bootstrap -->
+    <script>
+      (function (s, t, a, y, twenty, two) {
+        s.Stay22 = s.Stay22 || {};
+        s.Stay22.params = { lmaID: '6993fc334cae3b9e41874695' };
+        twenty = t.createElement(a);
+        two = t.getElementsByTagName(a)[0];
+        twenty.async = 1;
+        twenty.src = y;
+        two.parentNode.insertBefore(twenty, two);
+      })(window, document, 'script', 'https://scripts.stay22.com/letmeallez.js');
+    </script>
 
     <!-- Travelpayouts affiliate tracker (body) -->
     <script data-noptimize="1" data-cfasync="false">
