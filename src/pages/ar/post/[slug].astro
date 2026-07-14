@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { getCollection, render } from "astro:content";
 import { Image, getImage } from "astro:assets";
+import { wixResizedUrl } from "../../../utils/wixImage";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import Container from "../../../components/Container.astro";
 import Breadcrumbs from "../../../components/Breadcrumbs.astro";
@@ -38,7 +39,7 @@ const readingTime = post.data.readingTimeMinutes ?? getReadingTime(post.body ?? 
 const postUrl = localizedPath("ar", `/post/${post.data.slug}/`);
 const isRemoteImage = typeof post.data.featuredImage === "string";
 const ogImageSrc = isRemoteImage
-  ? (post.data.featuredImage as string)
+  ? wixResizedUrl(post.data.featuredImage as string, 1200, 630, 80)
   : (await getImage({ src: post.data.featuredImage as ImageMetadata, width: 1200, height: 630 })).src;
 
 const breadcrumbItems: BreadcrumbItem[] = [
@@ -106,7 +107,7 @@ const structuredData = [
 
       {isRemoteImage ? (
         <img
-          src={post.data.featuredImage as string}
+          src={wixResizedUrl(post.data.featuredImage as string, 1600, 900, 80)}
           alt={post.data.featuredImageAlt}
           width="1200"
           height="675"
