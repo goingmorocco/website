@@ -1,96 +1,169 @@
 ---
-// New homepage hero. Concept: the horizon where blue sky meets golden Sahara
-// dune is the real subject here, so it's made literal as the signature
-// moment — a thin gold line draws itself across the frame on load, sitting
-// at the photo's horizon. Everything else in the sequence stays restrained
-// around that one moment.
+// Hero carousel. Slide 1 content/behavior is unchanged from the original
+// single-slide hero. Slides 2-3 reuse the exact same visual language (same
+// gradient, same CTA button styles, same type scale) with different photos
+// and copy, so the carousel reads as one consistent moment, not three
+// different designs stitched together.
+//
+// The signature horizon line persists across all slides rather than
+// re-animating per slide -- it draws in once on load and stays, which
+// keeps the "premium, restrained" feel instead of re-triggering a flashy
+// animation every few seconds.
 interface Props {
   locale?: "en" | "ar";
 }
 const { locale = "en" } = Astro.props;
 
-const content = {
-  en: {
-    title: "Explore Morocco",
-    titleAccent: "Before You Go",
-    subtitle: "Practical, first-hand guides to the Sahara, the Atlas Mountains, and the medinas — written from Marrakech, not assembled from someone else's listicle.",
-    ctaPrimary: "Search Flights",
-    ctaSecondary: "Read the Guides",
-  },
-  ar: {
-    title: "استكشف المغرب",
-    titleAccent: "قبل أن تذهب",
-    subtitle: "أدلة عملية ومباشرة عن الصحراء وجبال الأطلس والمدن العتيقة — مكتوبة من مراكش، لا منقولة من قائمة عامة.",
-    ctaPrimary: "ابحث عن رحلات",
-    ctaSecondary: "اقرأ الأدلة",
-  },
+interface Slide {
+  image: string;
+  title: string;
+  titleAccent: string;
+  subtitle: string;
+  ctaPrimary: { text: string; href: string; external?: boolean };
+  ctaSecondary: { text: string; href: string; external?: boolean };
+}
+
+const content: Record<"en" | "ar", Slide[]> = {
+  en: [
+    {
+      image: "/images/home/hero-sahara.webp",
+      title: "Explore Morocco",
+      titleAccent: "Before You Go",
+      subtitle: "Practical, first-hand guides to the Sahara, the Atlas Mountains, and the medinas — written from Marrakech, not assembled from someone else's listicle.",
+      ctaPrimary: { text: "Search Flights", href: "https://booking.goingmorocco.com", external: true },
+      ctaSecondary: { text: "Read the Guides", href: "/post/" },
+    },
+    {
+      image: "/images/home/hero-desert.webp",
+      title: "The Sahara",
+      titleAccent: "Awaits",
+      subtitle: "Camp under a thousand stars in Merzouga, ride out at sunrise, and see why the desert is the trip people remember most.",
+      ctaPrimary: { text: "Explore Desert Tours", href: "/post/" },
+      ctaSecondary: { text: "Plan My Trip", href: "https://planner.goingmorocco.com", external: true },
+    },
+    {
+      image: "/images/home/hero-planning.webp",
+      title: "Need Help",
+      titleAccent: "Planning?",
+      subtitle: "From flights to itineraries to where to stay — we've mapped out every step, and we're happy to help with the rest.",
+      ctaPrimary: { text: "Contact Us", href: "/contact/" },
+      ctaSecondary: { text: "Let AI Plan My Trip", href: "https://planner.goingmorocco.com", external: true },
+    },
+  ],
+  ar: [
+    {
+      image: "/images/home/hero-sahara.webp",
+      title: "استكشف المغرب",
+      titleAccent: "قبل أن تذهب",
+      subtitle: "أدلة عملية ومباشرة عن الصحراء وجبال الأطلس والمدن العتيقة — مكتوبة من مراكش، لا منقولة من قائمة عامة.",
+      ctaPrimary: { text: "ابحث عن رحلات", href: "https://booking.goingmorocco.com", external: true },
+      ctaSecondary: { text: "اقرأ الأدلة", href: "/ar/post/" },
+    },
+    {
+      image: "/images/home/hero-desert.webp",
+      title: "الصحراء",
+      titleAccent: "في انتظارك",
+      subtitle: "بيت ليلتك تحت آلاف النجوم في مرزوكة، واخرج مع شروق الشمس، وستفهم لماذا تبقى الصحراء أكثر ما يتذكره الزوار.",
+      ctaPrimary: { text: "استكشف جولات الصحراء", href: "/ar/post/" },
+      ctaSecondary: { text: "خطط رحلتي", href: "https://planner.goingmorocco.com", external: true },
+    },
+    {
+      image: "/images/home/hero-planning.webp",
+      title: "تحتاج مساعدة",
+      titleAccent: "في التخطيط؟",
+      subtitle: "من الرحلات الجوية إلى خطط الرحلات وأماكن الإقامة — رتّبنا كل خطوة، ويسعدنا مساعدتك في الباقي.",
+      ctaPrimary: { text: "تواصل معنا", href: "/ar/contact/" },
+      ctaSecondary: { text: "دع الذكاء الاصطناعي يخطط رحلتي", href: "https://planner.goingmorocco.com", external: true },
+    },
+  ],
 };
 
-const { title, titleAccent, subtitle, ctaPrimary, ctaSecondary } = content[locale];
-const flightsHref = "https://booking.goingmorocco.com";
-const guidesHref = locale === "ar" ? "/ar/post/" : "/post/";
+const slides = content[locale];
 ---
 
-<section class="hero relative isolate flex min-h-[88vh] items-center overflow-hidden bg-ink">
-  <div class="hero-bg absolute inset-0 -z-20 bg-cover bg-center" style="background-image: url('/images/home/hero-sahara.jpg');"></div>
+<section class="hero-carousel relative isolate flex min-h-[88vh] items-center overflow-hidden bg-ink">
+  {slides.map((slide, i) => (
+    <div class:list={["hero-slide absolute inset-0", i === 0 && "is-active"]} data-slide={i}>
+      <img
+        src={slide.image}
+        alt=""
+        class="absolute inset-0 -z-20 h-full w-full object-cover"
+        loading={i === 0 ? "eager" : "lazy"}
+        decoding="async"
+        fetchpriority={i === 0 ? "high" : "low"}
+      />
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/50 to-ink/10"></div>
+      <div class="absolute inset-0 -z-10 bg-sand-dark/10 mix-blend-multiply"></div>
 
-  {/* Gradient for text legibility, warmed slightly toward the sand accent so the photo reads as part of the existing palette rather than a pasted-in stock image. */}
-  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/50 to-ink/10"></div>
-  <div class="absolute inset-0 -z-10 bg-sand-dark/10 mix-blend-multiply"></div>
+      <div class="mx-auto flex h-full w-full max-w-6xl items-center px-4 sm:px-6 lg:px-8">
+        <div class:list={["max-w-2xl", locale === "ar" && "ms-auto text-right"]}>
+          <h1 class="hero-line font-display text-4xl leading-[1.05] text-white drop-shadow-sm sm:text-5xl lg:text-6xl">
+            {slide.title}
+            <span class="block text-sand">{slide.titleAccent}</span>
+          </h1>
 
-  <div class="mx-auto w-full max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
-    <div class:list={["max-w-2xl", locale === "ar" && "ms-auto text-right"]}>
-      <h1 class="hero-line hero-line-1 font-display text-4xl leading-[1.05] text-white drop-shadow-sm sm:text-5xl lg:text-6xl">
-        {title}
-        <span class="block text-sand">{titleAccent}</span>
-      </h1>
+          <p class="hero-line mt-6 max-w-lg text-lg text-white/85">
+            {slide.subtitle}
+          </p>
 
-      <p class="hero-line hero-line-2 mt-6 max-w-lg text-lg text-white/85">
-        {subtitle}
-      </p>
-
-      <div class:list={["hero-line hero-line-3 mt-8 flex flex-wrap gap-4", locale === "ar" && "justify-end"]}>
-        <a
-          href={flightsHref}
-          target="_blank"
-          rel="noopener"
-          class="inline-flex items-center justify-center rounded-full bg-sand px-7 py-3 font-semibold text-ink shadow-lg shadow-black/20 transition-transform hover:scale-[1.02] hover:bg-sand-dark"
-        >
-          {ctaPrimary}
-        </a>
-        <a
-          href={guidesHref}
-          class="inline-flex items-center justify-center rounded-full border border-white/40 px-7 py-3 font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10"
-        >
-          {ctaSecondary}
-        </a>
+          <div class:list={["hero-line mt-8 flex flex-wrap gap-4", locale === "ar" && "justify-end"]}>
+            <a
+              href={slide.ctaPrimary.href}
+              target={slide.ctaPrimary.external ? "_blank" : undefined}
+              rel={slide.ctaPrimary.external ? "noopener" : undefined}
+              class="inline-flex items-center justify-center rounded-full bg-sand px-7 py-3 font-semibold text-ink shadow-lg shadow-black/20 transition-transform hover:scale-[1.02] hover:bg-sand-dark"
+            >
+              {slide.ctaPrimary.text}
+            </a>
+            <a
+              href={slide.ctaSecondary.href}
+              target={slide.ctaSecondary.external ? "_blank" : undefined}
+              rel={slide.ctaSecondary.external ? "noopener" : undefined}
+              class="inline-flex items-center justify-center rounded-full border border-white/40 px-7 py-3 font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10"
+            >
+              {slide.ctaSecondary.text}
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  ))}
 
-  {/* Signature element: the horizon line itself, drawing in last. */}
-  <div class="hero-horizon pointer-events-none absolute inset-x-0 bottom-[28%] h-px bg-gradient-to-r from-transparent via-sand to-transparent sm:bottom-[24%]"></div>
+  {/* Signature element: persists across all slides, draws in once on load and stays. */}
+  <div class="hero-horizon pointer-events-none absolute inset-x-0 bottom-[28%] z-10 h-px bg-gradient-to-r from-transparent via-sand to-transparent sm:bottom-[24%]"></div>
+
+  {/* Dot navigation */}
+  <div class="absolute inset-x-0 bottom-6 z-10 flex justify-center gap-2">
+    {slides.map((_, i) => (
+      <button
+        type="button"
+        class:list={["hero-dot h-2 rounded-full bg-white/50 transition-all", i === 0 && "is-active"]}
+        data-goto={i}
+        aria-label={`${locale === "ar" ? "الشريحة" : "Slide"} ${i + 1}`}
+      ></button>
+    ))}
+  </div>
 </section>
 
 <style>
-  /* Slow ambient Ken Burns drift on the background photo. */
-  .hero-bg {
-    animation: hero-drift 22s ease-in-out infinite alternate;
+  .hero-slide {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease-in-out;
   }
-  @keyframes hero-drift {
-    from { transform: scale(1); }
-    to { transform: scale(1.06); }
+  .hero-slide.is-active {
+    opacity: 1;
+    visibility: visible;
   }
 
-  /* Orchestrated load-in sequence: headline, subhead, CTAs, then the horizon line last. */
   .hero-line {
     opacity: 0;
     transform: translateY(14px);
     animation: hero-rise 0.7s ease-out forwards;
   }
-  .hero-line-1 { animation-delay: 0.1s; }
-  .hero-line-2 { animation-delay: 0.28s; }
-  .hero-line-3 { animation-delay: 0.46s; }
+  .hero-slide .hero-line:nth-child(1) { animation-delay: 0.1s; }
+  .hero-slide .hero-line:nth-child(2) { animation-delay: 0.28s; }
+  .hero-slide .hero-line:nth-child(3) { animation-delay: 0.46s; }
 
   @keyframes hero-rise {
     to { opacity: 1; transform: translateY(0); }
@@ -105,13 +178,65 @@ const guidesHref = locale === "ar" ? "/ar/post/" : "/post/";
     to { transform: scaleX(1); }
   }
 
+  .hero-dot.is-active {
+    width: 1.75rem;
+    background-color: var(--color-sand);
+  }
+  .hero-dot:not(.is-active) {
+    width: 0.5rem;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .hero-bg,
     .hero-line,
     .hero-horizon {
       animation: none;
       opacity: 1;
       transform: none;
     }
+    .hero-slide {
+      transition: none;
+    }
   }
 </style>
+
+<script>
+  const carousel = document.querySelector(".hero-carousel");
+  if (carousel) {
+    const slideEls = Array.from(carousel.querySelectorAll<HTMLElement>(".hero-slide"));
+    const dotEls = Array.from(carousel.querySelectorAll<HTMLButtonElement>(".hero-dot"));
+    let current = 0;
+    let timer: ReturnType<typeof setInterval> | null = null;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function goTo(index: number) {
+      slideEls[current]?.classList.remove("is-active");
+      dotEls[current]?.classList.remove("is-active");
+      current = (index + slideEls.length) % slideEls.length;
+      slideEls[current]?.classList.add("is-active");
+      dotEls[current]?.classList.add("is-active");
+    }
+
+    function startAutoplay() {
+      if (prefersReducedMotion || slideEls.length <= 1) return;
+      stopAutoplay();
+      timer = setInterval(() => goTo(current + 1), 6000);
+    }
+    function stopAutoplay() {
+      if (timer) clearInterval(timer);
+    }
+
+    dotEls.forEach((dot, i) => {
+      dot.addEventListener("click", () => {
+        goTo(i);
+        startAutoplay(); // reset the timer after a manual choice
+      });
+    });
+
+    carousel.addEventListener("mouseenter", stopAutoplay);
+    carousel.addEventListener("mouseleave", startAutoplay);
+    carousel.addEventListener("focusin", stopAutoplay);
+    carousel.addEventListener("focusout", startAutoplay);
+
+    startAutoplay();
+  }
+</script>
