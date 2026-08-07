@@ -1,0 +1,98 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+import Button from "../../components/Button.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="Sign Up | GoingMorocco"
+  description="Create a free GoingMorocco account to share your Morocco trip experiences, reviews, and questions."
+  alternateUrls={{ en: "/account/signup/", ar: "/ar/account/signup/" }}
+>
+  <Container class="max-w-md py-16">
+    <h1 class="font-display text-3xl text-ink">Create your account</h1>
+    <p class="mt-2 text-ink/70">Share your Morocco experience, ask questions, and connect with other travelers.</p>
+
+    <form id="signup-form" class="mt-8 space-y-4">
+      <div>
+        <label for="username" class="mb-1 block text-sm font-medium text-ink">Username</label>
+        <input id="username" name="username" type="text" required minlength="3" maxlength="24" pattern="[a-zA-Z0-9_]+"
+          class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+        <p class="mt-1 text-xs text-ink/50">Letters, numbers, and underscores only. This will be public.</p>
+      </div>
+
+      <div>
+        <label for="email" class="mb-1 block text-sm font-medium text-ink">Email</label>
+        <input id="email" name="email" type="email" required
+          class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+      </div>
+
+      <div>
+        <label for="password" class="mb-1 block text-sm font-medium text-ink">Password</label>
+        <input id="password" name="password" type="password" required minlength="8"
+          class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+        <p class="mt-1 text-xs text-ink/50">At least 8 characters.</p>
+      </div>
+
+      <label class="flex items-start gap-2 text-sm text-ink/70">
+        <input id="is-business" type="checkbox" class="mt-1" />
+        I'm signing up on behalf of a hotel or travel service, not as a traveler.
+      </label>
+
+      <p id="signup-error" class="hidden text-sm text-red-600"></p>
+      <p id="signup-success" class="hidden text-sm text-green-700"></p>
+
+      <Button type="submit" class="w-full">Create Account</Button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-ink/60">
+      Already have an account? <a href="/account/login/" class="font-medium text-royal hover:underline">Log in</a>
+    </p>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../utils/supabaseClient";
+
+  const form = document.getElementById("signup-form") as HTMLFormElement;
+  const errorEl = document.getElementById("signup-error")!;
+  const successEl = document.getElementById("signup-success")!;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl.classList.add("hidden");
+    successEl.classList.add("hidden");
+
+    const formData = new FormData(form);
+    const username = (formData.get("username") as string).trim();
+    const email = (formData.get("email") as string).trim();
+    const password = formData.get("password") as string;
+    const isBusiness = (document.getElementById("is-business") as HTMLInputElement).checked;
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          username,
+          // NOTE: role is trusted from client input here, which is fine for
+          // now since it only affects a display badge. If "business" role
+          // ever gates real permissions, verify it server-side (e.g. manual
+          // approval) instead of trusting signup metadata.
+          role: isBusiness ? "business" : "member",
+        },
+      },
+    });
+
+    if (error) {
+      errorEl.textContent = error.message;
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    successEl.textContent = "Check your email to confirm your account, then log in.";
+    successEl.classList.remove("hidden");
+    form.reset();
+  });
+</script>

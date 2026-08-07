@@ -1,0 +1,59 @@
+---
+// Renders once for desktop nav, once for mobile nav — same pattern as
+// SearchBox. Scoped via data-account-widget + querySelectorAll rather than
+// fixed IDs, so both instances update correctly regardless of which one
+// rendered first in the DOM.
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+const prefix = locale === "ar" ? "/ar" : "";
+---
+
+<div data-account-widget class="flex items-center gap-3">
+  <div data-logged-out class="hidden items-center gap-3">
+    <a href={`${prefix}/account/login/`} class="text-sm font-medium text-ink/80 hover:text-royal">
+      {locale === "ar" ? "تسجيل الدخول" : "Log In"}
+    </a>
+    <a
+      href={`${prefix}/account/signup/`}
+      class="rounded-full bg-royal px-4 py-1.5 text-sm font-semibold text-white hover:bg-royal-dark"
+    >
+      {locale === "ar" ? "إنشاء حساب" : "Sign Up"}
+    </a>
+  </div>
+
+  <div data-logged-in class="hidden items-center gap-3">
+    <a href={`${prefix}/account/dashboard/`} class="text-sm font-medium text-ink/80 hover:text-royal">
+      {locale === "ar" ? "لوحتي" : "Dashboard"}
+    </a>
+    <button data-logout-btn type="button" class="text-sm font-medium text-ink/60 hover:text-royal">
+      {locale === "ar" ? "تسجيل الخروج" : "Log Out"}
+    </button>
+  </div>
+</div>
+
+<script>
+  import { supabase } from "../utils/supabaseClient";
+
+  function render(isLoggedIn: boolean) {
+    document.querySelectorAll<HTMLElement>("[data-account-widget]").forEach((root) => {
+      const loggedOut = root.querySelector<HTMLElement>("[data-logged-out]")!;
+      const loggedIn = root.querySelector<HTMLElement>("[data-logged-in]")!;
+      loggedOut.classList.toggle("hidden", isLoggedIn);
+      loggedOut.classList.toggle("flex", !isLoggedIn);
+      loggedIn.classList.toggle("hidden", !isLoggedIn);
+      loggedIn.classList.toggle("flex", isLoggedIn);
+    });
+  }
+
+  supabase.auth.getSession().then(({ data }) => render(!!data.session));
+  supabase.auth.onAuthStateChange((_event, session) => render(!!session));
+
+  document.querySelectorAll<HTMLButtonElement>("[data-logout-btn]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "/";
+    });
+  });
+</script>

@@ -1,0 +1,84 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Container from "../../../components/Container.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="Member Profile | GoingMorocco"
+  description="View a GoingMorocco member's profile."
+  alternateUrls={{ en: "/account/profile/", ar: "/ar/account/profile/" }}
+>
+  <Container class="max-w-2xl py-16">
+    <div id="profile-loading" class="text-center text-ink/50">Loading profile…</div>
+
+    <div id="profile-not-found" class="hidden text-center">
+      <p class="text-ink/70">This member couldn't be found.</p>
+      <a href="/" class="mt-2 inline-block text-royal hover:underline">Back to homepage</a>
+    </div>
+
+    <div id="profile-content" class="hidden">
+      <div class="flex items-center gap-4">
+        <img id="profile-avatar" src="/logo.png" alt="" class="h-20 w-20 rounded-full border border-sand-light object-cover" />
+        <div>
+          <h1 id="profile-display-name" class="font-display text-2xl text-ink"></h1>
+          <p class="text-ink/60">@<span id="profile-username"></span></p>
+          <span id="profile-badge" class="hidden mt-1 inline-block rounded-full bg-sand-light px-2 py-0.5 text-xs font-medium text-ink/70">Business</span>
+        </div>
+      </div>
+      <p id="profile-bio" class="mt-6 text-ink/80"></p>
+      <p id="profile-joined" class="mt-4 text-sm text-ink/50"></p>
+
+      {/* Future: this member's forum threads list goes here once the forum UI is built. */}
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../../utils/supabaseClient";
+
+  const params = new URLSearchParams(window.location.search);
+  const username = params.get("u");
+
+  const loadingEl = document.getElementById("profile-loading")!;
+  const notFoundEl = document.getElementById("profile-not-found")!;
+  const contentEl = document.getElementById("profile-content")!;
+
+  async function loadProfile() {
+    if (!username) {
+      loadingEl.classList.add("hidden");
+      notFoundEl.classList.remove("hidden");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("username, display_name, avatar_url, bio, role, created_at")
+      .eq("username", username)
+      .single();
+
+    loadingEl.classList.add("hidden");
+
+    if (error || !data) {
+      notFoundEl.classList.remove("hidden");
+      return;
+    }
+
+    document.getElementById("profile-display-name")!.textContent = data.display_name || data.username;
+    document.getElementById("profile-username")!.textContent = data.username;
+    document.getElementById("profile-bio")!.textContent = data.bio || "";
+    document.getElementById("profile-joined")!.textContent =
+      "Member since " + new Date(data.created_at).toLocaleDateString("en-US", { year: "numeric", month: "long" });
+
+    if (data.avatar_url) {
+      (document.getElementById("profile-avatar") as HTMLImageElement).src = data.avatar_url;
+    }
+    if (data.role === "business") {
+      document.getElementById("profile-badge")!.classList.remove("hidden");
+    }
+
+    contentEl.classList.remove("hidden");
+  }
+
+  loadProfile();
+</script>

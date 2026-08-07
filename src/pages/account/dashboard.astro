@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="My Dashboard | GoingMorocco"
+  description="Your GoingMorocco member dashboard."
+  alternateUrls={{ en: "/account/dashboard/", ar: "/ar/account/dashboard/" }}
+>
+  <Container class="max-w-2xl py-16">
+    <div id="dashboard-loading" class="text-center text-ink/50">Loading…</div>
+
+    <div id="dashboard-content" class="hidden">
+      <h1 class="font-display text-3xl text-ink">Welcome back, <span id="dashboard-name"></span></h1>
+      <p class="mt-2 text-ink/70">This is where you'll write forum posts, manage your comments, and edit your profile.</p>
+
+      <div class="mt-8 rounded-xl border border-dashed border-sand-light p-6 text-center text-ink/50">
+        Forum posting, your threads, and comment management are coming in the next update.
+      </div>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../utils/supabaseClient";
+
+  const loadingEl = document.getElementById("dashboard-loading")!;
+  const contentEl = document.getElementById("dashboard-content")!;
+
+  async function init() {
+    const { data } = await supabase.auth.getSession();
+
+    if (!data.session) {
+      window.location.href = "/account/login/";
+      return;
+    }
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("display_name, username")
+      .eq("id", data.session.user.id)
+      .single();
+
+    document.getElementById("dashboard-name")!.textContent =
+      profile?.display_name || profile?.username || "there";
+
+    loadingEl.classList.add("hidden");
+    contentEl.classList.remove("hidden");
+  }
+
+  init();
+</script>
