@@ -7,14 +7,18 @@ import Container from "../../../components/Container.astro";
 // routes — better for SEO than the query-param shell pattern used for
 // user-generated content. If you ever add a 5th category in Supabase,
 // add its slug + names here too, or this list will silently miss it.
-const categories = [
-  { slug: "my-experience", nameEn: "My Experience in Morocco", nameAr: "تجربتي في المغرب" },
-  { slug: "hotels", nameEn: "Hotels in Morocco", nameAr: "الفنادق في المغرب" },
-  { slug: "reviews", nameEn: "Reviews & Recommendations", nameAr: "التقييمات والتوصيات" },
-  { slug: "services", nameEn: "Other Travel Services", nameAr: "خدمات سفر أخرى" },
-];
-
+//
+// This array is defined INSIDE getStaticPaths rather than at the top of the
+// file: Astro compiles getStaticPaths into its own isolated scope during the
+// build, so it can't close over a sibling top-level const the way normal
+// JavaScript would suggest — it has to be fully self-contained.
 export function getStaticPaths() {
+  const categories = [
+    { slug: "my-experience", nameEn: "My Experience in Morocco", nameAr: "تجربتي في المغرب" },
+    { slug: "hotels", nameEn: "Hotels in Morocco", nameAr: "الفنادق في المغرب" },
+    { slug: "reviews", nameEn: "Reviews & Recommendations", nameAr: "التقييمات والتوصيات" },
+    { slug: "services", nameEn: "Other Travel Services", nameAr: "خدمات سفر أخرى" },
+  ];
   return categories.map((cat) => ({ params: { category: cat.slug }, props: { cat } }));
 }
 
