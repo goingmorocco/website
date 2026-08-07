@@ -3,6 +3,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Container from "../components/Container.astro";
 import RouteDivider from "../components/RouteDivider.astro";
 import PostCard from "../components/PostCard.astro";
+import Hero from "../components/home/Hero.astro";
+import ScrollReveal from "../components/home/ScrollReveal.astro";
 import AboutMoroccoSection from "../components/home/AboutMoroccoSection.astro";
 import DestinationsSection from "../components/home/DestinationsSection.astro";
 import PlanYourTripSection from "../components/home/PlanYourTripSection.astro";
@@ -42,68 +44,75 @@ const display = featured.length >= 3 ? featured : latest;
   alternateUrls={{ en: "/", ar: "/ar/" }}
   structuredData={buildOrganizationSchema(locale)}
 >
-  <section class="border-b border-sand-light bg-gradient-to-b from-sand-light/50 to-paper py-16 sm:py-24">
-    <Container class="max-w-3xl text-center">
-      <h1 class="font-display text-4xl leading-tight text-ink sm:text-5xl">
-        Going Morocco? Explore it First!
-      </h1>
-      <p class="mt-5 text-lg text-ink/70">
-        Practical, first-hand guides to the Sahara, the Atlas Mountains, and the medinas — written from Marrakech, not assembled from someone else's listicle.
-      </p>
-    </Container>
-  </section>
+  <Hero />
 
-  <AboutMoroccoSection />
+  <div data-reveal>
+    <AboutMoroccoSection />
+  </div>
 
-  <DestinationsSection />
+  <div data-reveal>
+    <DestinationsSection />
+  </div>
 
-  <ToolPromoSection
-    eyebrow="Flights"
-    title="Find Your Flight to Morocco"
-    description="Compare flights to Marrakech, Casablanca, Fez, and beyond in one search. Our flight tool pulls real prices from airlines so you can find the best deal and book with confidence."
-    ctaText="Search Flights"
-    ctaHref="https://booking.goingmorocco.com"
-    image="/images/home/flights.jpg"
-    imageAlt="Airplane flying in a clear sky over Morocco"
-  />
+  <div data-reveal>
+    <ToolPromoSection
+      eyebrow="Flights"
+      title="Find Your Flight to Morocco"
+      description="Compare flights to Marrakech, Casablanca, Fez, and beyond in one search. Our flight tool pulls real prices from airlines so you can find the best deal and book with confidence."
+      ctaText="Search Flights"
+      ctaHref="https://booking.goingmorocco.com"
+      image="/images/home/flights.jpg"
+      imageAlt="Airplane flying in a clear sky over Morocco"
+    />
+  </div>
 
-  <ThingsToDoSection />
-  <FoodSection />
-  <ItinerariesSection />
-  <PlanYourTripSection />
-  <TravelTipsSection />
-  <StaySection />
+  <div data-reveal><ThingsToDoSection /></div>
+  <div data-reveal><FoodSection /></div>
+  <div data-reveal><ItinerariesSection /></div>
+  <div data-reveal><PlanYourTripSection /></div>
+  <div data-reveal><TravelTipsSection /></div>
+  <div data-reveal><StaySection /></div>
 
-  <ToolPromoSection
-    eyebrow="Itinerary Planner"
-    title="Let Our AI Plan Your Trip"
-    description="Tell our AI planner how many days you have, your budget, and what you love — deserts, mountains, cities, or all three — and get a ready-made Morocco itinerary in minutes."
-    ctaText="Plan My Trip"
-    ctaHref="https://planner.goingmorocco.com"
-    image="/images/home/itinerary.jpg"
-    imageAlt="Map and travel planning notebook for a Morocco trip"
-    reverse
-  />
+  <div data-reveal>
+    <ToolPromoSection
+      eyebrow="Itinerary Planner"
+      title="Let Our AI Plan Your Trip"
+      description="Tell our AI planner how many days you have, your budget, and what you love — deserts, mountains, cities, or all three — and get a ready-made Morocco itinerary in minutes."
+      ctaText="Plan My Trip"
+      ctaHref="https://planner.goingmorocco.com"
+      image="/images/home/itinerary.jpg"
+      imageAlt="Map and travel planning notebook for a Morocco trip"
+      reverse
+    />
+  </div>
 
-  <section class="py-16">
-    <Container>
-      <div class="flex items-baseline justify-between">
-        <h2 class="font-display text-2xl text-ink">{strings.home.latestPosts}</h2>
-        <a href="/post/" class="text-sm font-medium text-royal hover:underline">{strings.home.viewAll}</a>
-      </div>
-      <RouteDivider class="my-6" />
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {display.map((post) => (
-          <PostCard post={post} categoryName={categoryName(post.data.category)} />
-        ))}
-      </div>
-      <div class="mt-10 text-center">
-        <Button href="/post/" variant="outline">View More Posts</Button>
-      </div>
-    </Container>
-  </section>
+  <div data-reveal>
+    <section class="py-16">
+      <Container>
+        <div class="flex items-baseline justify-between">
+          <h2 class="font-display text-2xl text-ink">{strings.home.latestPosts}</h2>
+          <a href="/post/" class="text-sm font-medium text-royal hover:underline">{strings.home.viewAll}</a>
+        </div>
+        <RouteDivider class="my-6" />
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {display.map((post) => (
+            <PostCard post={post} categoryName={categoryName(post.data.category)} />
+          ))}
+        </div>
+        <div class="mt-10 text-center">
+          <Button href="/post/" variant="outline">View More Posts</Button>
+        </div>
+      </Container>
+    </section>
+  </div>
 
-  <FAQSection />
+  <div data-reveal>
+    <FAQSection />
+  </div>
 
-  <AboutGoingMoroccoSection />
+  <div data-reveal>
+    <AboutGoingMoroccoSection />
+  </div>
+
+  <ScrollReveal />
 </BaseLayout>
