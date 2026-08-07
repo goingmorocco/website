@@ -1,0 +1,136 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Container from "../../../../components/Container.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="New Post | GoingMorocco Forum"
+  description="Share a new post on the GoingMorocco forum."
+  alternateUrls={{ en: "/account/dashboard/new-thread/", ar: "/ar/account/dashboard/new-thread/" }}
+>
+  <Container class="max-w-2xl py-16">
+    <div id="check-auth" class="text-center text-ink/50">Checking your account…</div>
+
+    <div id="new-thread-form-wrap" class="hidden">
+      <h1 class="font-display text-3xl text-ink">Write a new post</h1>
+
+      <form id="new-thread-form" class="mt-8 space-y-4">
+        <div>
+          <label for="category" class="mb-1 block text-sm font-medium text-ink">Category</label>
+          <select id="category" name="category" required class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none">
+            <option value="my-experience">My Experience in Morocco</option>
+            <option value="hotels">Hotels in Morocco</option>
+            <option value="reviews">Reviews & Recommendations</option>
+            <option value="services">Other Travel Services</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="title" class="mb-1 block text-sm font-medium text-ink">Title</label>
+          <input id="title" name="title" type="text" required maxlength="150"
+            class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+        </div>
+
+        <div>
+          <label for="body" class="mb-1 block text-sm font-medium text-ink">Your post</label>
+          <textarea id="body" name="body" required rows="10"
+            class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none"></textarea>
+        </div>
+
+        <p id="thread-error" class="hidden text-sm text-red-600"></p>
+
+        <button type="submit" class="rounded-full bg-royal px-6 py-2.5 text-sm font-semibold text-white hover:bg-royal-dark">
+          Publish Post
+        </button>
+      </form>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../../../utils/supabaseClient";
+
+  const checkAuthEl = document.getElementById("check-auth")!;
+  const formWrapEl = document.getElementById("new-thread-form-wrap")!;
+  const form = document.getElementById("new-thread-form") as HTMLFormElement;
+  const errorEl = document.getElementById("thread-error")!;
+
+  // Pre-select category if arrived via ?category=slug from a category page's "+ New Post" link.
+  const params = new URLSearchParams(window.location.search);
+  const preselectedCategory = params.get("category");
+  if (preselectedCategory) {
+    (document.getElementById("category") as HTMLSelectElement).value = preselectedCategory;
+  }
+
+  function slugify(title: string) {
+    return title
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .slice(0, 80);
+  }
+
+  async function init() {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
+      window.location.href = "/account/login/";
+      return;
+    }
+    checkAuthEl.classList.add("hidden");
+    formWrapEl.classList.remove("hidden");
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl.classList.add("hidden");
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) {
+      window.location.href = "/account/login/";
+      return;
+    }
+
+    const formData = new FormData(form);
+    const categorySlug = formData.get("category") as string;
+    const title = (formData.get("title") as string).trim();
+    const body = (formData.get("body") as string).trim();
+
+    const { data: category, error: categoryError } = await supabase
+      .from("forum_categories")
+      .select("id")
+      .eq("slug", categorySlug)
+      .single();
+
+    if (categoryError || !category) {
+      errorEl.textContent = "Couldn't find that category. Try again.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    // Slug uniqueness: append a short random suffix rather than checking for
+    // collisions first, since two people titling a post the same thing at
+    // the same moment is rare enough that this is simpler than a
+    // check-then-insert race condition.
+    const slug = `${slugify(title)}-${Math.random().toString(36).slice(2, 7)}`;
+
+    const { error: insertError } = await supabase.from("forum_threads").insert({
+      category_id: category.id,
+      author_id: sessionData.session.user.id,
+      title,
+      slug,
+      body,
+    });
+
+    if (insertError) {
+      errorEl.textContent = insertError.message;
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    window.location.href = `/forum/thread/?slug=${encodeURIComponent(slug)}`;
+  });
+
+  init();
+</script>

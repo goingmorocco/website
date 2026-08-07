@@ -18,6 +18,7 @@ const navItems = [
   { href: localizedPath(locale, "/"), label: strings.nav.home },
   { href: localizedPath(locale, "/about/"), label: strings.nav.about },
   { href: localizedPath(locale, "/post/"), label: strings.nav.blog },
+  { href: localizedPath(locale, "/forum/"), label: locale === "ar" ? "المنتدى" : "Forum" },
   { href: localizedPath(locale, "/categories/"), label: strings.nav.categories },
   // External subdomains — not part of Astro's i18n routing, so plain
   // absolute URLs rather than localizedPath().

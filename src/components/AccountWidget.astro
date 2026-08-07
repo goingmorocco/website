@@ -10,14 +10,14 @@ const { locale = "en" } = Astro.props;
 const prefix = locale === "ar" ? "/ar" : "";
 ---
 
-<div data-account-widget class="flex items-center gap-3">
+<div data-account-widget class="ms-2 flex items-center gap-3 border-s border-sand-light ps-3">
   <div data-logged-out class="hidden items-center gap-3">
-    <a href={`${prefix}/account/login/`} class="text-sm font-medium text-ink/80 hover:text-royal">
+    <a href={`${prefix}/account/login/`} class="whitespace-nowrap text-sm font-medium text-ink/80 hover:text-royal">
       {locale === "ar" ? "تسجيل الدخول" : "Log In"}
     </a>
     <a
       href={`${prefix}/account/signup/`}
-      class="rounded-full bg-royal px-4 py-1.5 text-sm font-semibold text-white hover:bg-royal-dark"
+      class="whitespace-nowrap rounded-full bg-royal px-4 py-2 text-sm font-semibold text-white hover:bg-royal-dark"
     >
       {locale === "ar" ? "إنشاء حساب" : "Sign Up"}
     </a>

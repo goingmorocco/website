@@ -1,0 +1,92 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Container from "../../../components/Container.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="Forum Post | GoingMorocco"
+  description="Read this GoingMorocco forum post."
+  alternateUrls={{ en: "/forum/thread/", ar: "/ar/forum/thread/" }}
+>
+  <Container class="max-w-2xl py-16">
+    <div id="thread-loading" class="text-center text-ink/50">Loading post…</div>
+
+    <div id="thread-not-found" class="hidden text-center">
+      <p class="text-ink/70">This post couldn't be found.</p>
+      <a href="/forum/" class="mt-2 inline-block text-royal hover:underline">Back to the forum</a>
+    </div>
+
+    <div id="thread-content" class="hidden">
+      <a id="thread-category-link" href="/forum/" class="text-sm text-royal hover:underline"></a>
+      <h1 id="thread-title" class="mt-2 font-display text-3xl text-ink"></h1>
+      <p id="thread-meta" class="mt-2 text-sm text-ink/50"></p>
+      <div id="thread-body" class="prose-content mt-6"></div>
+
+      {/* Reserved space: comments and reactions land here in the next update. */}
+      <div class="mt-10 border-t border-sand-light pt-6 text-sm text-ink/50">
+        Comments and reactions are coming in the next update.
+      </div>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../../utils/supabaseClient";
+
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+
+  const loadingEl = document.getElementById("thread-loading")!;
+  const notFoundEl = document.getElementById("thread-not-found")!;
+  const contentEl = document.getElementById("thread-content")!;
+
+  function escapeHtml(text: string): string {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  async function loadThread() {
+    if (!slug) {
+      loadingEl.classList.add("hidden");
+      notFoundEl.classList.remove("hidden");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("forum_threads")
+      .select("title, body, created_at, profiles(username, display_name), forum_categories(slug, name_en)")
+      .eq("slug", slug)
+      .single();
+
+    loadingEl.classList.add("hidden");
+
+    if (error || !data) {
+      notFoundEl.classList.remove("hidden");
+      return;
+    }
+
+    const author = (data.profiles as any)?.display_name || (data.profiles as any)?.username || "Someone";
+    const date = new Date(data.created_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+    const category = data.forum_categories as any;
+
+    const categoryLink = document.getElementById("thread-category-link") as HTMLAnchorElement;
+    categoryLink.href = `/forum/${category?.slug ?? ""}/`;
+    categoryLink.textContent = `← ${category?.name_en ?? "Forum"}`;
+
+    document.getElementById("thread-title")!.textContent = data.title;
+    document.getElementById("thread-meta")!.textContent = `by ${author} · ${date}`;
+
+    // Plain-text posts (no rich formatting yet) — render each blank-line-
+    // separated block as its own paragraph rather than dumping raw text in
+    // as one unbroken block.
+    const bodyEl = document.getElementById("thread-body")!;
+    bodyEl.innerHTML = data.body
+      .split(/\n{2,}/)
+      .map((para: string) => `<p>${escapeHtml(para).replace(/\n/g, "<br>")}</p>`)
+      .join("");
+
+    contentEl.classList.remove("hidden");
+  }
+
+  loadThread();
+</script>

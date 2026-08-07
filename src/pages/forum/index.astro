@@ -1,0 +1,57 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="Forum | GoingMorocco"
+  description="Share your Morocco trip experiences, reviews, and questions with other travelers — and with hotels and service providers."
+  alternateUrls={{ en: "/forum/", ar: "/ar/forum/" }}
+>
+  <Container class="max-w-4xl py-16">
+    <h1 class="font-display text-3xl text-ink">Forum</h1>
+    <p class="mt-2 text-ink/70">Share your experience, read reviews, and ask questions.</p>
+
+    <div id="categories-loading" class="mt-8 text-ink/50">Loading categories…</div>
+
+    <div id="categories-grid" class="mt-8 hidden grid-cols-1 gap-4 sm:grid-cols-2"></div>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../utils/supabaseClient";
+
+  const loadingEl = document.getElementById("categories-loading")!;
+  const gridEl = document.getElementById("categories-grid")!;
+
+  async function loadCategories() {
+    const { data, error } = await supabase
+      .from("forum_categories")
+      .select("slug, name_en, description_en")
+      .order("sort_order");
+
+    loadingEl.classList.add("hidden");
+
+    if (error || !data) {
+      gridEl.innerHTML = `<p class="text-red-600">Couldn't load categories right now.</p>`;
+      gridEl.classList.remove("hidden");
+      return;
+    }
+
+    gridEl.innerHTML = data
+      .map(
+        (cat) => `
+        <a href="/forum/${cat.slug}/" class="block rounded-2xl border border-sand-light bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+          <h2 class="font-display text-lg text-ink">${cat.name_en}</h2>
+          <p class="mt-2 text-sm text-ink/70">${cat.description_en ?? ""}</p>
+        </a>
+      `
+      )
+      .join("");
+    gridEl.classList.remove("hidden");
+    gridEl.classList.add("grid");
+  }
+
+  loadCategories();
+</script>
