@@ -1,0 +1,117 @@
+---
+// New homepage hero. Concept: the horizon where blue sky meets golden Sahara
+// dune is the real subject here, so it's made literal as the signature
+// moment — a thin gold line draws itself across the frame on load, sitting
+// at the photo's horizon. Everything else in the sequence stays restrained
+// around that one moment.
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+
+const content = {
+  en: {
+    title: "Explore Morocco",
+    titleAccent: "Before You Go",
+    subtitle: "Practical, first-hand guides to the Sahara, the Atlas Mountains, and the medinas — written from Marrakech, not assembled from someone else's listicle.",
+    ctaPrimary: "Search Flights",
+    ctaSecondary: "Read the Guides",
+  },
+  ar: {
+    title: "استكشف المغرب",
+    titleAccent: "قبل أن تذهب",
+    subtitle: "أدلة عملية ومباشرة عن الصحراء وجبال الأطلس والمدن العتيقة — مكتوبة من مراكش، لا منقولة من قائمة عامة.",
+    ctaPrimary: "ابحث عن رحلات",
+    ctaSecondary: "اقرأ الأدلة",
+  },
+};
+
+const { title, titleAccent, subtitle, ctaPrimary, ctaSecondary } = content[locale];
+const flightsHref = "https://booking.goingmorocco.com";
+const guidesHref = locale === "ar" ? "/ar/post/" : "/post/";
+---
+
+<section class="hero relative isolate flex min-h-[88vh] items-center overflow-hidden bg-ink">
+  <div class="hero-bg absolute inset-0 -z-20 bg-cover bg-center" style="background-image: url('/images/home/hero-sahara.jpg');"></div>
+
+  {/* Gradient for text legibility, warmed slightly toward the sand accent so the photo reads as part of the existing palette rather than a pasted-in stock image. */}
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/50 to-ink/10"></div>
+  <div class="absolute inset-0 -z-10 bg-sand-dark/10 mix-blend-multiply"></div>
+
+  <div class="mx-auto w-full max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
+    <div class:list={["max-w-2xl", locale === "ar" && "ms-auto text-right"]}>
+      <h1 class="hero-line hero-line-1 font-display text-4xl leading-[1.05] text-white drop-shadow-sm sm:text-5xl lg:text-6xl">
+        {title}
+        <span class="block text-sand">{titleAccent}</span>
+      </h1>
+
+      <p class="hero-line hero-line-2 mt-6 max-w-lg text-lg text-white/85">
+        {subtitle}
+      </p>
+
+      <div class:list={["hero-line hero-line-3 mt-8 flex flex-wrap gap-4", locale === "ar" && "justify-end"]}>
+        <a
+          href={flightsHref}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center justify-center rounded-full bg-sand px-7 py-3 font-semibold text-ink shadow-lg shadow-black/20 transition-transform hover:scale-[1.02] hover:bg-sand-dark"
+        >
+          {ctaPrimary}
+        </a>
+        <a
+          href={guidesHref}
+          class="inline-flex items-center justify-center rounded-full border border-white/40 px-7 py-3 font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10"
+        >
+          {ctaSecondary}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {/* Signature element: the horizon line itself, drawing in last. */}
+  <div class="hero-horizon pointer-events-none absolute inset-x-0 bottom-[28%] h-px bg-gradient-to-r from-transparent via-sand to-transparent sm:bottom-[24%]"></div>
+</section>
+
+<style>
+  /* Slow ambient Ken Burns drift on the background photo. */
+  .hero-bg {
+    animation: hero-drift 22s ease-in-out infinite alternate;
+  }
+  @keyframes hero-drift {
+    from { transform: scale(1); }
+    to { transform: scale(1.06); }
+  }
+
+  /* Orchestrated load-in sequence: headline, subhead, CTAs, then the horizon line last. */
+  .hero-line {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: hero-rise 0.7s ease-out forwards;
+  }
+  .hero-line-1 { animation-delay: 0.1s; }
+  .hero-line-2 { animation-delay: 0.28s; }
+  .hero-line-3 { animation-delay: 0.46s; }
+
+  @keyframes hero-rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-horizon {
+    transform: scaleX(0);
+    animation: hero-horizon-draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    animation-delay: 0.7s;
+  }
+  @keyframes hero-horizon-draw {
+    to { transform: scaleX(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg,
+    .hero-line,
+    .hero-horizon {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
