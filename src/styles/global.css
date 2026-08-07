@@ -147,3 +147,24 @@ textarea:focus-visible {
 .prose-content img {
   border-radius: 1rem;
 }
+/*
+  Add this to the END of your existing src/styles/global.css.
+  Responsive 16:9 box for YouTube embeds inside forum posts — without this,
+  the raw <iframe> the embed node renders has no explicit size and would
+  show up tiny or broken.
+*/
+.embed-youtube {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin-block: 1.25em;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.embed-youtube iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
