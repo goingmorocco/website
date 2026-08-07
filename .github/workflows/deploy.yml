@@ -9,6 +9,11 @@
 #      GitHub will verify DNS and issue a TLS certificate automatically.
 #      The public/CNAME file in this repo handles this automatically — no extra
 #      config file is needed.
+#   4. Settings → Secrets and variables → Actions → add PUBLIC_SUPABASE_URL
+#      and PUBLIC_SUPABASE_ANON_KEY as repository secrets. Astro needs these
+#      at BUILD time (not just runtime) since they get baked into the static
+#      JS bundle that ships to the browser — .env files aren't committed to
+#      the repo, so without this step the build never sees them.
 
 name: Deploy to GitHub Pages
 
@@ -58,6 +63,9 @@ jobs:
 
       - name: Build site
         run: npm run build
+        env:
+          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
