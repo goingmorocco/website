@@ -1,194 +1,272 @@
 ---
-import BaseLayout from "../../../../layouts/BaseLayout.astro";
-import Container from "../../../../components/Container.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Container from "../../../components/Container.astro";
 ---
 
 <BaseLayout
   locale="en"
-  title="New Post | GoingMorocco Forum"
-  description="Share a new post on the GoingMorocco forum."
-  alternateUrls={{ en: "/account/dashboard/new-thread/", ar: "/ar/account/dashboard/new-thread/" }}
+  title="Forum Post | GoingMorocco"
+  description="Read this GoingMorocco forum post."
+  alternateUrls={{ en: "/forum/thread/", ar: "/ar/forum/thread/" }}
 >
-  <Container class="max-w-3xl py-16">
-    <div id="check-auth" class="text-center text-ink/50">Checking your account…</div>
+  <Container class="max-w-2xl py-16">
+    <div id="thread-loading" class="text-center text-ink/50">Loading post…</div>
 
-    <div id="new-thread-form-wrap" class="hidden">
-      <h1 class="font-display text-3xl text-ink">Write a new post</h1>
+    <div id="thread-not-found" class="hidden text-center">
+      <p class="text-ink/70">This post couldn't be found.</p>
+      <a href="/forum/" class="mt-2 inline-block text-royal hover:underline">Back to the forum</a>
+    </div>
 
-      <form id="new-thread-form" class="mt-8 space-y-6">
-        <div>
-          <label for="category" class="mb-1 block text-sm font-medium text-ink">Category</label>
-          <select id="category" name="category" required class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none">
-            <option value="my-experience">My Experience in Morocco</option>
-            <option value="hotels">Hotels in Morocco</option>
-            <option value="reviews">Reviews & Recommendations</option>
-            <option value="services">Other Travel Services</option>
-          </select>
+    <div id="thread-content" class="hidden">
+      <a id="thread-category-link" href="/forum/" class="text-sm text-royal hover:underline"></a>
+      <img id="thread-cover" class="mt-3 hidden h-56 w-full rounded-2xl object-cover" alt="" />
+      <h1 id="thread-title" class="mt-3 font-display text-3xl text-ink"></h1>
+      <p id="thread-meta" class="mt-2 text-sm text-ink/50"></p>
+      <div id="thread-body" class="prose-content mt-6"></div>
+
+      <!-- Share buttons -->
+      <div class="mt-8 flex flex-wrap items-center gap-2 border-y border-sand-light py-4">
+        <span class="text-sm font-medium text-ink/60">Share:</span>
+        <button data-share="whatsapp" class="rounded-full bg-[#25D366] px-3 py-1.5 text-sm font-semibold text-white hover:opacity-90">WhatsApp</button>
+        <button data-share="facebook" class="rounded-full bg-[#1877F2] px-3 py-1.5 text-sm font-semibold text-white hover:opacity-90">Facebook</button>
+        <button data-share="x" class="rounded-full bg-black px-3 py-1.5 text-sm font-semibold text-white hover:opacity-90">X</button>
+        <button data-share="copy" class="rounded-full border border-sand-light px-3 py-1.5 text-sm font-semibold text-ink/70 hover:border-royal hover:text-royal">🔗 Copy Link</button>
+      </div>
+
+      <!-- Comments -->
+      <div class="mt-10">
+        <h2 class="font-display text-xl text-ink">Comments</h2>
+
+        <div id="comment-form-wrap" class="mt-4 hidden">
+          <textarea id="comment-body" rows="3" placeholder="Share your experience or ask a question…"
+            class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none"></textarea>
+          <div class="mt-2 flex items-center justify-between">
+            <label class="inline-flex cursor-pointer items-center gap-1 text-sm text-ink/60 hover:text-royal">
+              🖼 Add a photo
+              <input id="comment-image-input" type="file" accept="image/*" class="hidden" />
+            </label>
+            <button id="comment-submit" class="rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white hover:bg-royal-dark">
+              Post Comment
+            </button>
+          </div>
+          <div id="comment-image-preview-wrap" class="mt-2 hidden">
+            <img id="comment-image-preview" class="h-24 rounded-lg object-cover" alt="" />
+            <button id="comment-image-remove" type="button" class="ml-2 text-xs text-red-500 hover:underline">Remove</button>
+          </div>
+          <p id="comment-error" class="mt-1 hidden text-sm text-red-600"></p>
         </div>
 
-        <div>
-          <label for="title" class="mb-1 block text-sm font-medium text-ink">Title</label>
-          <input id="title" name="title" type="text" required maxlength="150"
-            class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
-        </div>
+        <p id="comment-login-prompt" class="mt-4 hidden text-sm text-ink/60">
+          <a href="/account/login/" class="text-royal hover:underline">Log in</a> to leave a comment.
+        </p>
 
-        <!-- Cover image -->
-        <div>
-          <label class="mb-1 block text-sm font-medium text-ink">Cover image (optional)</label>
-          <div id="cover-preview-wrap" class="hidden mb-2">
-            <img id="cover-preview" class="h-40 w-full rounded-lg object-cover" alt="" />
-          </div>
-          <label class="inline-block cursor-pointer rounded-full border border-royal px-4 py-1.5 text-sm font-semibold text-royal hover:bg-royal hover:text-white">
-            Choose Cover Image
-            <input id="cover-input" type="file" accept="image/*" class="hidden" />
-          </label>
-        </div>
-
-        <!-- Rich editor -->
-        <div>
-          <label class="mb-1 block text-sm font-medium text-ink">Your post</label>
-          <div data-editor-toolbar class="mb-2 flex flex-wrap gap-1 rounded-t-lg border border-b-0 border-sand-light bg-sand-light/30 p-2">
-            <button type="button" data-action="bold" class="rounded px-2 py-1 text-sm font-bold hover:bg-sand-light" title="Bold">B</button>
-            <button type="button" data-action="italic" class="rounded px-2 py-1 text-sm italic hover:bg-sand-light" title="Italic">I</button>
-            <button type="button" data-action="underline" class="rounded px-2 py-1 text-sm underline hover:bg-sand-light" title="Underline">U</button>
-            <span class="mx-1 w-px bg-sand-light"></span>
-            <button type="button" data-action="h2" class="rounded px-2 py-1 text-sm font-semibold hover:bg-sand-light" title="Heading">H2</button>
-            <button type="button" data-action="h3" class="rounded px-2 py-1 text-sm font-semibold hover:bg-sand-light" title="Subheading">H3</button>
-            <span class="mx-1 w-px bg-sand-light"></span>
-            <button type="button" data-action="bullet-list" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Bullet list">• List</button>
-            <button type="button" data-action="ordered-list" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Numbered list">1. List</button>
-            <button type="button" data-action="blockquote" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Quote">" Quote</button>
-            <span class="mx-1 w-px bg-sand-light"></span>
-            <button type="button" data-action="link" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Link">🔗 Link</button>
-            <button type="button" data-action="image" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Insert image">🖼 Image</button>
-            <span class="mx-1 w-px bg-sand-light"></span>
-            <button type="button" data-action="youtube" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="YouTube">▶ YouTube</button>
-            <button type="button" data-action="instagram" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Instagram">📷 Instagram</button>
-            <button type="button" data-action="tiktok" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="TikTok">🎵 TikTok</button>
-          </div>
-          <div id="editor-container" class="rounded-b-lg border border-sand-light bg-white px-4 py-3"></div>
-          <p id="media-budget-label" class="mt-1 text-xs text-ink/50"></p>
-        </div>
-
-        <!-- Preview card fields -->
-        <details class="rounded-lg border border-sand-light p-4">
-          <summary class="cursor-pointer text-sm font-medium text-ink">Customize how this looks when shared (optional)</summary>
-          <p class="mt-2 text-xs text-ink/50">
-            This controls the preview card below. Note: on a static site like this one, it won't change how Google
-            or social apps preview the link — those need a live server per page, which this site doesn't have. It's
-            still useful as a writing aid and for anywhere you paste the link manually.
-          </p>
-          <div class="mt-3">
-            <label for="preview-title" class="mb-1 block text-xs font-medium text-ink">Preview title</label>
-            <input id="preview-title" type="text" maxlength="70" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm" />
-          </div>
-          <div class="mt-3">
-            <label for="preview-description" class="mb-1 block text-xs font-medium text-ink">Preview description</label>
-            <textarea id="preview-description" maxlength="160" rows="2" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm"></textarea>
-          </div>
-        </details>
-
-        <div>
-          <p class="mb-2 text-sm font-medium text-ink">Preview</p>
-          <div class="overflow-hidden rounded-xl border border-sand-light bg-white">
-            <img id="preview-card-image" class="hidden h-32 w-full object-cover" alt="" />
-            <div class="p-4">
-              <p id="preview-card-title" class="font-display text-ink">Your post title will appear here</p>
-              <p id="preview-card-description" class="mt-1 text-sm text-ink/60"></p>
-            </div>
-          </div>
-        </div>
-
-        <p id="thread-error" class="hidden text-sm text-red-600"></p>
-
-        <button type="submit" class="rounded-full bg-royal px-6 py-2.5 text-sm font-semibold text-white hover:bg-royal-dark">
-          Publish Post
-        </button>
-      </form>
+        <div id="comments-loading" class="mt-6 text-sm text-ink/50">Loading comments…</div>
+        <div id="comments-empty" class="mt-6 hidden text-sm text-ink/50">No comments yet — be the first to respond.</div>
+        <div id="comments-list" class="mt-6 hidden space-y-4"></div>
+      </div>
     </div>
   </Container>
 </BaseLayout>
 
 <script>
-  import { supabase } from "../../../../utils/supabaseClient";
-  import { createForumEditor, uploadCoverImage, initInstagramEmbeds, initTikTokEmbeds } from "../../../../editor/forumEditor";
-  import { sanitizeForumHtml } from "../../../../utils/sanitize";
-
-  const checkAuthEl = document.getElementById("check-auth")!;
-  const formWrapEl = document.getElementById("new-thread-form-wrap")!;
-  const form = document.getElementById("new-thread-form") as HTMLFormElement;
-  const errorEl = document.getElementById("thread-error")!;
-  const titleInput = document.getElementById("title") as HTMLInputElement;
-  const previewTitleInput = document.getElementById("preview-title") as HTMLInputElement;
-  const previewDescInput = document.getElementById("preview-description") as HTMLTextAreaElement;
-
-  let coverImageUrl: string | null = null;
-  let coverImageBytes = 0;
+  import { supabase } from "../../../utils/supabaseClient";
+  import { sanitizeForumHtml } from "../../../utils/sanitize";
+  import { initInstagramEmbeds, initTikTokEmbeds } from "../../../editor/forumEditor";
 
   const params = new URLSearchParams(window.location.search);
-  const preselectedCategory = params.get("category");
-  if (preselectedCategory) {
-    (document.getElementById("category") as HTMLSelectElement).value = preselectedCategory;
+  const slug = params.get("slug");
+
+  const loadingEl = document.getElementById("thread-loading")!;
+  const notFoundEl = document.getElementById("thread-not-found")!;
+  const contentEl = document.getElementById("thread-content")!;
+
+  let threadId: string | null = null;
+  let currentUserId: string | null = null;
+  let pendingCommentImageUrl: string | null = null;
+
+  function escapeHtml(text: string): string {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
-  function slugify(title: string) {
-    return title.toLowerCase().trim().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").slice(0, 80);
-  }
-
-  // Live preview card
-  function updatePreviewCard() {
-    document.getElementById("preview-card-title")!.textContent =
-      previewTitleInput.value || titleInput.value || "Your post title will appear here";
-    document.getElementById("preview-card-description")!.textContent = previewDescInput.value;
-  }
-  titleInput.addEventListener("input", updatePreviewCard);
-  previewTitleInput.addEventListener("input", updatePreviewCard);
-  previewDescInput.addEventListener("input", updatePreviewCard);
-
-  // Cover image upload
-  document.getElementById("cover-input")!.addEventListener("change", async (e) => {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-    const result = await uploadCoverImage(file, editorHandle?.getUsedBytes() ?? 0);
-    if (!result) return;
-    coverImageUrl = result.url;
-    coverImageBytes = result.bytes;
-    editorHandle?.addUsedBytes(result.bytes);
-
-    const img = document.getElementById("cover-preview") as HTMLImageElement;
-    img.src = result.url;
-    document.getElementById("cover-preview-wrap")!.classList.remove("hidden");
-
-    const previewImg = document.getElementById("preview-card-image") as HTMLImageElement;
-    previewImg.src = result.url;
-    previewImg.classList.remove("hidden");
-  });
-
-  let editorHandle: ReturnType<typeof createForumEditor> | null = null;
-
-  async function init() {
-    const { data } = await supabase.auth.getSession();
-    if (!data.session) {
-      window.location.href = "/account/login/";
+  // ---------- Load thread ----------
+  async function loadThread() {
+    if (!slug) {
+      loadingEl.classList.add("hidden");
+      notFoundEl.classList.remove("hidden");
       return;
     }
-    checkAuthEl.classList.add("hidden");
-    formWrapEl.classList.remove("hidden");
 
-    editorHandle = createForumEditor(
-      document.getElementById("editor-container")!,
-      document.getElementById("media-budget-label")!
-    );
+    const { data, error } = await supabase
+      .from("forum_threads")
+      .select("id, title, body, cover_image_url, created_at, profiles(username, display_name), forum_categories(slug, name_en)")
+      .eq("slug", slug)
+      .single();
 
-    // In case the toolbar was used before init() finished for cover bytes tracking.
-    if (coverImageBytes > 0) editorHandle.addUsedBytes(coverImageBytes);
+    loadingEl.classList.add("hidden");
+
+    if (error || !data) {
+      notFoundEl.classList.remove("hidden");
+      return;
+    }
+
+    threadId = data.id;
+
+    const author = (data.profiles as any)?.display_name || (data.profiles as any)?.username || "Someone";
+    const date = new Date(data.created_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+    const category = data.forum_categories as any;
+
+    const categoryLink = document.getElementById("thread-category-link") as HTMLAnchorElement;
+    categoryLink.href = `/forum/${category?.slug ?? ""}/`;
+    categoryLink.textContent = `← ${category?.name_en ?? "Forum"}`;
+
+    if (data.cover_image_url) {
+      const coverEl = document.getElementById("thread-cover") as HTMLImageElement;
+      coverEl.src = data.cover_image_url;
+      coverEl.classList.remove("hidden");
+    }
+
+    document.getElementById("thread-title")!.textContent = data.title;
+    document.getElementById("thread-meta")!.textContent = `by ${author} · ${date}`;
+    document.getElementById("thread-body")!.innerHTML = sanitizeForumHtml(data.body);
+
+    contentEl.classList.remove("hidden");
+
+    initInstagramEmbeds();
+    initTikTokEmbeds();
+
+    setupShareButtons(data.title);
+    loadComments();
   }
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  // ---------- Share buttons ----------
+  function setupShareButtons(title: string) {
+    const url = window.location.href;
+    const text = `${title} — GoingMorocco`;
+
+    document.querySelectorAll<HTMLButtonElement>("[data-share]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const platform = btn.dataset.share;
+        if (platform === "whatsapp") {
+          window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`, "_blank");
+        } else if (platform === "facebook") {
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, "_blank");
+        } else if (platform === "x") {
+          window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, "_blank");
+        } else if (platform === "copy") {
+          await navigator.clipboard.writeText(url);
+          const original = btn.textContent;
+          btn.textContent = "✓ Copied!";
+          setTimeout(() => (btn.textContent = original), 1800);
+        }
+      });
+    });
+  }
+
+  // ---------- Comments ----------
+  const commentsLoadingEl = document.getElementById("comments-loading")!;
+  const commentsEmptyEl = document.getElementById("comments-empty")!;
+  const commentsListEl = document.getElementById("comments-list")!;
+
+  async function loadComments() {
+    const { data: comments, error } = await supabase
+      .from("forum_comments")
+      .select("id, body, image_url, created_at, author_id, profiles(username, display_name)")
+      .eq("thread_id", threadId)
+      .order("created_at", { ascending: true });
+
+    commentsLoadingEl.classList.add("hidden");
+
+    if (error || !comments || comments.length === 0) {
+      commentsEmptyEl.classList.remove("hidden");
+      return;
+    }
+
+    renderComments(comments);
+    commentsListEl.classList.remove("hidden");
+  }
+
+  function renderComments(comments: any[]) {
+    commentsListEl.innerHTML = comments
+      .map((c) => {
+        const author = c.profiles?.display_name || c.profiles?.username || "Someone";
+        const date = new Date(c.created_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+        const canDelete = currentUserId && c.author_id === currentUserId;
+        return `
+          <div class="rounded-xl border border-sand-light bg-white p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium text-ink">${escapeHtml(author)} <span class="font-normal text-ink/40">· ${date}</span></p>
+              ${canDelete ? `<button data-delete-comment="${c.id}" class="text-xs text-red-500 hover:underline">Delete</button>` : ""}
+            </div>
+            <p class="mt-2 whitespace-pre-wrap text-sm text-ink/80">${escapeHtml(c.body)}</p>
+            ${c.image_url ? `<img src="${c.image_url}" alt="" class="mt-3 max-h-64 rounded-lg object-cover" />` : ""}
+          </div>
+        `;
+      })
+      .join("");
+
+    commentsListEl.querySelectorAll<HTMLButtonElement>("[data-delete-comment]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Delete this comment?")) return;
+        const { error } = await supabase.from("forum_comments").delete().eq("id", btn.dataset.deleteComment!);
+        if (error) {
+          alert(`Couldn't delete: ${error.message}`);
+          return;
+        }
+        loadComments();
+      });
+    });
+  }
+
+  // ---------- Comment posting (with optional image) ----------
+  const COMMENT_IMAGE_MAX_BYTES = 3 * 1024 * 1024; // 3MB, independent of the post author's own media budget
+
+  document.getElementById("comment-image-input")!.addEventListener("change", async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    if (file.size > COMMENT_IMAGE_MAX_BYTES) {
+      alert(`That image is ${(file.size / 1024 / 1024).toFixed(2)} MB — comment photos are limited to 3 MB.`);
+      return;
+    }
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) return;
+
+    const userId = sessionData.session.user.id;
+    const path = `${userId}/comment-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
+
+    const { error } = await supabase.storage.from("forum-media").upload(path, file);
+    if (error) {
+      alert(`Upload failed: ${error.message}`);
+      return;
+    }
+
+    const { data: publicUrlData } = supabase.storage.from("forum-media").getPublicUrl(path);
+    pendingCommentImageUrl = publicUrlData.publicUrl;
+
+    const preview = document.getElementById("comment-image-preview") as HTMLImageElement;
+    preview.src = pendingCommentImageUrl;
+    document.getElementById("comment-image-preview-wrap")!.classList.remove("hidden");
+  });
+
+  document.getElementById("comment-image-remove")!.addEventListener("click", () => {
+    pendingCommentImageUrl = null;
+    document.getElementById("comment-image-preview-wrap")!.classList.add("hidden");
+    (document.getElementById("comment-image-input") as HTMLInputElement).value = "";
+  });
+
+  document.getElementById("comment-submit")!.addEventListener("click", async () => {
+    const errorEl = document.getElementById("comment-error")!;
     errorEl.classList.add("hidden");
 
-    if (!editorHandle) return;
+    const bodyInput = document.getElementById("comment-body") as HTMLTextAreaElement;
+    const body = bodyInput.value.trim();
+
+    if (!body) {
+      errorEl.textContent = "Write something before posting.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
 
     const { data: sessionData } = await supabase.auth.getSession();
     if (!sessionData.session) {
@@ -196,54 +274,37 @@ import Container from "../../../../components/Container.astro";
       return;
     }
 
-    const bodyText = editorHandle.editor.getText().trim();
-    if (!bodyText) {
-      errorEl.textContent = "Your post needs some content before publishing.";
-      errorEl.classList.remove("hidden");
-      return;
-    }
-
-    const formData = new FormData(form);
-    const categorySlug = formData.get("category") as string;
-    const title = (formData.get("title") as string).trim();
-    // Sanitize on write too (defense in depth) — the critical boundary is
-    // sanitizing again at render time in thread.astro, since that's the
-    // actual point this reaches other people's browsers.
-    const bodyHtml = sanitizeForumHtml(editorHandle.editor.getHTML());
-
-    const { data: category, error: categoryError } = await supabase
-      .from("forum_categories")
-      .select("id")
-      .eq("slug", categorySlug)
-      .single();
-
-    if (categoryError || !category) {
-      errorEl.textContent = "Couldn't find that category. Try again.";
-      errorEl.classList.remove("hidden");
-      return;
-    }
-
-    const slug = `${slugify(title)}-${Math.random().toString(36).slice(2, 7)}`;
-
-    const { error: insertError } = await supabase.from("forum_threads").insert({
-      category_id: category.id,
+    const { error } = await supabase.from("forum_comments").insert({
+      thread_id: threadId,
       author_id: sessionData.session.user.id,
-      title,
-      slug,
-      body: bodyHtml,
-      cover_image_url: coverImageUrl,
-      preview_title: previewTitleInput.value.trim() || null,
-      preview_description: previewDescInput.value.trim() || null,
+      body,
+      image_url: pendingCommentImageUrl,
     });
 
-    if (insertError) {
-      errorEl.textContent = insertError.message;
+    if (error) {
+      errorEl.textContent = error.message;
       errorEl.classList.remove("hidden");
       return;
     }
 
-    window.location.href = `/forum/thread/?slug=${encodeURIComponent(slug)}`;
+    bodyInput.value = "";
+    pendingCommentImageUrl = null;
+    document.getElementById("comment-image-preview-wrap")!.classList.add("hidden");
+    (document.getElementById("comment-image-input") as HTMLInputElement).value = "";
+
+    loadComments();
   });
 
-  init();
+  async function setupCommentForm() {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      currentUserId = data.session.user.id;
+      document.getElementById("comment-form-wrap")!.classList.remove("hidden");
+    } else {
+      document.getElementById("comment-login-prompt")!.classList.remove("hidden");
+    }
+  }
+
+  loadThread();
+  setupCommentForm();
 </script>

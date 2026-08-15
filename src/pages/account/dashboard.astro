@@ -66,7 +66,7 @@ import Container from "../../components/Container.astro";
               <a href="/forum/thread/?slug=${encodeURIComponent(t.slug)}" class="font-medium text-ink hover:text-royal">${t.title}</a>
               <p class="mt-0.5 text-xs text-ink/50">${categoryName} · ${date}</p>
             </div>
-            <button data-delete-slug="${t.slug}" class="text-sm text-red-500 hover:underline">Delete</button>
+            <div class="flex gap-3"><a href="/account/dashboard/edit-thread/?slug=${encodeURIComponent(t.slug)}" class="text-sm text-royal hover:underline">Edit</a><button data-delete-slug="${t.slug}" class="text-sm text-red-500 hover:underline">Delete</button></div>
           </div>
         `;
       })
