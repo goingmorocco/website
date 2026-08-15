@@ -1,0 +1,94 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Container from "../../../components/Container.astro";
+import Button from "../../../components/Button.astro";
+---
+
+<BaseLayout
+  locale="ar"
+  title="إنشاء حساب | GoingMorocco"
+  description="أنشئ حساباً مجانياً في GoingMorocco لمشاركة تجاربك وتقييماتك وأسئلتك حول المغرب."
+  alternateUrls={{ en: "/account/signup/", ar: "/ar/account/signup/" }}
+>
+  <Container class="max-w-md py-16">
+    <h1 class="font-display text-3xl text-ink">أنشئ حسابك</h1>
+    <p class="mt-2 text-ink/70">شارك تجربتك في المغرب، اطرح أسئلتك، وتواصل مع مسافرين آخرين.</p>
+
+    <form id="signup-form" class="mt-8 space-y-4">
+      <div>
+        <label for="username" class="mb-1 block text-sm font-medium text-ink">اسم المستخدم</label>
+        <input id="username" name="username" type="text" required minlength="3" maxlength="24" pattern="[a-zA-Z0-9_]+"
+          class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+        <p class="mt-1 text-xs text-ink/50">أحرف إنجليزية وأرقام وشرطة سفلية فقط. سيكون عاماً للجميع.</p>
+      </div>
+
+      <div>
+        <label for="email" class="mb-1 block text-sm font-medium text-ink">البريد الإلكتروني</label>
+        <input id="email" name="email" type="email" required
+          class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+      </div>
+
+      <div>
+        <label for="password" class="mb-1 block text-sm font-medium text-ink">كلمة المرور</label>
+        <input id="password" name="password" type="password" required minlength="8"
+          class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+        <p class="mt-1 text-xs text-ink/50">8 أحرف على الأقل.</p>
+      </div>
+
+      <label class="flex items-start gap-2 text-sm text-ink/70">
+        <input id="is-business" type="checkbox" class="mt-1" />
+        أسجل نيابة عن فندق أو خدمة سياحية، وليس كمسافر.
+      </label>
+
+      <p id="signup-error" class="hidden text-sm text-red-600"></p>
+      <p id="signup-success" class="hidden text-sm text-green-700"></p>
+
+      <Button type="submit" class="w-full">إنشاء الحساب</Button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-ink/60">
+      لديك حساب بالفعل؟ <a href="/ar/account/login/" class="font-medium text-royal hover:underline">تسجيل الدخول</a>
+    </p>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../../utils/supabaseClient";
+
+  const form = document.getElementById("signup-form") as HTMLFormElement;
+  const errorEl = document.getElementById("signup-error")!;
+  const successEl = document.getElementById("signup-success")!;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl.classList.add("hidden");
+    successEl.classList.add("hidden");
+
+    const formData = new FormData(form);
+    const username = (formData.get("username") as string).trim();
+    const email = (formData.get("email") as string).trim();
+    const password = formData.get("password") as string;
+    const isBusiness = (document.getElementById("is-business") as HTMLInputElement).checked;
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          username,
+          role: isBusiness ? "business" : "member",
+        },
+      },
+    });
+
+    if (error) {
+      errorEl.textContent = error.message;
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    successEl.textContent = "تحقق من بريدك الإلكتروني لتأكيد حسابك، ثم سجّل الدخول.";
+    successEl.classList.remove("hidden");
+    form.reset();
+  });
+</script>

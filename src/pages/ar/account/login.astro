@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Container from "../../../components/Container.astro";
+import Button from "../../../components/Button.astro";
+---
+
+<BaseLayout
+  locale="ar"
+  title="تسجيل الدخول | GoingMorocco"
+  description="سجّل الدخول إلى حسابك في GoingMorocco."
+  alternateUrls={{ en: "/account/login/", ar: "/ar/account/login/" }}
+>
+  <Container class="max-w-md py-16">
+    <h1 class="font-display text-3xl text-ink">تسجيل الدخول</h1>
+
+    <form id="login-form" class="mt-8 space-y-4">
+      <div>
+        <label for="email" class="mb-1 block text-sm font-medium text-ink">البريد الإلكتروني</label>
+        <input id="email" name="email" type="email" required
+          class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+      </div>
+
+      <div>
+        <label for="password" class="mb-1 block text-sm font-medium text-ink">كلمة المرور</label>
+        <input id="password" name="password" type="password" required
+          class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+      </div>
+
+      <p id="login-error" class="hidden text-sm text-red-600"></p>
+
+      <Button type="submit" class="w-full">تسجيل الدخول</Button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-ink/60">
+      ليس لديك حساب؟ <a href="/ar/account/signup/" class="font-medium text-royal hover:underline">إنشاء حساب</a>
+    </p>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../../utils/supabaseClient";
+
+  const form = document.getElementById("login-form") as HTMLFormElement;
+  const errorEl = document.getElementById("login-error")!;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl.classList.add("hidden");
+
+    const formData = new FormData(form);
+    const email = (formData.get("email") as string).trim();
+    const password = formData.get("password") as string;
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      errorEl.textContent = error.message;
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    window.location.href = "/ar/account/dashboard/";
+  });
+</script>

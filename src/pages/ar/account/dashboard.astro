@@ -1,32 +1,32 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Container from "../../components/Container.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Container from "../../../components/Container.astro";
 ---
 
 <BaseLayout
-  locale="en"
-  title="My Dashboard | GoingMorocco"
-  description="Your GoingMorocco member dashboard."
+  locale="ar"
+  title="لوحتي | GoingMorocco"
+  description="لوحة تحكم عضو GoingMorocco."
   alternateUrls={{ en: "/account/dashboard/", ar: "/ar/account/dashboard/" }}
 >
   <Container class="max-w-2xl py-16">
-    <div id="dashboard-loading" class="text-center text-ink/50">Loading…</div>
+    <div id="dashboard-loading" class="text-center text-ink/50">جارٍ التحميل…</div>
 
     <div id="dashboard-content" class="hidden">
-      <h1 class="font-display text-3xl text-ink">Welcome back, <span id="dashboard-name"></span></h1>
-      <p class="mt-2 text-ink/70">Manage your forum posts here.</p>
+      <h1 class="font-display text-3xl text-ink">مرحباً بعودتك، <span id="dashboard-name"></span></h1>
+      <p class="mt-2 text-ink/70">أدر منشوراتك في المنتدى من هنا.</p>
 
       <div class="mt-6">
-        <a href="/forum/" class="rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white hover:bg-royal-dark">
-          + Write a New Post
+        <a href="/ar/forum/" class="rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white hover:bg-royal-dark">
+          + كتابة منشور جديد
         </a>
       </div>
 
-      <h2 class="mt-10 font-display text-xl text-ink">My Posts</h2>
+      <h2 class="mt-10 font-display text-xl text-ink">منشوراتي</h2>
 
-      <div id="my-posts-loading" class="mt-4 text-ink/50">Loading your posts…</div>
+      <div id="my-posts-loading" class="mt-4 text-ink/50">جارٍ تحميل منشوراتك…</div>
       <div id="my-posts-empty" class="mt-4 hidden rounded-xl border border-dashed border-sand-light p-6 text-center text-ink/50">
-        You haven't written any posts yet.
+        لم تكتب أي منشور بعد.
       </div>
       <div id="my-posts-list" class="mt-4 hidden space-y-3"></div>
     </div>
@@ -34,7 +34,7 @@ import Container from "../../components/Container.astro";
 </BaseLayout>
 
 <script>
-  import { supabase } from "../../utils/supabaseClient";
+  import { supabase } from "../../../utils/supabaseClient";
 
   const loadingEl = document.getElementById("dashboard-loading")!;
   const contentEl = document.getElementById("dashboard-content")!;
@@ -45,7 +45,7 @@ import Container from "../../components/Container.astro";
   async function loadMyPosts(userId: string) {
     const { data: threads, error } = await supabase
       .from("forum_threads")
-      .select("slug, title, created_at, forum_categories(name_en)")
+      .select("slug, title, created_at, forum_categories(name_ar)")
       .eq("author_id", userId)
       .order("created_at", { ascending: false });
 
@@ -58,15 +58,18 @@ import Container from "../../components/Container.astro";
 
     postsListEl.innerHTML = threads
       .map((t: any) => {
-        const date = new Date(t.created_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
-        const categoryName = t.forum_categories?.name_en ?? "";
+        const date = new Date(t.created_at).toLocaleDateString("ar", { year: "numeric", month: "short", day: "numeric" });
+        const categoryName = t.forum_categories?.name_ar ?? "";
         return `
           <div class="flex items-center justify-between rounded-xl border border-sand-light bg-white p-4">
             <div>
-              <a href="/forum/thread/?slug=${encodeURIComponent(t.slug)}" class="font-medium text-ink hover:text-royal">${t.title}</a>
+              <a href="/ar/forum/thread/?slug=${encodeURIComponent(t.slug)}" class="font-medium text-ink hover:text-royal">${t.title}</a>
               <p class="mt-0.5 text-xs text-ink/50">${categoryName} · ${date}</p>
             </div>
-            <div class="flex gap-3"><a href="/account/dashboard/edit-thread/?slug=${encodeURIComponent(t.slug)}" class="text-sm text-royal hover:underline">Edit</a><button data-delete-slug="${t.slug}" class="text-sm text-red-500 hover:underline">Delete</button></div>
+            <div class="flex gap-3">
+              <a href="/ar/account/dashboard/edit-thread/?slug=${encodeURIComponent(t.slug)}" class="text-sm text-royal hover:underline">تعديل</a>
+              <button data-delete-slug="${t.slug}" class="text-sm text-red-500 hover:underline">حذف</button>
+            </div>
           </div>
         `;
       })
@@ -75,11 +78,11 @@ import Container from "../../components/Container.astro";
 
     postsListEl.querySelectorAll<HTMLButtonElement>("[data-delete-slug]").forEach((btn) => {
       btn.addEventListener("click", async () => {
-        if (!confirm("Delete this post? This can't be undone.")) return;
+        if (!confirm("حذف هذا المنشور؟ لا يمكن التراجع عن هذا الإجراء.")) return;
         const slug = btn.dataset.deleteSlug!;
         const { error: deleteError } = await supabase.from("forum_threads").delete().eq("slug", slug);
         if (deleteError) {
-          alert(`Couldn't delete: ${deleteError.message}`);
+          alert(`تعذّر الحذف: ${deleteError.message}`);
           return;
         }
         btn.closest("div.flex")!.parentElement!.remove();
@@ -95,7 +98,7 @@ import Container from "../../components/Container.astro";
     const { data } = await supabase.auth.getSession();
 
     if (!data.session) {
-      window.location.href = "/account/login/";
+      window.location.href = "/ar/account/login/";
       return;
     }
 
@@ -106,7 +109,7 @@ import Container from "../../components/Container.astro";
       .single();
 
     document.getElementById("dashboard-name")!.textContent =
-      profile?.display_name || profile?.username || "there";
+      profile?.display_name || profile?.username || "بك";
 
     loadingEl.classList.add("hidden");
     contentEl.classList.remove("hidden");
