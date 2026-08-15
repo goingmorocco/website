@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Container from "../../components/Container.astro";
 import RouteDivider from "../../components/RouteDivider.astro";
 import PostCard from "../../components/PostCard.astro";
+import Hero from "../../components/home/Hero.astro";
 import AboutMoroccoSection from "../../components/home/AboutMoroccoSection.astro";
 import DestinationsSection from "../../components/home/DestinationsSection.astro";
 import PlanYourTripSection from "../../components/home/PlanYourTripSection.astro";
@@ -42,16 +43,7 @@ const display = featured.length >= 3 ? featured : latest;
   alternateUrls={{ en: "/", ar: "/ar/" }}
   structuredData={buildOrganizationSchema(locale)}
 >
-  <section class="border-b border-sand-light bg-gradient-to-b from-sand-light/50 to-paper py-16 sm:py-24">
-    <Container class="max-w-3xl text-center">
-      <h1 class="font-display text-4xl leading-tight text-ink sm:text-5xl">
-        ذاهب للمغرب؟ إكتشفه أولا!
-      </h1>
-      <p class="mt-5 text-lg text-ink/70">
-        أدلة عملية ومباشرة عن الصحراء وجبال الأطلس والمدن العتيقة — مكتوبة من مراكش، لا منقولة من قائمة عامة.
-      </p>
-    </Container>
-  </section>
+  <Hero locale="ar" />
 
   <AboutMoroccoSection locale="ar" />
 
