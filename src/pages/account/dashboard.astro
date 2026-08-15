@@ -67,9 +67,15 @@ import Container from "../../components/Container.astro";
       </div>
 
       <!-- ===== Everyone sees this ===== -->
-      <div class="mt-10">
+      <div class="mt-10 flex flex-wrap gap-3">
         <a href="/forum/" class="rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white hover:bg-royal-dark">
           + Write a New Post
+        </a>
+        <a id="my-profile-link" href="/account/profile/" class="rounded-full border border-sand-light px-5 py-2 text-sm font-semibold text-ink/70 hover:border-royal hover:text-royal">
+          View My Profile
+        </a>
+        <a href="/account/settings/" class="rounded-full border border-sand-light px-5 py-2 text-sm font-semibold text-ink/70 hover:border-royal hover:text-royal">
+          Settings
         </a>
       </div>
 
@@ -230,6 +236,11 @@ import Container from "../../components/Container.astro";
 
     document.getElementById("dashboard-name")!.textContent =
       profile?.display_name || profile?.username || "there";
+
+    if (profile?.username) {
+      (document.getElementById("my-profile-link") as HTMLAnchorElement).href =
+        `/account/profile/?u=${encodeURIComponent(profile.username)}`;
+    }
 
     loadingEl.classList.add("hidden");
     contentEl.classList.remove("hidden");

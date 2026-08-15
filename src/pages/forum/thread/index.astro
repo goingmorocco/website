@@ -24,8 +24,16 @@ import Container from "../../../components/Container.astro";
       <p id="thread-meta" class="mt-2 text-sm text-ink/50"></p>
       <div id="thread-body" class="prose-content mt-6"></div>
 
+      <!-- Like -->
+      <div class="mt-6">
+        <button id="like-btn" class="inline-flex items-center gap-2 rounded-full border border-sand-light px-4 py-2 text-sm font-medium text-ink/70 hover:border-royal">
+          <span id="like-icon">🤍</span>
+          <span id="like-count">0</span> likes
+        </button>
+      </div>
+
       <!-- Share buttons -->
-      <div class="mt-8 flex flex-wrap items-center gap-2 border-y border-sand-light py-4">
+      <div class="mt-6 flex flex-wrap items-center gap-2 border-y border-sand-light py-4">
         <span class="text-sm font-medium text-ink/60">Share:</span>
         <button data-share="whatsapp" class="rounded-full bg-[#25D366] px-3 py-1.5 text-sm font-semibold text-white hover:opacity-90">WhatsApp</button>
         <button data-share="facebook" class="rounded-full bg-[#1877F2] px-3 py-1.5 text-sm font-semibold text-white hover:opacity-90">Facebook</button>
@@ -135,7 +143,60 @@ import Container from "../../../components/Container.astro";
     initTikTokEmbeds();
 
     setupShareButtons(data.title);
+    setupLikeButton();
     loadComments();
+  }
+
+  // ---------- Like button ----------
+  let currentUserIdForLike: string | null = null;
+
+  async function setupLikeButton() {
+    const { data: sessionData } = await supabase.auth.getSession();
+    currentUserIdForLike = sessionData.session?.user.id ?? null;
+
+    await refreshLikeState();
+
+    document.getElementById("like-btn")!.addEventListener("click", async () => {
+      if (!currentUserIdForLike) {
+        window.location.href = "/account/login/";
+        return;
+      }
+
+      const { data: existing } = await supabase
+        .from("forum_reactions")
+        .select("id")
+        .eq("thread_id", threadId)
+        .eq("user_id", currentUserIdForLike)
+        .maybeSingle();
+
+      if (existing) {
+        await supabase.from("forum_reactions").delete().eq("id", existing.id);
+      } else {
+        await supabase.from("forum_reactions").insert({ thread_id: threadId, user_id: currentUserIdForLike });
+      }
+
+      refreshLikeState();
+    });
+  }
+
+  async function refreshLikeState() {
+    const { count } = await supabase
+      .from("forum_reactions")
+      .select("*", { count: "exact", head: true })
+      .eq("thread_id", threadId);
+
+    document.getElementById("like-count")!.textContent = String(count ?? 0);
+
+    if (currentUserIdForLike) {
+      const { data: existing } = await supabase
+        .from("forum_reactions")
+        .select("id")
+        .eq("thread_id", threadId)
+        .eq("user_id", currentUserIdForLike)
+        .maybeSingle();
+
+      document.getElementById("like-icon")!.textContent = existing ? "❤️" : "🤍";
+    }
   }
 
   // ---------- Share buttons ----------
