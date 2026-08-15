@@ -1,0 +1,310 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Container from "../../../components/Container.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="Forum Post | GoingMorocco"
+  description="Read this GoingMorocco forum post."
+  alternateUrls={{ en: "/forum/thread/", ar: "/ar/forum/thread/" }}
+>
+  <Container class="max-w-2xl py-16">
+    <div id="thread-loading" class="text-center text-ink/50">Loading post…</div>
+
+    <div id="thread-not-found" class="hidden text-center">
+      <p class="text-ink/70">This post couldn't be found.</p>
+      <a href="/forum/" class="mt-2 inline-block text-royal hover:underline">Back to the forum</a>
+    </div>
+
+    <div id="thread-content" class="hidden">
+      <a id="thread-category-link" href="/forum/" class="text-sm text-royal hover:underline"></a>
+      <img id="thread-cover" class="mt-3 hidden h-56 w-full rounded-2xl object-cover" alt="" />
+      <h1 id="thread-title" class="mt-3 font-display text-3xl text-ink"></h1>
+      <p id="thread-meta" class="mt-2 text-sm text-ink/50"></p>
+      <div id="thread-body" class="prose-content mt-6"></div>
+
+      <!-- Share buttons -->
+      <div class="mt-8 flex flex-wrap items-center gap-2 border-y border-sand-light py-4">
+        <span class="text-sm font-medium text-ink/60">Share:</span>
+        <button data-share="whatsapp" class="rounded-full bg-[#25D366] px-3 py-1.5 text-sm font-semibold text-white hover:opacity-90">WhatsApp</button>
+        <button data-share="facebook" class="rounded-full bg-[#1877F2] px-3 py-1.5 text-sm font-semibold text-white hover:opacity-90">Facebook</button>
+        <button data-share="x" class="rounded-full bg-black px-3 py-1.5 text-sm font-semibold text-white hover:opacity-90">X</button>
+        <button data-share="copy" class="rounded-full border border-sand-light px-3 py-1.5 text-sm font-semibold text-ink/70 hover:border-royal hover:text-royal">🔗 Copy Link</button>
+      </div>
+
+      <!-- Comments -->
+      <div class="mt-10">
+        <h2 class="font-display text-xl text-ink">Comments</h2>
+
+        <div id="comment-form-wrap" class="mt-4 hidden">
+          <textarea id="comment-body" rows="3" placeholder="Share your experience or ask a question…"
+            class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none"></textarea>
+          <div class="mt-2 flex items-center justify-between">
+            <label class="inline-flex cursor-pointer items-center gap-1 text-sm text-ink/60 hover:text-royal">
+              🖼 Add a photo
+              <input id="comment-image-input" type="file" accept="image/*" class="hidden" />
+            </label>
+            <button id="comment-submit" class="rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white hover:bg-royal-dark">
+              Post Comment
+            </button>
+          </div>
+          <div id="comment-image-preview-wrap" class="mt-2 hidden">
+            <img id="comment-image-preview" class="h-24 rounded-lg object-cover" alt="" />
+            <button id="comment-image-remove" type="button" class="ml-2 text-xs text-red-500 hover:underline">Remove</button>
+          </div>
+          <p id="comment-error" class="mt-1 hidden text-sm text-red-600"></p>
+        </div>
+
+        <p id="comment-login-prompt" class="mt-4 hidden text-sm text-ink/60">
+          <a href="/account/login/" class="text-royal hover:underline">Log in</a> to leave a comment.
+        </p>
+
+        <div id="comments-loading" class="mt-6 text-sm text-ink/50">Loading comments…</div>
+        <div id="comments-empty" class="mt-6 hidden text-sm text-ink/50">No comments yet — be the first to respond.</div>
+        <div id="comments-list" class="mt-6 hidden space-y-4"></div>
+      </div>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../../utils/supabaseClient";
+  import { sanitizeForumHtml } from "../../../utils/sanitize";
+  import { initInstagramEmbeds, initTikTokEmbeds } from "../../../editor/forumEditor";
+
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+
+  const loadingEl = document.getElementById("thread-loading")!;
+  const notFoundEl = document.getElementById("thread-not-found")!;
+  const contentEl = document.getElementById("thread-content")!;
+
+  let threadId: string | null = null;
+  let currentUserId: string | null = null;
+  let pendingCommentImageUrl: string | null = null;
+
+  function escapeHtml(text: string): string {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // ---------- Load thread ----------
+  async function loadThread() {
+    if (!slug) {
+      loadingEl.classList.add("hidden");
+      notFoundEl.classList.remove("hidden");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("forum_threads")
+      .select("id, title, body, cover_image_url, created_at, profiles(username, display_name), forum_categories(slug, name_en)")
+      .eq("slug", slug)
+      .single();
+
+    loadingEl.classList.add("hidden");
+
+    if (error || !data) {
+      notFoundEl.classList.remove("hidden");
+      return;
+    }
+
+    threadId = data.id;
+
+    const author = (data.profiles as any)?.display_name || (data.profiles as any)?.username || "Someone";
+    const date = new Date(data.created_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+    const category = data.forum_categories as any;
+
+    const categoryLink = document.getElementById("thread-category-link") as HTMLAnchorElement;
+    categoryLink.href = `/forum/${category?.slug ?? ""}/`;
+    categoryLink.textContent = `← ${category?.name_en ?? "Forum"}`;
+
+    if (data.cover_image_url) {
+      const coverEl = document.getElementById("thread-cover") as HTMLImageElement;
+      coverEl.src = data.cover_image_url;
+      coverEl.classList.remove("hidden");
+    }
+
+    document.getElementById("thread-title")!.textContent = data.title;
+    document.getElementById("thread-meta")!.textContent = `by ${author} · ${date}`;
+    document.getElementById("thread-body")!.innerHTML = sanitizeForumHtml(data.body);
+
+    contentEl.classList.remove("hidden");
+
+    initInstagramEmbeds();
+    initTikTokEmbeds();
+
+    setupShareButtons(data.title);
+    loadComments();
+  }
+
+  // ---------- Share buttons ----------
+  function setupShareButtons(title: string) {
+    const url = window.location.href;
+    const text = `${title} — GoingMorocco`;
+
+    document.querySelectorAll<HTMLButtonElement>("[data-share]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const platform = btn.dataset.share;
+        if (platform === "whatsapp") {
+          window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`, "_blank");
+        } else if (platform === "facebook") {
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, "_blank");
+        } else if (platform === "x") {
+          window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, "_blank");
+        } else if (platform === "copy") {
+          await navigator.clipboard.writeText(url);
+          const original = btn.textContent;
+          btn.textContent = "✓ Copied!";
+          setTimeout(() => (btn.textContent = original), 1800);
+        }
+      });
+    });
+  }
+
+  // ---------- Comments ----------
+  const commentsLoadingEl = document.getElementById("comments-loading")!;
+  const commentsEmptyEl = document.getElementById("comments-empty")!;
+  const commentsListEl = document.getElementById("comments-list")!;
+
+  async function loadComments() {
+    const { data: comments, error } = await supabase
+      .from("forum_comments")
+      .select("id, body, image_url, created_at, author_id, profiles(username, display_name)")
+      .eq("thread_id", threadId)
+      .order("created_at", { ascending: true });
+
+    commentsLoadingEl.classList.add("hidden");
+
+    if (error || !comments || comments.length === 0) {
+      commentsEmptyEl.classList.remove("hidden");
+      return;
+    }
+
+    renderComments(comments);
+    commentsListEl.classList.remove("hidden");
+  }
+
+  function renderComments(comments: any[]) {
+    commentsListEl.innerHTML = comments
+      .map((c) => {
+        const author = c.profiles?.display_name || c.profiles?.username || "Someone";
+        const date = new Date(c.created_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+        const canDelete = currentUserId && c.author_id === currentUserId;
+        return `
+          <div class="rounded-xl border border-sand-light bg-white p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium text-ink">${escapeHtml(author)} <span class="font-normal text-ink/40">· ${date}</span></p>
+              ${canDelete ? `<button data-delete-comment="${c.id}" class="text-xs text-red-500 hover:underline">Delete</button>` : ""}
+            </div>
+            <p class="mt-2 whitespace-pre-wrap text-sm text-ink/80">${escapeHtml(c.body)}</p>
+            ${c.image_url ? `<img src="${c.image_url}" alt="" class="mt-3 max-h-64 rounded-lg object-cover" />` : ""}
+          </div>
+        `;
+      })
+      .join("");
+
+    commentsListEl.querySelectorAll<HTMLButtonElement>("[data-delete-comment]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Delete this comment?")) return;
+        const { error } = await supabase.from("forum_comments").delete().eq("id", btn.dataset.deleteComment!);
+        if (error) {
+          alert(`Couldn't delete: ${error.message}`);
+          return;
+        }
+        loadComments();
+      });
+    });
+  }
+
+  // ---------- Comment posting (with optional image) ----------
+  const COMMENT_IMAGE_MAX_BYTES = 3 * 1024 * 1024; // 3MB, independent of the post author's own media budget
+
+  document.getElementById("comment-image-input")!.addEventListener("change", async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    if (file.size > COMMENT_IMAGE_MAX_BYTES) {
+      alert(`That image is ${(file.size / 1024 / 1024).toFixed(2)} MB — comment photos are limited to 3 MB.`);
+      return;
+    }
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) return;
+
+    const userId = sessionData.session.user.id;
+    const path = `${userId}/comment-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
+
+    const { error } = await supabase.storage.from("forum-media").upload(path, file);
+    if (error) {
+      alert(`Upload failed: ${error.message}`);
+      return;
+    }
+
+    const { data: publicUrlData } = supabase.storage.from("forum-media").getPublicUrl(path);
+    pendingCommentImageUrl = publicUrlData.publicUrl;
+
+    const preview = document.getElementById("comment-image-preview") as HTMLImageElement;
+    preview.src = pendingCommentImageUrl;
+    document.getElementById("comment-image-preview-wrap")!.classList.remove("hidden");
+  });
+
+  document.getElementById("comment-image-remove")!.addEventListener("click", () => {
+    pendingCommentImageUrl = null;
+    document.getElementById("comment-image-preview-wrap")!.classList.add("hidden");
+    (document.getElementById("comment-image-input") as HTMLInputElement).value = "";
+  });
+
+  document.getElementById("comment-submit")!.addEventListener("click", async () => {
+    const errorEl = document.getElementById("comment-error")!;
+    errorEl.classList.add("hidden");
+
+    const bodyInput = document.getElementById("comment-body") as HTMLTextAreaElement;
+    const body = bodyInput.value.trim();
+
+    if (!body) {
+      errorEl.textContent = "Write something before posting.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) {
+      window.location.href = "/account/login/";
+      return;
+    }
+
+    const { error } = await supabase.from("forum_comments").insert({
+      thread_id: threadId,
+      author_id: sessionData.session.user.id,
+      body,
+      image_url: pendingCommentImageUrl,
+    });
+
+    if (error) {
+      errorEl.textContent = error.message;
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    bodyInput.value = "";
+    pendingCommentImageUrl = null;
+    document.getElementById("comment-image-preview-wrap")!.classList.add("hidden");
+    (document.getElementById("comment-image-input") as HTMLInputElement).value = "";
+
+    loadComments();
+  });
+
+  async function setupCommentForm() {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      currentUserId = data.session.user.id;
+      document.getElementById("comment-form-wrap")!.classList.remove("hidden");
+    } else {
+      document.getElementById("comment-login-prompt")!.classList.remove("hidden");
+    }
+  }
+
+  loadThread();
+  setupCommentForm();
+</script>
