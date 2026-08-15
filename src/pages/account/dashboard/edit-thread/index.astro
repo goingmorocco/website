@@ -1,0 +1,212 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Container from "../../../../components/Container.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="Edit Post | GoingMorocco Forum"
+  description="Edit your GoingMorocco forum post."
+  alternateUrls={{ en: "/account/dashboard/edit-thread/", ar: "/ar/account/dashboard/edit-thread/" }}
+>
+  <Container class="max-w-3xl py-16">
+    <div id="check-auth" class="text-center text-ink/50">Loading…</div>
+
+    <div id="not-yours" class="hidden text-center text-ink/70">
+      <p>You can only edit your own posts.</p>
+      <a href="/account/dashboard/" class="mt-2 inline-block text-royal hover:underline">Back to dashboard</a>
+    </div>
+
+    <div id="edit-form-wrap" class="hidden">
+      <h1 class="font-display text-3xl text-ink">Edit post</h1>
+
+      <form id="edit-thread-form" class="mt-8 space-y-6">
+        <div>
+          <label for="category" class="mb-1 block text-sm font-medium text-ink">Category</label>
+          <select id="category" name="category" required class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none">
+            <option value="my-experience">My Experience in Morocco</option>
+            <option value="hotels">Hotels in Morocco</option>
+            <option value="reviews">Reviews & Recommendations</option>
+            <option value="services">Other Travel Services</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="title" class="mb-1 block text-sm font-medium text-ink">Title</label>
+          <input id="title" name="title" type="text" required maxlength="150"
+            class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Cover image</label>
+          <div id="cover-preview-wrap" class="hidden mb-2">
+            <img id="cover-preview" class="h-40 w-full rounded-lg object-cover" alt="" />
+          </div>
+          <label class="inline-block cursor-pointer rounded-full border border-royal px-4 py-1.5 text-sm font-semibold text-royal hover:bg-royal hover:text-white">
+            Replace Cover Image
+            <input id="cover-input" type="file" accept="image/*" class="hidden" />
+          </label>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Your post</label>
+          <div data-editor-toolbar class="mb-2 flex flex-wrap gap-1 rounded-t-lg border border-b-0 border-sand-light bg-sand-light/30 p-2">
+            <button type="button" data-action="bold" class="rounded px-2 py-1 text-sm font-bold hover:bg-sand-light" title="Bold">B</button>
+            <button type="button" data-action="italic" class="rounded px-2 py-1 text-sm italic hover:bg-sand-light" title="Italic">I</button>
+            <button type="button" data-action="underline" class="rounded px-2 py-1 text-sm underline hover:bg-sand-light" title="Underline">U</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="h2" class="rounded px-2 py-1 text-sm font-semibold hover:bg-sand-light" title="Heading">H2</button>
+            <button type="button" data-action="h3" class="rounded px-2 py-1 text-sm font-semibold hover:bg-sand-light" title="Subheading">H3</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="bullet-list" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Bullet list">• List</button>
+            <button type="button" data-action="ordered-list" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Numbered list">1. List</button>
+            <button type="button" data-action="blockquote" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Quote">" Quote</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="link" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Link">🔗 Link</button>
+            <button type="button" data-action="image" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Insert image">🖼 Image</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="youtube" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="YouTube">▶ YouTube</button>
+            <button type="button" data-action="instagram" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="Instagram">📷 Instagram</button>
+            <button type="button" data-action="tiktok" class="rounded px-2 py-1 text-sm hover:bg-sand-light" title="TikTok">🎵 TikTok</button>
+          </div>
+          <div id="editor-container" class="rounded-b-lg border border-sand-light bg-white px-4 py-3"></div>
+          <p id="media-budget-label" class="mt-1 text-xs text-ink/50"></p>
+        </div>
+
+        <p id="thread-error" class="hidden text-sm text-red-600"></p>
+
+        <div class="flex gap-3">
+          <button type="submit" class="rounded-full bg-royal px-6 py-2.5 text-sm font-semibold text-white hover:bg-royal-dark">
+            Save Changes
+          </button>
+          <a href="/account/dashboard/" class="rounded-full border border-sand-light px-6 py-2.5 text-sm font-semibold text-ink/70 hover:border-royal hover:text-royal">
+            Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../../../utils/supabaseClient";
+  import { createForumEditor, uploadCoverImage } from "../../../../editor/forumEditor";
+  import { sanitizeForumHtml } from "../../../../utils/sanitize";
+
+  const checkAuthEl = document.getElementById("check-auth")!;
+  const notYoursEl = document.getElementById("not-yours")!;
+  const formWrapEl = document.getElementById("edit-form-wrap")!;
+  const form = document.getElementById("edit-thread-form") as HTMLFormElement;
+  const errorEl = document.getElementById("thread-error")!;
+  const titleInput = document.getElementById("title") as HTMLInputElement;
+  const categorySelect = document.getElementById("category") as HTMLSelectElement;
+
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+
+  let editorHandle: ReturnType<typeof createForumEditor> | null = null;
+  let coverImageUrl: string | null = null;
+  let threadId: string | null = null;
+
+  async function init() {
+    if (!slug) {
+      window.location.href = "/account/dashboard/";
+      return;
+    }
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) {
+      window.location.href = "/account/login/";
+      return;
+    }
+
+    const { data: thread, error } = await supabase
+      .from("forum_threads")
+      .select("id, title, body, cover_image_url, author_id, forum_categories(slug)")
+      .eq("slug", slug)
+      .single();
+
+    checkAuthEl.classList.add("hidden");
+
+    if (error || !thread || thread.author_id !== sessionData.session.user.id) {
+      notYoursEl.classList.remove("hidden");
+      return;
+    }
+
+    threadId = thread.id;
+    titleInput.value = thread.title;
+    categorySelect.value = (thread.forum_categories as any)?.slug ?? "my-experience";
+    coverImageUrl = thread.cover_image_url;
+
+    if (coverImageUrl) {
+      const img = document.getElementById("cover-preview") as HTMLImageElement;
+      img.src = coverImageUrl;
+      document.getElementById("cover-preview-wrap")!.classList.remove("hidden");
+    }
+
+    formWrapEl.classList.remove("hidden");
+
+    editorHandle = createForumEditor(
+      document.getElementById("editor-container")!,
+      document.getElementById("media-budget-label")!
+    );
+    editorHandle.editor.commands.setContent(thread.body);
+  }
+
+  document.getElementById("cover-input")!.addEventListener("change", async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    const result = await uploadCoverImage(file, editorHandle?.getUsedBytes() ?? 0);
+    if (!result) return;
+    coverImageUrl = result.url;
+    editorHandle?.addUsedBytes(result.bytes);
+
+    const img = document.getElementById("cover-preview") as HTMLImageElement;
+    img.src = result.url;
+    document.getElementById("cover-preview-wrap")!.classList.remove("hidden");
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl.classList.add("hidden");
+    if (!editorHandle || !threadId) return;
+
+    const bodyText = editorHandle.editor.getText().trim();
+    if (!bodyText) {
+      errorEl.textContent = "Your post needs some content.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    const categorySlug = categorySelect.value;
+    const { data: category } = await supabase.from("forum_categories").select("id").eq("slug", categorySlug).single();
+    if (!category) {
+      errorEl.textContent = "Couldn't find that category.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    const bodyHtml = sanitizeForumHtml(editorHandle.editor.getHTML());
+
+    const { error: updateError } = await supabase
+      .from("forum_threads")
+      .update({
+        title: titleInput.value.trim(),
+        category_id: category.id,
+        body: bodyHtml,
+        cover_image_url: coverImageUrl,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", threadId);
+
+    if (updateError) {
+      errorEl.textContent = updateError.message;
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    window.location.href = `/forum/thread/?slug=${encodeURIComponent(slug!)}`;
+  });
+
+  init();
+</script>
