@@ -9,14 +9,65 @@ import Container from "../../components/Container.astro";
   description="Your GoingMorocco member dashboard."
   alternateUrls={{ en: "/account/dashboard/", ar: "/ar/account/dashboard/" }}
 >
-  <Container class="max-w-2xl py-16">
+  <Container class="max-w-3xl py-16">
     <div id="dashboard-loading" class="text-center text-ink/50">Loading…</div>
 
     <div id="dashboard-content" class="hidden">
       <h1 class="font-display text-3xl text-ink">Welcome back, <span id="dashboard-name"></span></h1>
-      <p class="mt-2 text-ink/70">Manage your forum posts here.</p>
 
-      <div class="mt-6">
+      <!-- ===== Admin-only section ===== -->
+      <div id="admin-section" class="hidden">
+        <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div class="rounded-xl border border-sand-light bg-white p-4 text-center">
+            <p id="stat-users" class="font-display text-2xl text-ink">—</p>
+            <p class="text-xs text-ink/50">Members</p>
+          </div>
+          <div class="rounded-xl border border-sand-light bg-white p-4 text-center">
+            <p id="stat-posts" class="font-display text-2xl text-ink">—</p>
+            <p class="text-xs text-ink/50">Forum Posts</p>
+          </div>
+          <div class="rounded-xl border border-sand-light bg-white p-4 text-center">
+            <p id="stat-comments" class="font-display text-2xl text-ink">—</p>
+            <p class="text-xs text-ink/50">Comments</p>
+          </div>
+          <div class="rounded-xl border border-sand-light bg-white p-4 text-center">
+            <p id="stat-unread-messages" class="font-display text-2xl text-ink">—</p>
+            <p class="text-xs text-ink/50">Unread Messages</p>
+          </div>
+        </div>
+
+        <div class="mt-6 grid gap-3 sm:grid-cols-3">
+          <a href="/admin/users/" class="rounded-xl border border-sand-light bg-white p-4 text-sm font-medium text-ink hover:border-royal hover:text-royal">Manage Users →</a>
+          <a href="/admin/posts/" class="rounded-xl border border-sand-light bg-white p-4 text-sm font-medium text-ink hover:border-royal hover:text-royal">Moderate Posts →</a>
+          <a href="/admin/comments/" class="rounded-xl border border-sand-light bg-white p-4 text-sm font-medium text-ink hover:border-royal hover:text-royal">Moderate Comments →</a>
+        </div>
+
+        <!-- Notification composer -->
+        <div class="mt-6 rounded-xl border border-sand-light bg-white p-5">
+          <h2 class="font-display text-lg text-ink">Send a Notification</h2>
+          <div class="mt-3 space-y-3">
+            <label class="flex items-center gap-2 text-sm text-ink/70">
+              <input id="notify-broadcast" type="checkbox" />
+              Send to all members instead of one person
+            </label>
+            <select id="notify-user-select" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm">
+              <option value="">Loading members…</option>
+            </select>
+            <input id="notify-title" type="text" placeholder="Title" maxlength="100"
+              class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm" />
+            <textarea id="notify-body" placeholder="Message (optional)" rows="2"
+              class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm"></textarea>
+            <p id="notify-error" class="hidden text-sm text-red-600"></p>
+            <p id="notify-success" class="hidden text-sm text-green-700"></p>
+            <button id="notify-send" class="rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white hover:bg-royal-dark">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Everyone sees this ===== -->
+      <div class="mt-10">
         <a href="/forum/" class="rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white hover:bg-royal-dark">
           + Write a New Post
         </a>
@@ -42,6 +93,8 @@ import Container from "../../components/Container.astro";
   const postsEmptyEl = document.getElementById("my-posts-empty")!;
   const postsListEl = document.getElementById("my-posts-list")!;
 
+  let allMembers: { id: string; label: string }[] = [];
+
   async function loadMyPosts(userId: string) {
     const { data: threads, error } = await supabase
       .from("forum_threads")
@@ -66,7 +119,10 @@ import Container from "../../components/Container.astro";
               <a href="/forum/thread/?slug=${encodeURIComponent(t.slug)}" class="font-medium text-ink hover:text-royal">${t.title}</a>
               <p class="mt-0.5 text-xs text-ink/50">${categoryName} · ${date}</p>
             </div>
-            <div class="flex gap-3"><a href="/account/dashboard/edit-thread/?slug=${encodeURIComponent(t.slug)}" class="text-sm text-royal hover:underline">Edit</a><button data-delete-slug="${t.slug}" class="text-sm text-red-500 hover:underline">Delete</button></div>
+            <div class="flex gap-3">
+              <a href="/account/dashboard/edit-thread/?slug=${encodeURIComponent(t.slug)}" class="text-sm text-royal hover:underline">Edit</a>
+              <button data-delete-slug="${t.slug}" class="text-sm text-red-500 hover:underline">Delete</button>
+            </div>
           </div>
         `;
       })
@@ -91,6 +147,73 @@ import Container from "../../components/Container.astro";
     });
   }
 
+  // ---------- Admin section ----------
+  async function loadAdminSection() {
+    const [{ count: userCount }, { count: postCount }, { count: commentCount }, { count: unreadCount }, { data: members }] = await Promise.all([
+      supabase.from("profiles").select("*", { count: "exact", head: true }),
+      supabase.from("forum_threads").select("*", { count: "exact", head: true }),
+      supabase.from("forum_comments").select("*", { count: "exact", head: true }),
+      supabase.from("messages").select("*", { count: "exact", head: true }).eq("is_read", false),
+      supabase.from("profiles").select("id, username, display_name").order("username"),
+    ]);
+
+    document.getElementById("stat-users")!.textContent = String(userCount ?? 0);
+    document.getElementById("stat-posts")!.textContent = String(postCount ?? 0);
+    document.getElementById("stat-comments")!.textContent = String(commentCount ?? 0);
+    document.getElementById("stat-unread-messages")!.textContent = String(unreadCount ?? 0);
+
+    allMembers = (members ?? []).map((m) => ({ id: m.id, label: m.display_name || m.username }));
+    const select = document.getElementById("notify-user-select") as HTMLSelectElement;
+    select.innerHTML = allMembers.map((m) => `<option value="${m.id}">${m.label}</option>`).join("");
+  }
+
+  const broadcastCheckbox = document.getElementById("notify-broadcast") as HTMLInputElement;
+  const userSelect = document.getElementById("notify-user-select") as HTMLSelectElement;
+  broadcastCheckbox.addEventListener("change", () => {
+    userSelect.classList.toggle("hidden", broadcastCheckbox.checked);
+  });
+
+  document.getElementById("notify-send")!.addEventListener("click", async () => {
+    const errorEl = document.getElementById("notify-error")!;
+    const successEl = document.getElementById("notify-success")!;
+    errorEl.classList.add("hidden");
+    successEl.classList.add("hidden");
+
+    const title = (document.getElementById("notify-title") as HTMLInputElement).value.trim();
+    const body = (document.getElementById("notify-body") as HTMLTextAreaElement).value.trim();
+
+    if (!title) {
+      errorEl.textContent = "Add a title first.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    const rows = broadcastCheckbox.checked
+      ? allMembers.map((m) => ({ user_id: m.id, title, body: body || null }))
+      : [{ user_id: userSelect.value, title, body: body || null }];
+
+    if (!broadcastCheckbox.checked && !userSelect.value) {
+      errorEl.textContent = "Pick a member first.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    const { error } = await supabase.from("notifications").insert(rows);
+
+    if (error) {
+      errorEl.textContent = error.message;
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    successEl.textContent = broadcastCheckbox.checked
+      ? `Sent to all ${rows.length} members.`
+      : "Sent.";
+    successEl.classList.remove("hidden");
+    (document.getElementById("notify-title") as HTMLInputElement).value = "";
+    (document.getElementById("notify-body") as HTMLTextAreaElement).value = "";
+  });
+
   async function init() {
     const { data } = await supabase.auth.getSession();
 
@@ -101,7 +224,7 @@ import Container from "../../components/Container.astro";
 
     const { data: profile } = await supabase
       .from("profiles")
-      .select("display_name, username")
+      .select("display_name, username, role")
       .eq("id", data.session.user.id)
       .single();
 
@@ -110,6 +233,11 @@ import Container from "../../components/Container.astro";
 
     loadingEl.classList.add("hidden");
     contentEl.classList.remove("hidden");
+
+    if (profile?.role === "admin") {
+      document.getElementById("admin-section")!.classList.remove("hidden");
+      loadAdminSection();
+    }
 
     loadMyPosts(data.session.user.id);
   }
