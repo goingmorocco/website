@@ -1,0 +1,115 @@
+---
+// Same instance-scoping pattern as AccountWidget/SearchBox — this renders
+// once for desktop nav, once for mobile nav, so it uses data attributes
+// instead of fixed IDs to avoid the duplicate-ID bug hit earlier in this
+// project.
+interface Props {
+  locale?: "en" | "ar";
+}
+const { locale = "en" } = Astro.props;
+---
+
+<div data-notification-bell class="relative hidden">
+  <button data-bell-toggle type="button" class="relative rounded-full p-2 text-ink/70 hover:text-royal" aria-label={locale === "ar" ? "الإشعارات" : "Notifications"}>
+    🔔
+    <span data-unread-badge class="absolute -right-0.5 -top-0.5 hidden h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white"></span>
+  </button>
+
+  <div data-bell-dropdown class="absolute end-0 z-50 mt-2 hidden w-72 rounded-xl border border-sand-light bg-white p-2 shadow-xl">
+    <p class="px-2 py-1 text-xs font-semibold uppercase text-ink/40">
+      {locale === "ar" ? "الإشعارات" : "Notifications"}
+    </p>
+    <div data-notifications-list class="max-h-80 overflow-y-auto"></div>
+    <p data-notifications-empty class="hidden px-2 py-4 text-center text-sm text-ink/50">
+      {locale === "ar" ? "لا توجد إشعارات" : "No notifications"}
+    </p>
+  </div>
+</div>
+
+<script>
+  import { supabase } from "../utils/supabaseClient";
+
+  function escapeHtml(text: string): string {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  let currentUserId: string | null = null;
+
+  async function loadNotifications() {
+    if (!currentUserId) return;
+
+    const { data: notifications } = await supabase
+      .from("notifications")
+      .select("id, title, body, link_url, is_read, created_at")
+      .eq("user_id", currentUserId)
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    const unreadCount = (notifications ?? []).filter((n) => !n.is_read).length;
+
+    document.querySelectorAll<HTMLElement>("[data-notification-bell]").forEach((root) => {
+      root.classList.remove("hidden");
+      const badge = root.querySelector<HTMLElement>("[data-unread-badge]")!;
+      if (unreadCount > 0) {
+        badge.textContent = String(unreadCount > 9 ? "9+" : unreadCount);
+        badge.classList.remove("hidden");
+        badge.classList.add("flex");
+      } else {
+        badge.classList.add("hidden");
+      }
+
+      const listEl = root.querySelector<HTMLElement>("[data-notifications-list]")!;
+      const emptyEl = root.querySelector<HTMLElement>("[data-notifications-empty]")!;
+
+      if (!notifications || notifications.length === 0) {
+        listEl.innerHTML = "";
+        emptyEl.classList.remove("hidden");
+        return;
+      }
+      emptyEl.classList.add("hidden");
+
+      listEl.innerHTML = notifications
+        .map((n) => {
+          const date = new Date(n.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+          const content = `
+            <p class="text-sm font-medium text-ink">${escapeHtml(n.title)}</p>
+            ${n.body ? `<p class="mt-0.5 text-xs text-ink/60">${escapeHtml(n.body)}</p>` : ""}
+            <p class="mt-1 text-xs text-ink/40">${date}</p>
+          `;
+          const wrapperClass = `block rounded-lg p-2 hover:bg-sand-light/50 ${n.is_read ? "" : "bg-royal/5"}`;
+          return n.link_url
+            ? `<a href="${n.link_url}" data-mark-read="${n.id}" class="${wrapperClass}">${content}</a>`
+            : `<div data-mark-read="${n.id}" class="${wrapperClass} cursor-pointer">${content}</div>`;
+        })
+        .join("");
+
+      listEl.querySelectorAll<HTMLElement>("[data-mark-read]").forEach((el) => {
+        el.addEventListener("click", async () => {
+          await supabase.from("notifications").update({ is_read: true }).eq("id", el.dataset.markRead!);
+        });
+      });
+    });
+  }
+
+  document.querySelectorAll<HTMLButtonElement>("[data-bell-toggle]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const dropdown = btn.parentElement!.querySelector<HTMLElement>("[data-bell-dropdown]")!;
+      dropdown.classList.toggle("hidden");
+    });
+  });
+
+  document.addEventListener("click", () => {
+    document.querySelectorAll<HTMLElement>("[data-bell-dropdown]").forEach((d) => d.classList.add("hidden"));
+  });
+
+  async function init() {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) return; // stays hidden for logged-out visitors
+    currentUserId = data.session.user.id;
+    loadNotifications();
+    setInterval(loadNotifications, 60000); // light polling, once a minute
+  }
+
+  init();
+</script>

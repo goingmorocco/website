@@ -1,0 +1,160 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Container from "../../../components/Container.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="Messages | GoingMorocco"
+  description="Your GoingMorocco messages."
+  alternateUrls={{ en: "/account/messages/", ar: "/ar/account/messages/" }}
+>
+  <Container class="max-w-2xl py-16">
+    <div id="checking" class="text-center text-ink/50">Loading…</div>
+
+    <div id="page-content" class="hidden">
+      <a href="/account/dashboard/" class="text-sm text-royal hover:underline">← Dashboard</a>
+
+      <div id="no-conversation" class="hidden mt-6">
+        <h1 class="font-display text-2xl text-ink">Messages</h1>
+        <div id="conversations-list" class="mt-6 space-y-2"></div>
+        <p id="conversations-empty" class="hidden text-sm text-ink/50">No messages yet.</p>
+      </div>
+
+      <div id="conversation-view" class="hidden mt-6">
+        <a href="/account/messages/" class="text-sm text-royal hover:underline">← All conversations</a>
+        <h1 id="conversation-with" class="mt-2 font-display text-2xl text-ink"></h1>
+        <div id="messages-list" class="mt-4 max-h-[50vh] space-y-3 overflow-y-auto rounded-xl border border-sand-light bg-white p-4"></div>
+        <div class="mt-3 flex gap-2">
+          <input id="message-input" type="text" placeholder="Type a message…"
+            class="flex-1 rounded-lg border border-sand-light px-3 py-2 text-sm focus:border-royal focus:outline-none" />
+          <button id="message-send" class="rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white hover:bg-royal-dark">Send</button>
+        </div>
+      </div>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../../utils/supabaseClient";
+
+  const params = new URLSearchParams(window.location.search);
+  const withUserId = params.get("with");
+  let myId: string | null = null;
+
+  function escapeHtml(text: string): string {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  async function loadConversation() {
+    if (!withUserId || !myId) return;
+
+    const { data: profile } = await supabase.from("profiles").select("username, display_name").eq("id", withUserId).single();
+    document.getElementById("conversation-with")!.textContent = profile?.display_name || profile?.username || "Member";
+
+    const { data: messages } = await supabase
+      .from("messages")
+      .select("id, body, sender_id, created_at")
+      .or(`and(sender_id.eq.${myId},recipient_id.eq.${withUserId}),and(sender_id.eq.${withUserId},recipient_id.eq.${myId})`)
+      .order("created_at", { ascending: true });
+
+    const listEl = document.getElementById("messages-list")!;
+    listEl.innerHTML = (messages ?? [])
+      .map((m) => {
+        const fromMe = m.sender_id === myId;
+        const time = new Date(m.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+        return `
+          <div class="flex ${fromMe ? "justify-end" : "justify-start"}">
+            <div class="max-w-[75%] rounded-xl px-3 py-2 text-sm ${fromMe ? "bg-royal text-white" : "bg-sand-light/50 text-ink"}">
+              <p>${escapeHtml(m.body)}</p>
+              <p class="mt-1 text-xs opacity-60">${time}</p>
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+    listEl.scrollTop = listEl.scrollHeight;
+
+    await supabase.from("messages").update({ is_read: true }).eq("sender_id", withUserId).eq("recipient_id", myId).eq("is_read", false);
+  }
+
+  document.getElementById("message-send")!.addEventListener("click", async () => {
+    const input = document.getElementById("message-input") as HTMLInputElement;
+    const body = input.value.trim();
+    if (!body || !withUserId || !myId) return;
+
+    const { error } = await supabase.from("messages").insert({ sender_id: myId, recipient_id: withUserId, body });
+    if (error) {
+      alert(`Couldn't send: ${error.message}`);
+      return;
+    }
+    input.value = "";
+    loadConversation();
+  });
+
+  document.getElementById("message-input")!.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") document.getElementById("message-send")!.click();
+  });
+
+  async function loadConversationsList() {
+    const { data: messages } = await supabase
+      .from("messages")
+      .select("sender_id, recipient_id, body, created_at")
+      .or(`sender_id.eq.${myId},recipient_id.eq.${myId}`)
+      .order("created_at", { ascending: false });
+
+    if (!messages || messages.length === 0) {
+      document.getElementById("conversations-empty")!.classList.remove("hidden");
+      return;
+    }
+
+    const seen = new Set<string>();
+    const partners: { id: string; lastMessage: string }[] = [];
+    for (const m of messages) {
+      const otherId = m.sender_id === myId ? m.recipient_id : m.sender_id;
+      if (!seen.has(otherId)) {
+        seen.add(otherId);
+        partners.push({ id: otherId, lastMessage: m.body });
+      }
+    }
+
+    const profileIds = partners.map((p) => p.id);
+    const { data: profiles } = await supabase.from("profiles").select("id, username, display_name").in("id", profileIds);
+    const profileMap = new Map((profiles ?? []).map((p) => [p.id, p]));
+
+    document.getElementById("conversations-list")!.innerHTML = partners
+      .map((p) => {
+        const profile = profileMap.get(p.id);
+        const name = profile?.display_name || profile?.username || "Member";
+        return `
+          <a href="/account/messages/?with=${p.id}" class="block rounded-xl border border-sand-light bg-white p-4 hover:border-royal">
+            <p class="font-medium text-ink">${escapeHtml(name)}</p>
+            <p class="mt-0.5 truncate text-sm text-ink/50">${escapeHtml(p.lastMessage)}</p>
+          </a>
+        `;
+      })
+      .join("");
+  }
+
+  async function init() {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
+      window.location.href = "/account/login/";
+      return;
+    }
+    myId = data.session.user.id;
+
+    document.getElementById("checking")!.classList.add("hidden");
+    document.getElementById("page-content")!.classList.remove("hidden");
+
+    if (withUserId) {
+      document.getElementById("conversation-view")!.classList.remove("hidden");
+      loadConversation();
+    } else {
+      document.getElementById("no-conversation")!.classList.remove("hidden");
+      loadConversationsList();
+    }
+  }
+
+  init();
+</script>
