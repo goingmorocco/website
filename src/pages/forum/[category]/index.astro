@@ -2,16 +2,6 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import Container from "../../../components/Container.astro";
 
-// The 4 categories are fixed and known in advance (seeded once in
-// supabase-schema.sql), so unlike threads/profiles these CAN be real static
-// routes — better for SEO than the query-param shell pattern used for
-// user-generated content. If you ever add a 5th category in Supabase,
-// add its slug + names here too, or this list will silently miss it.
-//
-// This array is defined INSIDE getStaticPaths rather than at the top of the
-// file: Astro compiles getStaticPaths into its own isolated scope during the
-// build, so it can't close over a sibling top-level const the way normal
-// JavaScript would suggest — it has to be fully self-contained.
 export function getStaticPaths() {
   const categories = [
     { slug: "my-experience", nameEn: "My Experience in Morocco", nameAr: "تجربتي في المغرب" },
@@ -31,21 +21,23 @@ const { cat } = Astro.props;
   description={`${cat.nameEn} — read and share posts in this category.`}
   alternateUrls={{ en: `/forum/${cat.slug}/`, ar: `/ar/forum/${cat.slug}/` }}
 >
-  <Container class="max-w-3xl py-16" data-category-slug={cat.slug}>
-    <a href="/forum/" class="text-sm text-royal hover:underline">← All Categories</a>
-    <div class="mt-3 flex items-center justify-between">
-      <h1 class="font-display text-3xl text-ink">{cat.nameEn}</h1>
-      <a
-        href={`/account/dashboard/new-thread/?category=${cat.slug}`}
-        class="rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white hover:bg-royal-dark"
-      >
-        + New Post
-      </a>
-    </div>
+  <Container class="max-w-3xl py-16">
+    <div data-category-slug={cat.slug}>
+      <a href="/forum/" class="text-sm text-royal hover:underline">← All Categories</a>
+      <div class="mt-3 flex items-center justify-between">
+        <h1 class="font-display text-3xl text-ink">{cat.nameEn}</h1>
+        <a
+          href={`/account/dashboard/new-thread/?category=${cat.slug}`}
+          class="rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white hover:bg-royal-dark"
+        >
+          + New Post
+        </a>
+      </div>
 
-    <div id="threads-loading" class="mt-8 text-ink/50">Loading posts…</div>
-    <div id="threads-empty" class="mt-8 hidden text-ink/50">No posts here yet — be the first to share something.</div>
-    <div id="threads-list" class="mt-8 hidden space-y-4"></div>
+      <div id="threads-loading" class="mt-8 text-ink/50">Loading posts…</div>
+      <div id="threads-empty" class="mt-8 hidden text-ink/50">No posts here yet — be the first to share something.</div>
+      <div id="threads-list" class="mt-8 hidden space-y-4"></div>
+    </div>
   </Container>
 </BaseLayout>
 
