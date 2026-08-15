@@ -24,6 +24,9 @@ const prefix = locale === "ar" ? "/ar" : "";
   </div>
 
   <div data-logged-in class="hidden items-center gap-3">
+    <a data-admin-link href={`${prefix}/admin/`} class="hidden text-sm font-semibold text-royal hover:underline">
+      {locale === "ar" ? "الإدارة" : "Admin"}
+    </a>
     <a href={`${prefix}/account/dashboard/`} class="text-sm font-medium text-ink/80 hover:text-royal">
       {locale === "ar" ? "لوحتي" : "Dashboard"}
     </a>
@@ -47,8 +50,24 @@ const prefix = locale === "ar" ? "/ar" : "";
     });
   }
 
+  async function checkAdmin() {
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) return;
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", sessionData.session.user.id)
+      .single();
+
+    if (profile?.role === "admin") {
+      document.querySelectorAll<HTMLElement>("[data-admin-link]").forEach((el) => el.classList.remove("hidden"));
+    }
+  }
+
   supabase.auth.getSession().then(({ data }) => render(!!data.session));
   supabase.auth.onAuthStateChange((_event, session) => render(!!session));
+  checkAdmin();
 
   document.querySelectorAll<HTMLButtonElement>("[data-logout-btn]").forEach((btn) => {
     btn.addEventListener("click", async () => {
