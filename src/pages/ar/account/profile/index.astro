@@ -28,6 +28,19 @@ import Container from "../../../../components/Container.astro";
       </div>
       <p id="profile-bio" class="mt-6 text-ink/80"></p>
       <p id="profile-joined" class="mt-4 text-sm text-ink/50"></p>
+      <a id="profile-edit-link" href="/ar/account/settings/" class="mt-4 hidden inline-block rounded-full border border-royal px-4 py-1.5 text-sm font-semibold text-royal hover:bg-royal hover:text-white">
+        تعديل الملف الشخصي
+      </a>
+
+      <div class="mt-8 flex gap-2 border-b border-sand-light">
+        <button data-tab="posts" class="tab-btn border-b-2 border-royal px-3 py-2 text-sm font-medium text-royal">المنشورات</button>
+        <button data-tab="comments" class="tab-btn border-b-2 border-transparent px-3 py-2 text-sm font-medium text-ink/60 hover:text-royal">التعليقات</button>
+        <button data-tab="likes" class="tab-btn border-b-2 border-transparent px-3 py-2 text-sm font-medium text-ink/60 hover:text-royal">المنشورات المعجب بها</button>
+      </div>
+
+      <div id="tab-posts" class="tab-panel mt-4 space-y-3"></div>
+      <div id="tab-comments" class="tab-panel mt-4 hidden space-y-3"></div>
+      <div id="tab-likes" class="tab-panel mt-4 hidden space-y-3"></div>
     </div>
   </Container>
 </BaseLayout>
@@ -42,6 +55,10 @@ import Container from "../../../../components/Container.astro";
   const notFoundEl = document.getElementById("profile-not-found")!;
   const contentEl = document.getElementById("profile-content")!;
 
+  function escapeHtml(text: string): string {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
   async function loadProfile() {
     if (!username) {
       loadingEl.classList.add("hidden");
@@ -51,7 +68,7 @@ import Container from "../../../../components/Container.astro";
 
     const { data, error } = await supabase
       .from("profiles")
-      .select("username, display_name, avatar_url, bio, role, created_at")
+      .select("id, username, display_name, avatar_url, bio, role, created_at")
       .eq("username", username)
       .single();
 
@@ -76,7 +93,81 @@ import Container from "../../../../components/Container.astro";
     }
 
     contentEl.classList.remove("hidden");
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (sessionData.session?.user.id === data.id) {
+      document.getElementById("profile-edit-link")!.classList.remove("hidden");
+    }
+
+    loadActivity(data.id);
   }
+
+  async function loadActivity(profileId: string) {
+    const [{ data: posts }, { data: comments }, { data: likes }] = await Promise.all([
+      supabase
+        .from("forum_threads")
+        .select("slug, title, created_at")
+        .eq("author_id", profileId)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("forum_comments")
+        .select("body, created_at, forum_threads(slug, title)")
+        .eq("author_id", profileId)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("forum_reactions")
+        .select("created_at, forum_threads(slug, title)")
+        .eq("user_id", profileId)
+        .not("thread_id", "is", null)
+        .order("created_at", { ascending: false }),
+    ]);
+
+    const postsEl = document.getElementById("tab-posts")!;
+    postsEl.innerHTML = posts && posts.length
+      ? posts.map((p: any) => `
+          <a href="/ar/forum/thread/?slug=${encodeURIComponent(p.slug)}" class="block rounded-xl border border-sand-light bg-white p-4 hover:border-royal">
+            <p class="font-medium text-ink">${escapeHtml(p.title)}</p>
+            <p class="mt-0.5 text-xs text-ink/50">${new Date(p.created_at).toLocaleDateString("ar", { year: "numeric", month: "short", day: "numeric" })}</p>
+          </a>
+        `).join("")
+      : `<p class="text-sm text-ink/50">لا توجد منشورات بعد.</p>`;
+
+    const commentsEl = document.getElementById("tab-comments")!;
+    commentsEl.innerHTML = comments && comments.length
+      ? comments.map((c: any) => `
+          <div class="rounded-xl border border-sand-light bg-white p-4">
+            <p class="text-sm text-ink/80">${escapeHtml(c.body)}</p>
+            <p class="mt-1 text-xs text-ink/50">
+              على ${c.forum_threads ? `<a href="/ar/forum/thread/?slug=${encodeURIComponent(c.forum_threads.slug)}" class="text-royal hover:underline">${escapeHtml(c.forum_threads.title)}</a>` : "(منشور محذوف)"}
+              · ${new Date(c.created_at).toLocaleDateString("ar", { year: "numeric", month: "short", day: "numeric" })}
+            </p>
+          </div>
+        `).join("")
+      : `<p class="text-sm text-ink/50">لا توجد تعليقات بعد.</p>`;
+
+    const likesEl = document.getElementById("tab-likes")!;
+    likesEl.innerHTML = likes && likes.length
+      ? likes.map((l: any) => l.forum_threads ? `
+          <a href="/ar/forum/thread/?slug=${encodeURIComponent(l.forum_threads.slug)}" class="block rounded-xl border border-sand-light bg-white p-4 hover:border-royal">
+            <p class="font-medium text-ink">❤️ ${escapeHtml(l.forum_threads.title)}</p>
+          </a>
+        ` : "").join("")
+      : `<p class="text-sm text-ink/50">لا توجد منشورات معجب بها بعد.</p>`;
+  }
+
+  document.querySelectorAll<HTMLButtonElement>(".tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-btn").forEach((b) => {
+        b.classList.remove("border-royal", "text-royal");
+        b.classList.add("border-transparent", "text-ink/60");
+      });
+      btn.classList.add("border-royal", "text-royal");
+      btn.classList.remove("border-transparent", "text-ink/60");
+
+      document.querySelectorAll(".tab-panel").forEach((p) => p.classList.add("hidden"));
+      document.getElementById(`tab-${btn.dataset.tab}`)!.classList.remove("hidden");
+    });
+  });
 
   loadProfile();
 </script>
