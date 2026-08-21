@@ -1,15 +1,12 @@
 ---
-import { type Locale } from "../utils/i18n";
-
 interface Props {
-  locale: Locale;
+  locale: "en" | "ar";
   placeholder: string;
   noResults: string;
   label: string;
-  /** Unique suffix so multiple SearchBox instances on one page (desktop nav +
-   * mobile nav) don't collide on id="site-search" — duplicate IDs meant the
-   * search script always bound to whichever instance appeared first in the
-   * DOM (desktop), leaving the mobile input completely unwired. */
+  /** Unique suffix so multiple SearchBox instances on one page don't
+   * collide on id="site-search" — duplicate IDs meant the search script
+   * always bound to whichever instance appeared first in the DOM. */
   instanceId: string;
 }
 const { locale, placeholder, noResults, label, instanceId } = Astro.props;
@@ -17,7 +14,7 @@ const inputId = `site-search-${instanceId}`;
 const resultsId = `search-results-${instanceId}`;
 ---
 
-<div class="relative" data-search-root>
+<div class="relative w-full" data-search-root data-locale={locale}>
   <label for={inputId} class="sr-only">{label}</label>
   <div class="relative flex items-center">
     <svg
@@ -34,30 +31,25 @@ const resultsId = `search-results-${instanceId}`;
       autocomplete="off"
       spellcheck="false"
       placeholder={placeholder}
-      data-locale={locale}
-      class="w-full rounded-full border border-sand-light bg-white py-2 ps-9 pe-4 text-sm text-ink placeholder-ink/40 focus:border-royal focus:outline-none focus-visible:ring-2 focus-visible:ring-royal sm:w-56"
+      class="w-full rounded-full border border-sand-light bg-white py-2 ps-9 pe-4 text-sm text-ink placeholder-ink/40 focus:border-royal focus:outline-none focus-visible:ring-2 focus-visible:ring-royal"
       aria-autocomplete="list"
       aria-controls={resultsId}
       aria-expanded="false"
     />
   </div>
 
-  <!-- Dropdown -->
   <div
     id={resultsId}
     role="listbox"
     data-no-results={noResults}
-    class="absolute start-0 top-full z-50 mt-1 hidden w-80 overflow-hidden rounded-xl border border-sand-light bg-white shadow-xl"
+    class="absolute start-0 top-full z-50 mt-1 hidden w-full min-w-[20rem] overflow-hidden rounded-xl border border-sand-light bg-white shadow-xl"
   ></div>
 </div>
 
 <script>
-  // Reads the pre-built /search.json index (generated at build time from all
-  // content collections). No external search service needed — pure static.
-  // Matching: case-insensitive substring on title + description + tags, filtered
-  // by the current locale so English search never surfaces Arabic posts.
+  import { supabase } from "../utils/supabaseClient";
 
-  interface PostEntry {
+  interface BlogEntry {
     title: string;
     description: string;
     url: string;
@@ -66,27 +58,31 @@ const resultsId = `search-results-${instanceId}`;
     tags: string[];
   }
 
-  // Shared across every instance on the page (desktop + mobile) so the
-  // /search.json index is only ever fetched once, no matter how many
-  // SearchBox instances are present.
-  let index: PostEntry[] | null = null;
-  let indexPromise: Promise<void> | null = null;
-
-  async function loadIndex() {
-    if (index) return;
-    if (!indexPromise) {
-      indexPromise = fetch("/search.json")
-        .then((res) => res.json())
-        .then((data) => { index = data; })
-        .catch(() => { index = []; });
-    }
-    await indexPromise;
+  interface MergedResult {
+    title: string;
+    snippet: string;
+    url: string;
+    kind: "blog" | "forum";
   }
 
-  function search(query: string, locale: string): PostEntry[] {
-    if (!index || query.length < 2) return [];
+  let blogIndex: BlogEntry[] | null = null;
+  let blogIndexPromise: Promise<void> | null = null;
+
+  async function loadBlogIndex() {
+    if (blogIndex) return;
+    if (!blogIndexPromise) {
+      blogIndexPromise = fetch("/search.json")
+        .then((res) => res.json())
+        .then((data) => { blogIndex = data; })
+        .catch(() => { blogIndex = []; });
+    }
+    await blogIndexPromise;
+  }
+
+  function searchBlog(query: string, locale: string): MergedResult[] {
+    if (!blogIndex) return [];
     const q = query.toLowerCase();
-    return index
+    return blogIndex
       .filter(
         (p) =>
           p.locale === locale &&
@@ -94,7 +90,26 @@ const resultsId = `search-results-${instanceId}`;
             p.description.toLowerCase().includes(q) ||
             p.tags.some((t) => t.toLowerCase().includes(q)))
       )
-      .slice(0, 7);
+      .slice(0, 5)
+      .map((p) => ({ title: p.title, snippet: p.description, url: p.url, kind: "blog" as const }));
+  }
+
+  async function searchForum(query: string, locale: string): Promise<MergedResult[]> {
+    const { data, error } = await supabase
+      .from("forum_threads")
+      .select("title, slug")
+      .ilike("title", `%${query}%`)
+      .limit(5);
+
+    if (error || !data) return [];
+
+    const prefix = locale === "ar" ? "/ar/forum/thread/" : "/forum/thread/";
+    return data.map((t) => ({
+      title: t.title,
+      snippet: locale === "ar" ? "منتدى" : "Forum post",
+      url: `${prefix}?slug=${encodeURIComponent(t.slug)}`,
+      kind: "forum" as const,
+    }));
   }
 
   function highlight(text: string, query: string): string {
@@ -102,25 +117,31 @@ const resultsId = `search-results-${instanceId}`;
     return text.replace(new RegExp(`(${escaped})`, "gi"), "<mark class='bg-sand-light rounded px-0.5'>$1</mark>");
   }
 
-  // Initializes one SearchBox instance (its own input + dropdown), fully
-  // scoped to that instance's root so multiple instances on the same page
-  // (desktop nav + mobile nav) never interfere with each other.
   function initInstance(root: HTMLElement) {
     const input = root.querySelector<HTMLInputElement>("input[type='search']");
     const dropdown = root.querySelector<HTMLElement>("[role='listbox']");
     if (!input || !dropdown) return;
 
-    const locale = input.dataset.locale ?? "en";
+    const locale = root.dataset.locale ?? "en";
     const noResultsLabel = dropdown.dataset.noResults ?? "No results found";
     let activeIndex = -1;
+    let requestToken = 0;
 
-    function renderResults(results: PostEntry[], query: string) {
+    function renderResults(blogResults: MergedResult[], forumResults: MergedResult[], query: string) {
       activeIndex = -1;
       if (!dropdown) return;
-      if (results.length === 0) {
+
+      if (blogResults.length === 0 && forumResults.length === 0) {
         dropdown.innerHTML = `<p class="px-4 py-3 text-sm text-ink/60">${noResultsLabel}</p>`;
-      } else {
-        dropdown.innerHTML = results
+        showDropdown();
+        return;
+      }
+
+      const sectionLabel = (label: string) =>
+        `<p class="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-ink/40">${label}</p>`;
+
+      const renderGroup = (results: MergedResult[]) =>
+        results
           .map(
             (r, i) => `
             <a
@@ -130,11 +151,15 @@ const resultsId = `search-results-${instanceId}`;
               class="flex flex-col gap-0.5 px-4 py-3 text-sm hover:bg-sand-light/60 focus:bg-sand-light/60 focus:outline-none border-b border-sand-light/60 last:border-0"
             >
               <span class="font-medium text-ink">${highlight(r.title, query)}</span>
-              <span class="text-xs text-ink/60 line-clamp-1">${highlight(r.description, query)}</span>
+              <span class="text-xs text-ink/60 line-clamp-1">${highlight(r.snippet, query)}</span>
             </a>`
           )
           .join("");
-      }
+
+      dropdown.innerHTML =
+        (blogResults.length ? sectionLabel(locale === "ar" ? "المدونة" : "Blog") + renderGroup(blogResults) : "") +
+        (forumResults.length ? sectionLabel(locale === "ar" ? "المنتدى" : "Forum") + renderGroup(forumResults) : "");
+
       showDropdown();
     }
 
@@ -162,13 +187,21 @@ const resultsId = `search-results-${instanceId}`;
       }
     }
 
-    input.addEventListener("focus", loadIndex);
+    input.addEventListener("focus", loadBlogIndex);
 
     input.addEventListener("input", async () => {
       const q = input.value.trim();
       if (q.length < 2) { hideDropdown(); return; }
-      await loadIndex();
-      renderResults(search(q, locale), q);
+
+      const myToken = ++requestToken;
+      await loadBlogIndex();
+      const blogResults = searchBlog(q, locale);
+      const forumResults = await searchForum(q, locale);
+
+      // If another keystroke happened while the forum query was in flight,
+      // drop this stale response instead of overwriting newer results.
+      if (myToken !== requestToken) return;
+      renderResults(blogResults, forumResults, q);
     });
 
     input.addEventListener("keydown", (e) => {

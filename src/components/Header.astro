@@ -36,6 +36,17 @@ const navItems = [
       <Logo height={80} />
     </a>
 
+    <!-- Search: always visible, not gated behind any breakpoint -->
+    <div class="min-w-0 flex-1 max-w-xs sm:max-w-sm lg:max-w-md">
+      <SearchBox
+        locale={locale}
+        placeholder={strings.search.placeholder}
+        noResults={strings.search.noResults}
+        label={strings.search.label}
+        instanceId="header"
+      />
+    </div>
+
     <!-- Desktop nav -->
     <nav aria-label="Main navigation" class="hidden items-center gap-4 2xl:flex">
       {navItems.map((item) => (
@@ -50,15 +61,8 @@ const navItems = [
       ))}
     </nav>
 
-    <!-- Desktop: Search + language switcher -->
+    <!-- Desktop: language switcher, notifications, account -->
     <div class="hidden items-center gap-3 2xl:flex">
-      <SearchBox
-        locale={locale}
-        placeholder={strings.search.placeholder}
-        noResults={strings.search.noResults}
-        label={strings.search.label}
-        instanceId="desktop"
-      />
       <LanguageSwitcher currentLocale={locale} alternateUrls={alternateUrls} />
       <NotificationBell locale={locale} />
       <AccountWidget locale={locale} />
@@ -85,16 +89,6 @@ const navItems = [
   <!-- Mobile nav panel -->
   <nav id="mobile-nav" aria-label="Mobile navigation" class="hidden border-t border-sand-light bg-paper 2xl:hidden">
     <Container class="flex flex-col gap-1 py-3">
-      <!-- Mobile search -->
-      <div class="pb-2 pt-1">
-        <SearchBox
-          locale={locale}
-          placeholder={strings.search.placeholder}
-          noResults={strings.search.noResults}
-          label={strings.search.label}
-          instanceId="mobile"
-        />
-      </div>
       {navItems.map((item) => (
         <a
           href={item.href}

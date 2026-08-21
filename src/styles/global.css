@@ -1,29 +1,21 @@
 @import "tailwindcss";
 
 /*
-  Self-hosted via @fontsource-variable (not Google Fonts CDN): one origin
-  instead of two (no extra DNS/TLS handshake to fonts.googleapis.com), works
-  offline/in restricted networks, and ships as a single variable font per
-  family instead of one file per weight. Using the weight-axis-only build
-  (`wght.css`, not `full.css`) skips the optical-size and italic axes we
-  don't use, which keeps the file smaller.
-  Each family's CSS is itself split into multiple @font-face blocks by
-  unicode-range (latin vs arabic, etc.), so the browser only ever downloads
-  the subset actually needed for the characters on the page.
+  Self-hosted via @fontsource (not Google Fonts CDN): one origin instead of
+  two (no extra DNS/TLS handshake to fonts.googleapis.com), works offline/in
+  restricted networks. Inter ships as a variable font (one file, all
+  weights); Almarai isn't published as a variable font on Google Fonts, so
+  it's loaded as two fixed weights (regular + bold) instead.
 */
-@import "@fontsource-variable/fraunces/wght.css";
 @import "@fontsource-variable/inter/wght.css";
-@import "@fontsource-variable/markazi-text/wght.css";
-@import "@fontsource-variable/noto-sans-arabic/wght.css";
+@import "@fontsource/almarai/400.css";
+@import "@fontsource/almarai/700.css";
 
 /*
   Design tokens for GoingMorocco.
   Palette: royal blue (trust, the Atlantic/Mediterranean coast) paired with
-  warm sand/gold (the desert interior) on a warm off-white paper background —
+  warm sand/gold (the desert interior) on a pure white background —
   deliberately not a generic "travel blue gradient" or cream+terracotta combo.
-  Full rationale and the rest of the type/layout system lands in Step 2
-  (layout + components); this file defines the tokens so every later step
-  draws from the same palette instead of re-deciding colors per component.
 */
 @theme {
   --color-paper: #ffffff; /* page background: pure white */
@@ -40,13 +32,15 @@
      for here) — gold-text hits ~4.7:1, verified against both backgrounds. */
   --color-gold-text: #8a6a35;
 
-  --font-display: "Fraunces Variable", "Markazi Text Variable", serif;
-  --font-body: "Inter Variable", "Noto Sans Arabic Variable", system-ui, sans-serif;
+  /* Unified to Inter (English) / Almarai (Arabic) for both headings and
+     body text — no separate display/serif typeface anymore. */
+  --font-display: "Inter Variable", system-ui, sans-serif;
+  --font-body: "Inter Variable", system-ui, sans-serif;
 }
 
 html[lang="ar"] {
-  --font-display: "Markazi Text Variable", "Fraunces Variable", serif;
-  --font-body: "Noto Sans Arabic Variable", "Inter Variable", system-ui, sans-serif;
+  --font-display: "Almarai", system-ui, sans-serif;
+  --font-body: "Almarai", system-ui, sans-serif;
 }
 
 body {
@@ -147,11 +141,10 @@ textarea:focus-visible {
 .prose-content img {
   border-radius: 1rem;
 }
+
 /*
-  Add this to the END of your existing src/styles/global.css.
   Responsive 16:9 box for YouTube embeds inside forum posts — without this,
-  the raw <iframe> the embed node renders has no explicit size and would
-  show up tiny or broken.
+  the raw <iframe> the embed node renders has no explicit size.
 */
 .embed-youtube {
   position: relative;
@@ -168,31 +161,42 @@ textarea:focus-visible {
   height: 100%;
   border: 0;
 }
-/*
-  Newspaper theme for the homepage — append this to the END of your
-  src/styles/global.css.
 
-  Scoped under .newspaper-home so it ONLY affects elements wrapped in that
-  class, not the whole site. Hero and ToolPromoSection (Flights/Itinerary)
-  are deliberately left untouched, per request — don't wrap those.
+/*
+  Site-wide card styling: smaller corner radius (~75% smaller than
+  Tailwind's defaults) and thicker 2px borders on card-style elements.
+*/
+.rounded-xl {
+  border-radius: 3px !important;
+}
+.rounded-2xl {
+  border-radius: 4px !important;
+}
+.rounded-lg {
+  border-radius: 2px !important;
+}
+.rounded-xl.border,
+.rounded-2xl.border {
+  border-width: 2px !important;
+}
+
+/*
+  Newspaper theme — opt-in via the .newspaper-home wrapper class, currently
+  used on most homepage sections (not the Hero or the Flights/Itinerary
+  promo sections, which keep their normal styling).
 */
 .newspaper-home {
   background-color: #ffffff !important;
 }
-
 .newspaper-home * {
   color: #000000 !important;
 }
-
-/* Cards: anything with your existing rounded/border card styling gets a
-   solid black border instead of the soft sand-light one. */
 .newspaper-home .rounded-xl,
 .newspaper-home .rounded-2xl {
   border-color: #000000 !important;
   border-width: 1.5px !important;
   box-shadow: none !important;
 }
-
 .newspaper-home a:hover {
   text-decoration: underline;
 }
