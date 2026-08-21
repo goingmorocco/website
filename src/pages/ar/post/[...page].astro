@@ -29,7 +29,7 @@ for (const post of page.data) {
   locale={locale}
   title={page.currentPage === 1 ? "المدونة — غوينغ موروكو" : `المدونة — صفحة ${page.currentPage} — غوينغ موروكو`}
   description="جميع أدلة السفر إلى المغرب من غوينغ موروكو: الصحراء، جبال الأطلس، المدن العتيقة، الطعام، وتخطيط الرحلات."
-  alternateUrls={page.currentPage === 1 ? { en: "/post/", ar: "/ar/post/" } : {}}
+  alternateUrls={{ en: "/post/", ar: "/ar/post/" }}
 >
   <Container class="py-12">
     <h1 class="font-display text-3xl text-ink">المدونة</h1>
