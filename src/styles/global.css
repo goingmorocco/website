@@ -168,3 +168,31 @@ textarea:focus-visible {
   height: 100%;
   border: 0;
 }
+/*
+  Newspaper theme for the homepage — append this to the END of your
+  src/styles/global.css.
+
+  Scoped under .newspaper-home so it ONLY affects elements wrapped in that
+  class, not the whole site. Hero and ToolPromoSection (Flights/Itinerary)
+  are deliberately left untouched, per request — don't wrap those.
+*/
+.newspaper-home {
+  background-color: #ffffff !important;
+}
+
+.newspaper-home * {
+  color: #000000 !important;
+}
+
+/* Cards: anything with your existing rounded/border card styling gets a
+   solid black border instead of the soft sand-light one. */
+.newspaper-home .rounded-xl,
+.newspaper-home .rounded-2xl {
+  border-color: #000000 !important;
+  border-width: 1.5px !important;
+  box-shadow: none !important;
+}
+
+.newspaper-home a:hover {
+  text-decoration: underline;
+}
