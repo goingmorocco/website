@@ -37,7 +37,7 @@ const navItems = [
     </a>
 
     <!-- Desktop nav -->
-    <nav aria-label="Main navigation" class="hidden items-center gap-4 xl:flex">
+    <nav aria-label="Main navigation" class="hidden items-center gap-4 2xl:flex">
       {navItems.map((item) => (
         <a
           href={item.href}
@@ -51,7 +51,7 @@ const navItems = [
     </nav>
 
     <!-- Desktop: Search + language switcher -->
-    <div class="hidden items-center gap-3 xl:flex">
+    <div class="hidden items-center gap-3 2xl:flex">
       <SearchBox
         locale={locale}
         placeholder={strings.search.placeholder}
@@ -70,7 +70,7 @@ const navItems = [
       data-menu-trigger
       aria-expanded="false"
       aria-controls="mobile-nav"
-      class="inline-flex h-10 w-10 items-center justify-center rounded-md text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal xl:hidden"
+      class="inline-flex h-10 w-10 items-center justify-center rounded-md text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal 2xl:hidden"
     >
       <span class="sr-only">Open menu</span>
       <svg data-menu-icon-open width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -83,7 +83,7 @@ const navItems = [
   </Container>
 
   <!-- Mobile nav panel -->
-  <nav id="mobile-nav" aria-label="Mobile navigation" class="hidden border-t border-sand-light bg-paper xl:hidden">
+  <nav id="mobile-nav" aria-label="Mobile navigation" class="hidden border-t border-sand-light bg-paper 2xl:hidden">
     <Container class="flex flex-col gap-1 py-3">
       <!-- Mobile search -->
       <div class="pb-2 pt-1">

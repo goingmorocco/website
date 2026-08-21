@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Container from "../../../components/Container.astro";
+import Button from "../../../components/Button.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="Forgot Password | GoingMorocco"
+  description="Reset your GoingMorocco account password."
+  alternateUrls={{ en: "/account/forgot-password/", ar: "/ar/account/forgot-password/" }}
+>
+  <Container class="max-w-md py-16">
+    <h1 class="font-display text-3xl text-ink">Reset your password</h1>
+    <p class="mt-2 text-ink/70">Enter your email and we'll send you a link to set a new password.</p>
+
+    <form id="forgot-form" class="mt-8 space-y-4">
+      <div>
+        <label for="email" class="mb-1 block text-sm font-medium text-ink">Email</label>
+        <input id="email" name="email" type="email" required
+          class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+      </div>
+
+      <p id="forgot-error" class="hidden text-sm text-red-600"></p>
+      <p id="forgot-success" class="hidden text-sm text-green-700"></p>
+
+      <Button type="submit" class="w-full">Send Reset Link</Button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-ink/60">
+      <a href="/account/login/" class="font-medium text-royal hover:underline">Back to log in</a>
+    </p>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../../utils/supabaseClient";
+
+  const form = document.getElementById("forgot-form") as HTMLFormElement;
+  const errorEl = document.getElementById("forgot-error")!;
+  const successEl = document.getElementById("forgot-success")!;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl.classList.add("hidden");
+    successEl.classList.add("hidden");
+
+    const email = (new FormData(form).get("email") as string).trim();
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/account/reset-password/`,
+    });
+
+    if (error) {
+      errorEl.textContent = error.message;
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    successEl.textContent = "If that email has an account, a reset link is on its way. Check your inbox.";
+    successEl.classList.remove("hidden");
+    form.reset();
+  });
+</script>

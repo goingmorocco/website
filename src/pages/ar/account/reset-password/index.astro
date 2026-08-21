@@ -1,0 +1,99 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Container from "../../../../components/Container.astro";
+import Button from "../../../../components/Button.astro";
+---
+
+<BaseLayout
+  locale="ar"
+  title="تعيين كلمة مرور جديدة | GoingMorocco"
+  description="عيّن كلمة مرور جديدة لحسابك في GoingMorocco."
+  alternateUrls={{ en: "/account/reset-password/", ar: "/ar/account/reset-password/" }}
+>
+  <Container class="max-w-md py-16">
+    <div id="checking" class="text-center text-ink/50">جارٍ التحقق من رابط إعادة التعيين…</div>
+
+    <div id="invalid-link" class="hidden text-center">
+      <p class="text-ink/70">هذا الرابط غير صالح أو منتهي الصلاحية.</p>
+      <a href="/ar/account/forgot-password/" class="mt-2 inline-block text-royal hover:underline">اطلب رابطاً جديداً</a>
+    </div>
+
+    <div id="reset-form-wrap" class="hidden">
+      <h1 class="font-display text-3xl text-ink">تعيين كلمة مرور جديدة</h1>
+
+      <form id="reset-form" class="mt-8 space-y-4">
+        <div>
+          <label for="new-password" class="mb-1 block text-sm font-medium text-ink">كلمة المرور الجديدة</label>
+          <input id="new-password" type="password" required minlength="8"
+            class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+        </div>
+        <div>
+          <label for="confirm-password" class="mb-1 block text-sm font-medium text-ink">تأكيد كلمة المرور</label>
+          <input id="confirm-password" type="password" required minlength="8"
+            class="w-full rounded-lg border border-sand-light px-3 py-2 focus:border-royal focus:outline-none" />
+        </div>
+
+        <p id="reset-error" class="hidden text-sm text-red-600"></p>
+        <p id="reset-success" class="hidden text-sm text-green-700"></p>
+
+        <Button type="submit" class="w-full">تحديث كلمة المرور</Button>
+      </form>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../../../utils/supabaseClient";
+
+  const checkingEl = document.getElementById("checking")!;
+  const invalidEl = document.getElementById("invalid-link")!;
+  const formWrapEl = document.getElementById("reset-form-wrap")!;
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === "PASSWORD_RECOVERY" || (event === "SIGNED_IN" && session)) {
+      checkingEl.classList.add("hidden");
+      formWrapEl.classList.remove("hidden");
+    }
+  });
+
+  setTimeout(async () => {
+    if (!formWrapEl.classList.contains("hidden")) return;
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      checkingEl.classList.add("hidden");
+      formWrapEl.classList.remove("hidden");
+    } else {
+      checkingEl.classList.add("hidden");
+      invalidEl.classList.remove("hidden");
+    }
+  }, 3000);
+
+  document.getElementById("reset-form")!.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById("reset-error")!;
+    const successEl = document.getElementById("reset-success")!;
+    errorEl.classList.add("hidden");
+    successEl.classList.add("hidden");
+
+    const newPassword = (document.getElementById("new-password") as HTMLInputElement).value;
+    const confirmPassword = (document.getElementById("confirm-password") as HTMLInputElement).value;
+
+    if (newPassword !== confirmPassword) {
+      errorEl.textContent = "كلمتا المرور غير متطابقتين.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+    if (error) {
+      errorEl.textContent = error.message;
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    successEl.textContent = "تم تحديث كلمة المرور! جارٍ تحويلك لتسجيل الدخول…";
+    successEl.classList.remove("hidden");
+    setTimeout(() => (window.location.href = "/ar/account/login/"), 2000);
+  });
+</script>
