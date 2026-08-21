@@ -154,10 +154,9 @@ textarea:focus-visible {
 }
 
 /* ============================================================
-   Card style: "Accent Edge" — medium rounded corners, no border,
-   soft shadow, colored top bar on text/icon cards (skipped on cards
-   with a photo, since the bar would cut across the image and the
-   photo already carries enough visual interest on its own).
+   Card style: "Soft Elevation" — medium rounded corners, no border,
+   soft resting shadow, deeper shadow + slight lift on hover. Applied
+   uniformly to every card site-wide.
    ============================================================ */
 .rounded-xl {
   border-radius: 12px !important;
@@ -172,8 +171,6 @@ textarea:focus-visible {
 .rounded-xl.border,
 .rounded-2xl.border {
   border: none !important;
-  position: relative;
-  overflow: hidden; /* keeps the accent bar's corners clipped to match the card's own rounding */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
@@ -184,14 +181,13 @@ textarea:focus-visible {
   transform: translateY(-2px);
 }
 
-.rounded-xl.border:not(:has(img))::before,
-.rounded-2xl.border:not(:has(img))::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 4px;
-  background-color: var(--color-royal);
+/* FAQ / Q&A accordion only: <details> is the one tag used exclusively for
+   this component anywhere on the site, so it's a safe, precise way to
+   scope this override without touching FAQSection.astro directly. Keeps
+   the shadow + hover lift from above, adds a thin black border on top. */
+details.rounded-xl.border,
+details.rounded-2xl.border {
+  border: 1px solid #000000 !important;
 }
 
 /*
