@@ -76,14 +76,6 @@ textarea:focus-visible {
 }
 
 /*
-  Logical properties only (ps-/pe-/ms-/me- via Tailwind's built-in support,
-  text-start/text-end) instead of pl-/pr-/text-left/text-right anywhere
-  direction-sensitive — this is what lets the exact same component markup
-  flip correctly between the LTR English site and the RTL Arabic site with
-  zero RTL-specific component variants.
-*/
-
-/*
   Article body typography. Hand-written rather than @tailwindcss/typography:
   this is a small, fully-known set of rules using only logical properties
   (margin-block, padding-inline-start), so it's guaranteed correct in RTL
@@ -143,8 +135,7 @@ textarea:focus-visible {
 }
 
 /*
-  Responsive 16:9 box for YouTube embeds inside forum posts — without this,
-  the raw <iframe> the embed node renders has no explicit size.
+  Responsive 16:9 box for YouTube embeds inside forum posts.
 */
 .embed-youtube {
   position: relative;
@@ -162,40 +153,58 @@ textarea:focus-visible {
   border: 0;
 }
 
-/*
-  Site-wide card styling: smaller corner radius (~75% smaller than
-  Tailwind's defaults) and thicker 2px borders on card-style elements.
-*/
+/* ============================================================
+   Card style: "Accent Edge" — medium rounded corners, no border,
+   soft shadow, colored top bar on text/icon cards (skipped on cards
+   with a photo, since the bar would cut across the image and the
+   photo already carries enough visual interest on its own).
+   ============================================================ */
 .rounded-xl {
-  border-radius: 3px !important;
+  border-radius: 12px !important;
 }
 .rounded-2xl {
-  border-radius: 4px !important;
+  border-radius: 14px !important;
 }
 .rounded-lg {
-  border-radius: 2px !important;
+  border-radius: 8px !important;
 }
+
 .rounded-xl.border,
 .rounded-2xl.border {
-  border-width: 2px !important;
+  border: none !important;
+  position: relative;
+  overflow: hidden; /* keeps the accent bar's corners clipped to match the card's own rounding */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.rounded-xl.border:hover,
+.rounded-2xl.border:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.rounded-xl.border:not(:has(img))::before,
+.rounded-2xl.border:not(:has(img))::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 4px;
+  background-color: var(--color-royal);
 }
 
 /*
-  Newspaper theme — opt-in via the .newspaper-home wrapper class, currently
-  used on most homepage sections (not the Hero or the Flights/Itinerary
-  promo sections, which keep their normal styling).
+  Newspaper theme — opt-in via the .newspaper-home wrapper class. Keeps the
+  white background / black text choice; no longer forces its own black
+  borders on cards, so the Accent Edge style above applies consistently
+  everywhere, homepage included.
 */
 .newspaper-home {
   background-color: #ffffff !important;
 }
 .newspaper-home * {
   color: #000000 !important;
-}
-.newspaper-home .rounded-xl,
-.newspaper-home .rounded-2xl {
-  border-color: #000000 !important;
-  border-width: 1.5px !important;
-  box-shadow: none !important;
 }
 .newspaper-home a:hover {
   text-decoration: underline;
