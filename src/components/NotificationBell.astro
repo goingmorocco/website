@@ -71,15 +71,19 @@ const { locale = "en" } = Astro.props;
       listEl.innerHTML = notifications
         .map((n) => {
           const date = new Date(n.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+          const truncatedBody = n.body && n.body.length > 80 ? n.body.slice(0, 80) + "…" : n.body;
           const content = `
             <p class="text-sm font-medium text-ink">${escapeHtml(n.title)}</p>
-            ${n.body ? `<p class="mt-0.5 text-xs text-ink/60">${escapeHtml(n.body)}</p>` : ""}
+            ${truncatedBody ? `<p class="mt-0.5 text-xs text-ink/60">${escapeHtml(truncatedBody)}</p>` : ""}
             <p class="mt-1 text-xs text-ink/40">${date}</p>
           `;
           const wrapperClass = `block rounded-lg p-2 hover:bg-sand-light/50 ${n.is_read ? "" : "bg-royal/5"}`;
+          // With a link: navigate straight to the related post/comment/activity.
+          // Without one: it's a plain notice, so open it in a lightbox instead
+          // of doing nothing visible (which is what happened before this fix).
           return n.link_url
             ? `<a href="${n.link_url}" data-mark-read="${n.id}" class="${wrapperClass}">${content}</a>`
-            : `<div data-mark-read="${n.id}" class="${wrapperClass} cursor-pointer">${content}</div>`;
+            : `<button type="button" data-open-lightbox="${n.id}" data-title="${escapeHtml(n.title)}" data-body="${escapeHtml(n.body ?? "")}" class="w-full text-start ${wrapperClass} cursor-pointer">${content}</button>`;
         })
         .join("");
 
@@ -88,7 +92,37 @@ const { locale = "en" } = Astro.props;
           await supabase.from("notifications").update({ is_read: true }).eq("id", el.dataset.markRead!);
         });
       });
+
+      listEl.querySelectorAll<HTMLElement>("[data-open-lightbox]").forEach((el) => {
+        el.addEventListener("click", async () => {
+          await supabase.from("notifications").update({ is_read: true }).eq("id", el.dataset.openLightbox!);
+          openLightbox(el.dataset.title ?? "", el.dataset.body ?? "");
+        });
+      });
     });
+  }
+
+  function openLightbox(title: string, body: string) {
+    let overlay = document.getElementById("notification-lightbox");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "notification-lightbox";
+      overlay.className = "fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4";
+      overlay.innerHTML = `
+        <div class="w-full max-w-sm rounded-xl bg-white p-6">
+          <h3 id="lightbox-title" class="font-display text-lg text-ink"></h3>
+          <p id="lightbox-body" class="mt-2 text-sm text-ink/70"></p>
+          <button id="lightbox-close" class="mt-4 rounded-full bg-royal px-5 py-2 text-sm font-semibold text-white">Close</button>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) overlay!.remove();
+      });
+      overlay.querySelector("#lightbox-close")!.addEventListener("click", () => overlay!.remove());
+    }
+    overlay.querySelector("#lightbox-title")!.textContent = title;
+    overlay.querySelector("#lightbox-body")!.textContent = body;
   }
 
   document.querySelectorAll<HTMLButtonElement>("[data-bell-toggle]").forEach((btn) => {

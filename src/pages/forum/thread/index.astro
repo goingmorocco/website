@@ -25,11 +25,12 @@ import Container from "../../../components/Container.astro";
       <div id="thread-body" class="prose-content mt-6"></div>
 
       <!-- Like -->
-      <div class="mt-6">
+      <div class="mt-6 flex items-center gap-3">
         <button id="like-btn" class="inline-flex items-center gap-2 rounded-full border border-sand-light px-4 py-2 text-sm font-medium text-ink/70 hover:border-royal">
           <span id="like-icon">🤍</span>
           <span id="like-count">0</span> likes
         </button>
+        <button id="report-btn" class="text-sm text-ink/40 hover:text-red-500">🚩 Report</button>
       </div>
 
       <!-- Share buttons -->
@@ -144,7 +145,49 @@ import Container from "../../../components/Container.astro";
 
     setupShareButtons(data.title);
     setupLikeButton();
+    setupReportButton(data.title);
     loadComments();
+  }
+
+  // ---------- Report ----------
+  function setupReportButton(postTitle: string) {
+    document.getElementById("report-btn")!.addEventListener("click", async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        window.location.href = "/account/login/";
+        return;
+      }
+
+      const reason = window.prompt("Why are you reporting this post? (This goes only to the site admin.)");
+      if (!reason || !reason.trim()) return;
+
+      const { error } = await supabase.from("reports").insert({
+        thread_id: threadId,
+        reporter_id: sessionData.session.user.id,
+        reason: reason.trim(),
+      });
+
+      if (error) {
+        alert(`Couldn't submit report: ${error.message}`);
+        return;
+      }
+
+      // Notify every admin — reports are rare enough that this is fine to do
+      // per-report rather than needing a queue/digest system.
+      const { data: admins } = await supabase.from("profiles").select("id").eq("role", "admin");
+      if (admins && admins.length > 0) {
+        await supabase.from("notifications").insert(
+          admins.map((a) => ({
+            user_id: a.id,
+            title: "New post report",
+            body: `"${postTitle}" was reported: ${reason.trim().slice(0, 100)}`,
+            link_url: "/admin/reports/",
+          }))
+        );
+      }
+
+      alert("Thanks — this has been reported to the admin.");
+    });
   }
 
   // ---------- Like button ----------

@@ -25,11 +25,12 @@ import Container from "../../../../components/Container.astro";
       <div id="thread-body" class="prose-content mt-6"></div>
 
       <!-- إعجاب -->
-      <div class="mt-6">
+      <div class="mt-6 flex items-center gap-3">
         <button id="like-btn" class="inline-flex items-center gap-2 rounded-full border border-sand-light px-4 py-2 text-sm font-medium text-ink/70 hover:border-royal">
           <span id="like-icon">🤍</span>
           <span id="like-count">0</span> إعجاب
         </button>
+        <button id="report-btn" class="text-sm text-ink/40 hover:text-red-500">🚩 إبلاغ</button>
       </div>
 
       <!-- أزرار المشاركة -->
@@ -143,7 +144,47 @@ import Container from "../../../../components/Container.astro";
 
     setupShareButtons(data.title);
     setupLikeButton();
+    setupReportButton(data.title);
     loadComments();
+  }
+
+  // ---------- الإبلاغ ----------
+  function setupReportButton(postTitle: string) {
+    document.getElementById("report-btn")!.addEventListener("click", async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        window.location.href = "/ar/account/login/";
+        return;
+      }
+
+      const reason = window.prompt("لماذا تُبلغ عن هذا المنشور؟ (يصل هذا فقط لمشرف الموقع.)");
+      if (!reason || !reason.trim()) return;
+
+      const { error } = await supabase.from("reports").insert({
+        thread_id: threadId,
+        reporter_id: sessionData.session.user.id,
+        reason: reason.trim(),
+      });
+
+      if (error) {
+        alert(`تعذّر إرسال البلاغ: ${error.message}`);
+        return;
+      }
+
+      const { data: admins } = await supabase.from("profiles").select("id").eq("role", "admin");
+      if (admins && admins.length > 0) {
+        await supabase.from("notifications").insert(
+          admins.map((a) => ({
+            user_id: a.id,
+            title: "بلاغ جديد عن منشور",
+            body: `تم الإبلاغ عن "${postTitle}": ${reason.trim().slice(0, 100)}`,
+            link_url: "/admin/reports/",
+          }))
+        );
+      }
+
+      alert("شكراً — تم إرسال هذا للمشرف.");
+    });
   }
 
   // ---------- زر الإعجاب ----------

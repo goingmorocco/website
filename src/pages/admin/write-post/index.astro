@@ -1,0 +1,224 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Container from "../../../components/Container.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="Write Blog Post | Admin | GoingMorocco"
+  description="Publish a new blog post."
+  alternateUrls={{ en: "/admin/write-post/", ar: "/admin/write-post/" }}
+>
+  <Container class="max-w-3xl py-16">
+    <div id="checking" class="text-center text-ink/50">Checking access…</div>
+
+    <div id="editor-wrap" class="hidden">
+      <a href="/account/dashboard/" class="text-sm text-royal hover:underline">← Dashboard</a>
+      <h1 class="mt-2 font-display text-3xl text-ink">Write a Blog Post</h1>
+      <p class="mt-1 text-sm text-ink/60">
+        This publishes a real, statically-generated blog post — same as your existing ones. It commits directly
+        to your GitHub repo and goes live after the next automatic rebuild (usually 1-3 minutes).
+      </p>
+
+      <form id="post-form" class="mt-8 space-y-6">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-ink">Language</label>
+            <select id="locale" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm">
+              <option value="en">English</option>
+              <option value="ar">Arabic</option>
+            </select>
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-ink">Category</label>
+            <select id="category" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm">
+              <option value="tourism">Going Morocco</option>
+              <option value="recipes">Moroccan Recipes</option>
+              <option value="handicrafts-products">Handicrafts & Products</option>
+              <option value="tours">Tours & Itineraries</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Title</label>
+          <input id="title" type="text" required maxlength="150" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm" />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">URL Slug</label>
+          <input id="slug" type="text" required class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm" />
+          <p class="mt-1 text-xs text-ink/50">Auto-filled from the title — edit if you want a different URL.</p>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Meta Description</label>
+          <textarea id="description" rows="2" maxlength="160" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm"></textarea>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Tags (comma separated)</label>
+          <input id="tags" type="text" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm" />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Featured Image</label>
+          <div id="cover-preview-wrap" class="hidden mb-2">
+            <img id="cover-preview" class="h-40 w-full rounded-lg object-cover" alt="" />
+          </div>
+          <label class="inline-block cursor-pointer rounded-full border border-royal px-4 py-1.5 text-sm font-semibold text-royal hover:bg-royal hover:text-white">
+            Upload Image
+            <input id="cover-input" type="file" accept="image/*" class="hidden" />
+          </label>
+          <input id="cover-alt" type="text" placeholder="Image alt text" class="mt-2 w-full rounded-lg border border-sand-light px-3 py-2 text-sm" />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Body</label>
+          <div data-editor-toolbar class="mb-2 flex flex-wrap gap-1 rounded-t-lg border border-b-0 border-sand-light bg-sand-light/30 p-2">
+            <button type="button" data-action="bold" class="rounded px-2 py-1 text-sm font-bold hover:bg-sand-light">B</button>
+            <button type="button" data-action="italic" class="rounded px-2 py-1 text-sm italic hover:bg-sand-light">I</button>
+            <button type="button" data-action="underline" class="rounded px-2 py-1 text-sm underline hover:bg-sand-light">U</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="h2" class="rounded px-2 py-1 text-sm font-semibold hover:bg-sand-light">H2</button>
+            <button type="button" data-action="h3" class="rounded px-2 py-1 text-sm font-semibold hover:bg-sand-light">H3</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="bullet-list" class="rounded px-2 py-1 text-sm hover:bg-sand-light">• List</button>
+            <button type="button" data-action="ordered-list" class="rounded px-2 py-1 text-sm hover:bg-sand-light">1. List</button>
+            <button type="button" data-action="blockquote" class="rounded px-2 py-1 text-sm hover:bg-sand-light">" Quote</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="link" class="rounded px-2 py-1 text-sm hover:bg-sand-light">🔗 Link</button>
+            <button type="button" data-action="image" class="rounded px-2 py-1 text-sm hover:bg-sand-light">🖼 Image</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="youtube" class="rounded px-2 py-1 text-sm hover:bg-sand-light">▶ YouTube</button>
+            <button type="button" data-action="instagram" class="rounded px-2 py-1 text-sm hover:bg-sand-light">📷 Instagram</button>
+            <button type="button" data-action="tiktok" class="rounded px-2 py-1 text-sm hover:bg-sand-light">🎵 TikTok</button>
+          </div>
+          <div id="editor-container" class="rounded-b-lg border border-sand-light bg-white px-4 py-3"></div>
+        </div>
+
+        <p id="post-error" class="hidden text-sm text-red-600"></p>
+        <p id="post-success" class="hidden text-sm text-green-700"></p>
+
+        <button type="submit" id="publish-btn" class="rounded-full bg-royal px-6 py-2.5 text-sm font-semibold text-white hover:bg-royal-dark">
+          Publish Post
+        </button>
+      </form>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { supabase } from "../../../utils/supabaseClient";
+  import { requireAdmin } from "../../../utils/adminGuard";
+  import { createForumEditor } from "../../../editor/forumEditor";
+  import { tiptapToMdx } from "../../../utils/tiptapToMdx";
+
+  const titleInput = document.getElementById("title") as HTMLInputElement;
+  const slugInput = document.getElementById("slug") as HTMLInputElement;
+  let slugManuallyEdited = false;
+  slugInput.addEventListener("input", () => { slugManuallyEdited = true; });
+
+  function slugify(title: string) {
+    return title.toLowerCase().trim().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").slice(0, 80);
+  }
+  titleInput.addEventListener("input", () => {
+    if (!slugManuallyEdited) slugInput.value = slugify(titleInput.value);
+  });
+
+  let coverImageUrl = "";
+  document.getElementById("cover-input")!.addEventListener("change", async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    const userId = sessionData.session!.user.id;
+    const path = `${userId}/blog-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
+
+    const { error } = await supabase.storage.from("forum-media").upload(path, file);
+    if (error) {
+      alert(`Upload failed: ${error.message}`);
+      return;
+    }
+
+    const { data: publicUrlData } = supabase.storage.from("forum-media").getPublicUrl(path);
+    coverImageUrl = publicUrlData.publicUrl;
+
+    const img = document.getElementById("cover-preview") as HTMLImageElement;
+    img.src = coverImageUrl;
+    document.getElementById("cover-preview-wrap")!.classList.remove("hidden");
+  });
+
+  let editorHandle: ReturnType<typeof createForumEditor> | null = null;
+
+  async function init() {
+    const admin = await requireAdmin();
+    if (!admin) return;
+
+    document.getElementById("checking")!.classList.add("hidden");
+    document.getElementById("editor-wrap")!.classList.remove("hidden");
+
+    // Reuses the forum editor as-is — a hidden budget label element it
+    // expects, since this page doesn't show the 3MB forum media limit
+    // (blog posts aren't subject to that constraint).
+    const hiddenBudgetLabel = document.createElement("p");
+    editorHandle = createForumEditor(document.getElementById("editor-container")!, hiddenBudgetLabel);
+  }
+
+  document.getElementById("post-form")!.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById("post-error")!;
+    const successEl = document.getElementById("post-success")!;
+    const publishBtn = document.getElementById("publish-btn") as HTMLButtonElement;
+    errorEl.classList.add("hidden");
+    successEl.classList.add("hidden");
+
+    if (!editorHandle) return;
+
+    const bodyText = editorHandle.editor.getText().trim();
+    if (!bodyText) {
+      errorEl.textContent = "Write some content first.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    const { body, imports } = tiptapToMdx(editorHandle.editor.getJSON());
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    const { data: { session } } = { data: { session: sessionData.session } };
+    if (!session) return;
+
+    publishBtn.disabled = true;
+    publishBtn.textContent = "Publishing…";
+
+    const { data, error } = await supabase.functions.invoke("publish-blog-post", {
+      body: {
+        locale: (document.getElementById("locale") as HTMLSelectElement).value,
+        slug: slugInput.value.trim(),
+        title: titleInput.value.trim(),
+        description: (document.getElementById("description") as HTMLTextAreaElement).value.trim(),
+        category: (document.getElementById("category") as HTMLSelectElement).value,
+        tags: (document.getElementById("tags") as HTMLInputElement).value.split(",").map((t) => t.trim()).filter(Boolean),
+        featuredImage: coverImageUrl,
+        featuredImageAlt: (document.getElementById("cover-alt") as HTMLInputElement).value.trim(),
+        bodyMdx: body,
+        imports,
+        publishDate: new Date().toISOString().slice(0, 10),
+      },
+    });
+
+    publishBtn.disabled = false;
+    publishBtn.textContent = "Publish Post";
+
+    if (error || data?.error) {
+      errorEl.textContent = data?.error || error?.message || "Something went wrong.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    successEl.textContent = "Published! It'll be live on the site in a minute or two, once the site finishes rebuilding.";
+    successEl.classList.remove("hidden");
+  });
+
+  init();
+</script>
