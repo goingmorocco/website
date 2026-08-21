@@ -36,8 +36,8 @@ const navItems = [
       <Logo height={80} />
     </a>
 
-    <!-- Search: always visible, not gated behind any breakpoint -->
-    <div class="min-w-0 flex-1 max-w-xs sm:max-w-sm lg:max-w-md">
+    <!-- Search: desktop only (2xl+) — mobile gets it back in the hamburger menu below -->
+    <div class="hidden min-w-0 flex-1 max-w-xs sm:max-w-sm lg:max-w-md 2xl:block">
       <SearchBox
         locale={locale}
         placeholder={strings.search.placeholder}
@@ -89,6 +89,15 @@ const navItems = [
   <!-- Mobile nav panel -->
   <nav id="mobile-nav" aria-label="Mobile navigation" class="hidden border-t border-sand-light bg-paper 2xl:hidden">
     <Container class="flex flex-col gap-1 py-3">
+      <div class="pb-2 pt-1">
+        <SearchBox
+          locale={locale}
+          placeholder={strings.search.placeholder}
+          noResults={strings.search.noResults}
+          label={strings.search.label}
+          instanceId="mobile"
+        />
+      </div>
       {navItems.map((item) => (
         <a
           href={item.href}
