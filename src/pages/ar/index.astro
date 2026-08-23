@@ -4,14 +4,13 @@ import Container from "../../components/Container.astro";
 import RouteDivider from "../../components/RouteDivider.astro";
 import PostCard from "../../components/PostCard.astro";
 import Hero from "../../components/home/Hero.astro";
+import ScrollReveal from "../../components/home/ScrollReveal.astro";
 import AboutMoroccoSection from "../../components/home/AboutMoroccoSection.astro";
 import DestinationsSection from "../../components/home/DestinationsSection.astro";
-import PlanYourTripSection from "../../components/home/PlanYourTripSection.astro";
 import ThingsToDoSection from "../../components/home/ThingsToDoSection.astro";
 import ItinerariesSection from "../../components/home/ItinerariesSection.astro";
 import StaySection from "../../components/home/StaySection.astro";
 import FoodSection from "../../components/home/FoodSection.astro";
-import TravelTipsSection from "../../components/home/TravelTipsSection.astro";
 import AboutGoingMoroccoSection from "../../components/home/AboutGoingMoroccoSection.astro";
 import ToolPromoSection from "../../components/home/ToolPromoSection.astro";
 import FAQSection from "../../components/home/FAQSection.astro";
@@ -45,57 +44,71 @@ const display = featured.length >= 3 ? featured : latest;
 >
   <Hero locale="ar" />
 
-  <AboutMoroccoSection locale="ar" />
+  <div data-reveal class="newspaper-home">
+    <AboutMoroccoSection locale="ar" />
+  </div>
 
-  <DestinationsSection locale="ar" />
+  <div data-reveal class="newspaper-home">
+    <DestinationsSection locale="ar" />
+  </div>
 
-  <ToolPromoSection
-    eyebrow="الرحلات الجوية"
-    title="ابحث عن رحلتك إلى المغرب"
-    description="قارن رحلات الطيران إلى مراكش والدار البيضاء وفاس وغيرها في بحث واحد. أداة الرحلات لدينا تجلب أسعاراً حقيقية من شركات الطيران لتجد أفضل صفقة وتحجز بثقة."
-    ctaText="ابحث عن رحلات"
-    ctaHref="https://booking.goingmorocco.com"
-    image="/images/home/flights.jpg"
-    imageAlt="طائرة تحلق في سماء صافية فوق المغرب"
-  />
+  <div data-reveal>
+    <ToolPromoSection
+      eyebrow="الرحلات الجوية"
+      title="ابحث عن رحلتك إلى المغرب"
+      description="قارن رحلات الطيران إلى مراكش والدار البيضاء وفاس وغيرها في بحث واحد. أداة الرحلات لدينا تجلب أسعاراً حقيقية من شركات الطيران لتجد أفضل صفقة وتحجز بثقة."
+      ctaText="ابحث عن رحلات"
+      ctaHref="https://booking.goingmorocco.com"
+      image="/images/home/flights.jpg"
+      imageAlt="طائرة تحلق في سماء صافية فوق المغرب"
+    />
+  </div>
 
-  <ThingsToDoSection locale="ar" />
-  <FoodSection locale="ar" />
-  <ItinerariesSection locale="ar" />
-  <PlanYourTripSection locale="ar" />
-  <TravelTipsSection locale="ar" />
-  <StaySection locale="ar" />
+  <div data-reveal class="newspaper-home"><ThingsToDoSection locale="ar" /></div>
+  <div data-reveal class="newspaper-home"><FoodSection locale="ar" /></div>
+  <div data-reveal class="newspaper-home"><ItinerariesSection locale="ar" /></div>
+  <div data-reveal class="newspaper-home"><StaySection locale="ar" /></div>
 
-  <ToolPromoSection
-    eyebrow="مخطط الرحلات"
-    title="دع الذكاء الاصطناعي يخطط رحلتك"
-    description="أخبر مخطط الذكاء الاصطناعي لدينا بعدد أيامك وميزانيتك وما تحب — الصحراء أو الجبال أو المدن أو الثلاثة معاً — واحصل على خطة رحلة جاهزة للمغرب خلال دقائق."
-    ctaText="خطط رحلتي"
-    ctaHref="https://planner.goingmorocco.com"
-    image="/images/home/itinerary.jpg"
-    imageAlt="خريطة ودفتر تخطيط لرحلة إلى المغرب"
-    reverse
-  />
+  <div data-reveal>
+    <ToolPromoSection
+      eyebrow="مخطط الرحلات"
+      title="دع الذكاء الاصطناعي يخطط رحلتك"
+      description="أخبر مخطط الذكاء الاصطناعي لدينا بعدد أيامك وميزانيتك وما تحب — الصحراء أو الجبال أو المدن أو الثلاثة معاً — واحصل على خطة رحلة جاهزة للمغرب خلال دقائق."
+      ctaText="خطط رحلتي"
+      ctaHref="https://planner.goingmorocco.com"
+      image="/images/home/itinerary.jpg"
+      imageAlt="خريطة ودفتر تخطيط لرحلة إلى المغرب"
+      reverse
+    />
+  </div>
 
-  <section class="py-16">
-    <Container>
-      <div class="flex items-baseline justify-between">
-        <h2 class="font-display text-2xl text-ink">{strings.home.latestPosts}</h2>
-        <a href="/ar/post/" class="text-sm font-medium text-royal hover:underline">{strings.home.viewAll}</a>
-      </div>
-      <RouteDivider class="my-6" />
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {display.map((post) => (
-          <PostCard post={post} categoryName={categoryName(post.data.category)} />
-        ))}
-      </div>
-      <div class="mt-10 text-center">
-        <Button href="/ar/post/" variant="outline">المزيد من المقالات</Button>
-      </div>
-    </Container>
-  </section>
+  <div data-reveal class="newspaper-home">
+    <section class="py-16">
+      <Container>
+        <div class="flex items-baseline justify-between">
+          <h2 class="font-display text-2xl text-ink">{strings.home.latestPosts}</h2>
+          <a href="/ar/post/" class="text-sm font-medium text-royal hover:underline">{strings.home.viewAll}</a>
+        </div>
+        <RouteDivider class="my-6" />
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {display.map((post) => (
+            <PostCard post={post} categoryName={categoryName(post.data.category)} />
+          ))}
+        </div>
+        <div class="mt-10 text-center">
+          <Button href="/ar/post/" variant="outline">المزيد من المقالات</Button>
+        </div>
+      </Container>
+    </section>
+  </div>
 
-  <FAQSection locale="ar" />
+  <div data-reveal class="newspaper-home">
+    <FAQSection locale="ar" />
+  </div>
 
-  <AboutGoingMoroccoSection locale="ar" />
+  <div data-reveal class="newspaper-home">
+    <AboutGoingMoroccoSection locale="ar" />
+  </div>
+
+  <ScrollReveal />
 </BaseLayout>
