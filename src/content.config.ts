@@ -75,4 +75,34 @@ const categories = defineCollection({
   }),
 });
 
-export const collections = { blog, categories };
+// --- Promoted forum posts -------------------------------------------------
+// Forum threads stay live in Supabase from the moment they're posted, but
+// after clearing a moderation window (see scripts/promote-forum-posts.mjs,
+// run on a schedule via GitHub Actions) get "promoted" into a real static
+// .mdx file here — same treatment as blog posts, so they're genuinely
+// crawlable and get correct social-share previews, unlike the
+// Supabase-rendered thread view.
+//
+// `threadId` links back to the live Supabase row so the static page can
+// still load comments/likes/reactions dynamically underneath the
+// statically-rendered post body.
+//
+// Not locale-split like blog/categories: forum threads aren't tagged by
+// language today, so promoted posts live in one shared namespace
+// regardless of which language they were written in.
+const forumPosts = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/forum-posts" }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      slug: z.string(),
+      publishDate: z.coerce.date(),
+      author: z.string(),
+      category: z.string(), // references categories collection `id`
+      featuredImage: z.union([image(), z.string().url()]).optional(),
+      threadId: z.string(),
+    }),
+});
+
+export const collections = { blog, categories, forumPosts };
