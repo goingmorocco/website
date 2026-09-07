@@ -30,14 +30,14 @@ const navItems = [
 ---
 
 <header class="sticky top-0 z-50 border-b border-sand-light bg-paper/90 backdrop-blur-sm">
-  <Container class="flex items-center justify-between gap-4 py-2">
+  <Container class="flex items-center justify-between gap-4 py-1">
     <!-- Logo -->
     <a href={localizedPath(locale, "/")} class="flex-shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal" aria-label="GoingMorocco home">
-      <Logo height={80} />
+      <Logo height={84} />
     </a>
 
     <!-- Search: desktop only (2xl+) — mobile gets it back in the hamburger menu below -->
-    <div class="hidden min-w-0 flex-1 max-w-xs sm:max-w-sm lg:max-w-md 2xl:block">
+    <div class="hidden min-w-0 flex-1 max-w-xs sm:max-w-sm lg:block lg:max-w-md">
       <SearchBox
         locale={locale}
         placeholder={strings.search.placeholder}
