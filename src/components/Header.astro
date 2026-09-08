@@ -30,10 +30,10 @@ const navItems = [
 ---
 
 <header class="sticky top-0 z-50 border-b border-sand-light bg-paper/90 backdrop-blur-sm">
-  <Container class="flex items-center justify-between gap-4 py-1">
+  <Container class="flex items-center justify-between gap-4 py-2">
     <!-- Logo -->
     <a href={localizedPath(locale, "/")} class="flex-shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal" aria-label="GoingMorocco home">
-      <Logo height={84} />
+      <Logo height={100} />
     </a>
 
     <!-- Search: desktop only (2xl+) — mobile gets it back in the hamburger menu below -->
@@ -61,9 +61,13 @@ const navItems = [
       ))}
     </nav>
 
-    <!-- Desktop: language switcher, notifications, account -->
+    <!-- Desktop: language switcher only (Bell/Account are always visible, see below) -->
     <div class="hidden items-center gap-3 2xl:flex">
       <LanguageSwitcher currentLocale={locale} alternateUrls={alternateUrls} />
+    </div>
+
+    <!-- Bell + Account: always visible, mobile and desktop alike -->
+    <div class="flex items-center gap-2">
       <NotificationBell locale={locale} />
       <AccountWidget locale={locale} />
     </div>
@@ -89,7 +93,7 @@ const navItems = [
   <!-- Mobile nav panel -->
   <nav id="mobile-nav" aria-label="Mobile navigation" class="hidden border-t border-sand-light bg-paper 2xl:hidden">
     <Container class="flex flex-col gap-1 py-3">
-      <div class="pb-2 pt-1">
+      <div class="pb-2 pt-1 lg:hidden">
         <SearchBox
           locale={locale}
           placeholder={strings.search.placeholder}
@@ -110,10 +114,6 @@ const navItems = [
       ))}
       <div class="mt-2 border-t border-sand-light pt-3">
         <LanguageSwitcher currentLocale={locale} alternateUrls={alternateUrls} />
-      </div>
-      <div class="mt-3 border-t border-sand-light pt-3">
-        <NotificationBell locale={locale} />
-        <AccountWidget locale={locale} />
       </div>
     </Container>
   </nav>
