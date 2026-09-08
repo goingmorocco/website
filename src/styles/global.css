@@ -1,15 +1,13 @@
 @import "tailwindcss";
 
 /*
-  Self-hosted via @fontsource (not Google Fonts CDN): one origin instead of
-  two (no extra DNS/TLS handshake to fonts.googleapis.com), works offline/in
-  restricted networks. Inter ships as a variable font (one file, all
-  weights); Almarai isn't published as a variable font on Google Fonts, so
-  it's loaded as two fixed weights (regular + bold) instead.
+  Self-hosted via @fontsource-variable (not Google Fonts CDN): one origin
+  instead of two (no extra DNS/TLS handshake to fonts.googleapis.com),
+  works offline/in restricted networks, and ships as a single variable
+  font per family instead of one file per weight.
 */
 @import "@fontsource-variable/inter/wght.css";
-@import "@fontsource/almarai/400.css";
-@import "@fontsource/almarai/700.css";
+@import "@fontsource-variable/cairo/wght.css";
 
 /*
   Design tokens for GoingMorocco.
@@ -32,15 +30,15 @@
      for here) — gold-text hits ~4.7:1, verified against both backgrounds. */
   --color-gold-text: #8a6a35;
 
-  /* Unified to Inter (English) / Almarai (Arabic) for both headings and
+  /* Unified to Inter (English) / Cairo (Arabic) for both headings and
      body text — no separate display/serif typeface anymore. */
   --font-display: "Inter Variable", system-ui, sans-serif;
   --font-body: "Inter Variable", system-ui, sans-serif;
 }
 
 html[lang="ar"] {
-  --font-display: "Almarai", system-ui, sans-serif;
-  --font-body: "Almarai", system-ui, sans-serif;
+  --font-display: "Cairo Variable", system-ui, sans-serif;
+  --font-body: "Cairo Variable", system-ui, sans-serif;
 }
 
 body {
@@ -204,4 +202,11 @@ details.rounded-2xl.border {
 }
 .newspaper-home a:hover {
   text-decoration: underline;
+}
+
+/* Homepage cards specifically get a subtle border back, on top of the
+   shadow + hover lift every card already has. */
+.newspaper-home .rounded-xl.border,
+.newspaper-home .rounded-2xl.border {
+  border: 1px solid var(--color-sand-light) !important;
 }
