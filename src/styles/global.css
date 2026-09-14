@@ -131,7 +131,40 @@ textarea:focus-visible {
 .prose-content img {
   border-radius: 1rem;
 }
-
+/*
+  Add this inside/near your existing .prose-content rules in global.css.
+  Tables were never styled — raw HTML tables from migrated posts were
+  rendering with bare browser defaults (no borders at all).
+  Logical properties throughout, matching the rest of .prose-content, so
+  this stays correct in RTL without a separate Arabic override.
+*/
+.prose-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-block: 1.5em;
+  font-size: 0.95em;
+}
+.prose-content th,
+.prose-content td {
+  border: 1px solid var(--color-sand-light);
+  padding: 0.6em 0.8em;
+  text-align: start;
+}
+.prose-content th {
+  background-color: var(--color-sand-light);
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.prose-content tbody tr:nth-child(even) {
+  background-color: color-mix(in srgb, var(--color-sand-light) 30%, transparent);
+}
+/* Tables often overflow narrow phone screens — this lets it scroll
+   horizontally instead of breaking the page layout. */
+.prose-content table {
+  display: block;
+  overflow-x: auto;
+}
 /*
   Responsive 16:9 box for YouTube embeds inside forum posts.
 */
