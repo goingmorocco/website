@@ -16,7 +16,7 @@ const { Content } = await render(post);
   locale="en"
   title={`${post.data.title} | GoingMorocco Forum`}
   description={post.data.description}
-  alternateUrls={{ en: `/forum/post/${post.data.slug}/`, ar: `/forum/post/${post.data.slug}/` }}
+  alternateUrls={{ en: `/forum/post/${post.data.slug}/` }}
 >
   <Container class="max-w-2xl py-16">
     <a href={`/forum/${post.data.category}/`} class="text-sm text-royal hover:underline">← {post.data.category}</a>
