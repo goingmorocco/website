@@ -52,8 +52,9 @@ import Container from "../../../components/Container.astro";
         </div>
 
         <div>
-          <label class="mb-1 block text-sm font-medium text-ink">Meta Description</label>
-          <textarea id="description" rows="2" maxlength="160" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm"></textarea>
+          <label class="mb-1 block text-sm font-medium text-ink">Meta Description <span class="text-red-500">*</span></label>
+          <textarea id="description" rows="2" maxlength="160" required class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm"></textarea>
+          <p class="mt-1 text-xs text-ink/50">Required — an empty description breaks the site build entirely, so this can't be skipped.</p>
         </div>
 
         <div>
@@ -182,6 +183,13 @@ import Container from "../../../components/Container.astro";
       return;
     }
 
+    const descriptionValue = (document.getElementById("description") as HTMLTextAreaElement).value.trim();
+    if (!descriptionValue) {
+      errorEl.textContent = "Meta description is required — an empty one breaks the entire site build.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
     const { body, imports } = tiptapToMdx(editorHandle.editor.getJSON());
 
     const { data: sessionData } = await supabase.auth.getSession();
@@ -196,7 +204,7 @@ import Container from "../../../components/Container.astro";
         locale: (document.getElementById("locale") as HTMLSelectElement).value,
         slug: slugInput.value.trim(),
         title: titleInput.value.trim(),
-        description: (document.getElementById("description") as HTMLTextAreaElement).value.trim(),
+        description: descriptionValue,
         category: (document.getElementById("category") as HTMLSelectElement).value,
         tags: (document.getElementById("tags") as HTMLInputElement).value.split(",").map((t) => t.trim()).filter(Boolean),
         featuredImage: coverImageUrl,

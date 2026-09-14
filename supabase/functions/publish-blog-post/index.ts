@@ -77,8 +77,8 @@ Deno.serve(async (req) => {
       author,
     } = body;
 
-    if (!slug || !title || !bodyMdx) {
-      return new Response(JSON.stringify({ error: "Missing required fields" }), { status: 400, headers: corsHeaders() });
+    if (!slug || !title || !bodyMdx || !description || !description.trim()) {
+      return new Response(JSON.stringify({ error: "Missing required fields (title, slug, description, and body are all required)" }), { status: 400, headers: corsHeaders() });
     }
 
     const frontmatter = [
