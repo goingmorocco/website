@@ -115,7 +115,7 @@ import Container from "../../../../components/Container.astro";
   import { mdxBodyToHtml } from "../../../../utils/mdxBodyToHtml";
   import { parseFrontmatter, parseTagsArray } from "../../../../utils/parseFrontmatter";
 
-  const GITHUB_REPO = "https://github.com/goingmorocco/website.git"; // ← update this once, same as the list page
+  const GITHUB_REPO = "goingmorocco/website";
 
   const params = new URLSearchParams(window.location.search);
   const locale = params.get("locale") as "en" | "ar";
