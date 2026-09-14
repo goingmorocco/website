@@ -1,0 +1,268 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Container from "../../../../components/Container.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="Edit Blog Post | Admin | GoingMorocco"
+  description="Edit an existing blog post."
+  alternateUrls={{ en: "/admin/blog-posts/edit/", ar: "/admin/blog-posts/edit/" }}
+>
+  <Container class="max-w-3xl py-16">
+    <div id="checking" class="text-center text-ink/50">Loading post…</div>
+    <div id="load-error" class="hidden text-center text-red-600"></div>
+
+    <div id="editor-wrap" class="hidden">
+      <a href="/admin/blog-posts/" class="text-sm text-royal hover:underline">← All Blog Posts</a>
+      <h1 class="mt-2 font-display text-3xl text-ink">Edit Blog Post</h1>
+      <p id="wix-notice" class="mt-1 hidden text-sm text-amber-700 bg-amber-50 rounded-lg p-3">
+        This post may use older formatting from the original Wix migration (like a gallery or CTA button) that
+        this editor doesn't fully support yet — those sections may not display correctly here. If you don't need
+        to touch them, consider editing this specific post directly on GitHub instead to be safe.
+      </p>
+
+      <form id="post-form" class="mt-8 space-y-6">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-ink">Language</label>
+            <input id="locale-display" type="text" disabled class="w-full rounded-lg border border-sand-light bg-sand-light/30 px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-ink">Category</label>
+            <select id="category" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm">
+              <option value="tourism">Going Morocco</option>
+              <option value="recipes">Moroccan Recipes</option>
+              <option value="handicrafts-products">Handicrafts & Products</option>
+              <option value="tours">Tours & Itineraries</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Title</label>
+          <input id="title" type="text" required maxlength="150" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm" />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">URL Slug</label>
+          <input id="slug-display" type="text" disabled class="w-full rounded-lg border border-sand-light bg-sand-light/30 px-3 py-2 text-sm" />
+          <p class="mt-1 text-xs text-ink/50">Slug can't be changed here — editing it would break the post's existing URL and any links to it.</p>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Meta Description <span class="text-red-500">*</span></label>
+          <textarea id="description" rows="2" maxlength="160" required class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm"></textarea>
+          <p class="mt-1 text-xs text-ink/50">Required — an empty description breaks the site build entirely.</p>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Tags (comma separated)</label>
+          <input id="tags" type="text" class="w-full rounded-lg border border-sand-light px-3 py-2 text-sm" />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Featured Image</label>
+          <div id="cover-preview-wrap" class="hidden mb-2">
+            <img id="cover-preview" class="h-40 w-full rounded-lg object-cover" alt="" />
+          </div>
+          <label class="inline-block cursor-pointer rounded-full border border-royal px-4 py-1.5 text-sm font-semibold text-royal hover:bg-royal hover:text-white">
+            Replace Image
+            <input id="cover-input" type="file" accept="image/*" class="hidden" />
+          </label>
+          <input id="cover-alt" type="text" placeholder="Image alt text" class="mt-2 w-full rounded-lg border border-sand-light px-3 py-2 text-sm" />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-ink">Body</label>
+          <div data-editor-toolbar class="mb-2 flex flex-wrap gap-1 rounded-t-lg border border-b-0 border-sand-light bg-sand-light/30 p-2">
+            <button type="button" data-action="bold" class="rounded px-2 py-1 text-sm font-bold hover:bg-sand-light">B</button>
+            <button type="button" data-action="italic" class="rounded px-2 py-1 text-sm italic hover:bg-sand-light">I</button>
+            <button type="button" data-action="underline" class="rounded px-2 py-1 text-sm underline hover:bg-sand-light">U</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="h2" class="rounded px-2 py-1 text-sm font-semibold hover:bg-sand-light">H2</button>
+            <button type="button" data-action="h3" class="rounded px-2 py-1 text-sm font-semibold hover:bg-sand-light">H3</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="bullet-list" class="rounded px-2 py-1 text-sm hover:bg-sand-light">• List</button>
+            <button type="button" data-action="ordered-list" class="rounded px-2 py-1 text-sm hover:bg-sand-light">1. List</button>
+            <button type="button" data-action="blockquote" class="rounded px-2 py-1 text-sm hover:bg-sand-light">" Quote</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="link" class="rounded px-2 py-1 text-sm hover:bg-sand-light">🔗 Link</button>
+            <button type="button" data-action="image" class="rounded px-2 py-1 text-sm hover:bg-sand-light">🖼 Image</button>
+            <span class="mx-1 w-px bg-sand-light"></span>
+            <button type="button" data-action="youtube" class="rounded px-2 py-1 text-sm hover:bg-sand-light">▶ YouTube</button>
+            <button type="button" data-action="instagram" class="rounded px-2 py-1 text-sm hover:bg-sand-light">📷 Instagram</button>
+            <button type="button" data-action="tiktok" class="rounded px-2 py-1 text-sm hover:bg-sand-light">🎵 TikTok</button>
+          </div>
+          <div id="editor-container" class="rounded-b-lg border border-sand-light bg-white px-4 py-3"></div>
+        </div>
+
+        <p id="post-error" class="hidden text-sm text-red-600"></p>
+        <p id="post-success" class="hidden text-sm text-green-700"></p>
+
+        <button type="submit" id="save-btn" class="rounded-full bg-royal px-6 py-2.5 text-sm font-semibold text-white hover:bg-royal-dark">
+          Save Changes
+        </button>
+      </form>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  import { requireAdmin } from "../../../../utils/adminGuard";
+  import { createForumEditor } from "../../../../editor/forumEditor";
+  import { tiptapToMdx } from "../../../../utils/tiptapToMdx";
+  import { mdxBodyToHtml } from "../../../../utils/mdxBodyToHtml";
+  import { parseFrontmatter, parseTagsArray } from "../../../../utils/parseFrontmatter";
+
+  const GITHUB_REPO = "https://github.com/goingmorocco/website.git"; // ← update this once, same as the list page
+
+  const params = new URLSearchParams(window.location.search);
+  const locale = params.get("locale") as "en" | "ar";
+  const slug = params.get("slug");
+  const filePath = `src/content/blog/${locale}/${slug}.mdx`;
+
+  let fileSha = "";
+  let extraFrontmatter: Record<string, string> = {};
+  let coverImageUrl = "";
+  let editorHandle: ReturnType<typeof createForumEditor> | null = null;
+
+  async function loadPost() {
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`);
+    if (!res.ok) {
+      document.getElementById("checking")!.classList.add("hidden");
+      const errEl = document.getElementById("load-error")!;
+      errEl.textContent = "Couldn't find this post on GitHub.";
+      errEl.classList.remove("hidden");
+      return;
+    }
+
+    const data = await res.json();
+    fileSha = data.sha;
+    const rawContent = atob(data.content.replace(/\n/g, ""));
+
+    const { frontmatter, extra, body } = parseFrontmatter(rawContent);
+    extraFrontmatter = extra;
+
+    (document.getElementById("locale-display") as HTMLInputElement).value = locale === "ar" ? "Arabic" : "English";
+    (document.getElementById("slug-display") as HTMLInputElement).value = slug ?? "";
+    (document.getElementById("title") as HTMLInputElement).value = frontmatter.title ?? "";
+    (document.getElementById("description") as HTMLTextAreaElement).value = frontmatter.description ?? "";
+    (document.getElementById("category") as HTMLSelectElement).value = frontmatter.category ?? "tourism";
+    (document.getElementById("tags") as HTMLInputElement).value = parseTagsArray(frontmatter.tags).join(", ");
+    (document.getElementById("cover-alt") as HTMLInputElement).value = frontmatter.featuredImageAlt ?? "";
+
+    if (frontmatter.featuredImage) {
+      coverImageUrl = frontmatter.featuredImage;
+      const img = document.getElementById("cover-preview") as HTMLImageElement;
+      img.src = coverImageUrl;
+      document.getElementById("cover-preview-wrap")!.classList.remove("hidden");
+    }
+
+    // Flag posts likely using components this editor doesn't fully support yet.
+    if (/<CTAButton|<Gallery/.test(body)) {
+      document.getElementById("wix-notice")!.classList.remove("hidden");
+    }
+
+    document.getElementById("checking")!.classList.add("hidden");
+    document.getElementById("editor-wrap")!.classList.remove("hidden");
+
+    const budgetLabel = document.createElement("p"); // unused here, editor expects the element to exist
+    editorHandle = createForumEditor(document.getElementById("editor-container")!, budgetLabel);
+    editorHandle.editor.commands.setContent(mdxBodyToHtml(body));
+  }
+
+  document.getElementById("cover-input")!.addEventListener("change", async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    const { supabase } = await import("../../../../utils/supabaseClient");
+    const { data: sessionData } = await supabase.auth.getSession();
+    const userId = sessionData.session!.user.id;
+    const path = `${userId}/blog-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
+    const { error } = await supabase.storage.from("forum-media").upload(path, file);
+    if (error) { alert(`Upload failed: ${error.message}`); return; }
+    const { data: publicUrlData } = supabase.storage.from("forum-media").getPublicUrl(path);
+    coverImageUrl = publicUrlData.publicUrl;
+    const img = document.getElementById("cover-preview") as HTMLImageElement;
+    img.src = coverImageUrl;
+    document.getElementById("cover-preview-wrap")!.classList.remove("hidden");
+  });
+
+  document.getElementById("post-form")!.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById("post-error")!;
+    const successEl = document.getElementById("post-success")!;
+    const saveBtn = document.getElementById("save-btn") as HTMLButtonElement;
+    errorEl.classList.add("hidden");
+    successEl.classList.add("hidden");
+
+    if (!editorHandle) return;
+
+    const bodyText = editorHandle.editor.getText().trim();
+    if (!bodyText) {
+      errorEl.textContent = "Post body can't be empty.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    const descriptionValue = (document.getElementById("description") as HTMLTextAreaElement).value.trim();
+    if (!descriptionValue) {
+      errorEl.textContent = "Meta description is required — an empty one breaks the entire site build.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    const { body, imports } = tiptapToMdx(editorHandle.editor.getJSON());
+
+    const { supabase } = await import("../../../../utils/supabaseClient");
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) return;
+
+    saveBtn.disabled = true;
+    saveBtn.textContent = "Saving…";
+
+    const { data, error } = await supabase.functions.invoke("publish-blog-post", {
+      body: {
+        locale,
+        slug,
+        title: (document.getElementById("title") as HTMLInputElement).value.trim(),
+        description: descriptionValue,
+        category: (document.getElementById("category") as HTMLSelectElement).value,
+        tags: (document.getElementById("tags") as HTMLInputElement).value.split(",").map((t) => t.trim()).filter(Boolean),
+        featuredImage: coverImageUrl,
+        featuredImageAlt: (document.getElementById("cover-alt") as HTMLInputElement).value.trim(),
+        bodyMdx: body,
+        imports,
+        publishDate: new Date().toISOString().slice(0, 10),
+        sha: fileSha,
+        extraFrontmatter,
+      },
+    });
+
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Save Changes";
+
+    if (error || data?.error) {
+      errorEl.textContent = data?.error || error?.message || "Something went wrong.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    successEl.textContent = "Saved! It'll be live in a minute or two once the site finishes rebuilding.";
+    successEl.classList.remove("hidden");
+  });
+
+  async function init() {
+    const admin = await requireAdmin();
+    if (!admin) return;
+
+    if (!locale || !slug) {
+      window.location.href = "/admin/blog-posts/";
+      return;
+    }
+
+    loadPost();
+  }
+
+  init();
+</script>

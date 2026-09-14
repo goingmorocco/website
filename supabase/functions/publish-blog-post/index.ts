@@ -75,11 +75,22 @@ Deno.serve(async (req) => {
       imports, // any "import X from ..." lines needed (YouTube/Instagram/TikTok embeds), from the browser
       publishDate, // "YYYY-MM-DD"
       author,
+      sha, // present when editing an existing file — GitHub requires the
+           // current file's blob SHA to update it in place, otherwise it
+           // rejects the write as a conflict. Omitted when creating new.
+      extraFrontmatter, // { [key]: rawYamlValue } — fields the edit form
+                        // doesn't have UI for (translationId, updatedDate,
+                        // featured, etc. from Wix-migrated posts) but must
+                        // still be preserved on save, not silently dropped.
     } = body;
 
     if (!slug || !title || !bodyMdx || !description || !description.trim()) {
       return new Response(JSON.stringify({ error: "Missing required fields (title, slug, description, and body are all required)" }), { status: 400, headers: corsHeaders() });
     }
+
+    const extraLines = extraFrontmatter
+      ? Object.entries(extraFrontmatter).map(([key, value]) => `${key}: ${value}`)
+      : [];
 
     const frontmatter = [
       "---",
@@ -94,6 +105,7 @@ Deno.serve(async (req) => {
       `featuredImage: "${featuredImage ?? ""}"`,
       `featuredImageAlt: "${String(featuredImageAlt ?? "").replace(/"/g, '\\"')}"`,
       "draft: false",
+      ...extraLines,
       "---",
     ].join("\n");
 
@@ -115,9 +127,10 @@ Deno.serve(async (req) => {
         "User-Agent": "GoingMorocco-Admin-Dashboard",
       },
       body: JSON.stringify({
-        message: `Add blog post: ${title}`,
+        message: sha ? `Edit blog post: ${title}` : `Add blog post: ${title}`,
         content: base64Content,
         branch: "main",
+        ...(sha ? { sha } : {}),
       }),
     });
 
