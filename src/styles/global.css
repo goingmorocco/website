@@ -139,7 +139,9 @@ textarea:focus-visible {
   this stays correct in RTL without a separate Arabic override.
 */
 .prose-content table {
+  display: block;
   width: 100%;
+  overflow-x: auto;
   border-collapse: collapse;
   margin-block: 1.5em;
   font-size: 0.95em;
@@ -158,12 +160,6 @@ textarea:focus-visible {
 }
 .prose-content tbody tr:nth-child(even) {
   background-color: color-mix(in srgb, var(--color-sand-light) 30%, transparent);
-}
-/* Tables often overflow narrow phone screens — this lets it scroll
-   horizontally instead of breaking the page layout. */
-.prose-content table {
-  display: block;
-  overflow-x: auto;
 }
 /*
   Responsive 16:9 box for YouTube embeds inside forum posts.
