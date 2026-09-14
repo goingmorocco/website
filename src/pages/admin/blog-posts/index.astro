@@ -40,13 +40,17 @@ import Container from "../../../components/Container.astro";
   import { requireAdmin } from "../../../utils/adminGuard";
 
   // Public read — no token needed, this is just your already-public repo content.
-  const GITHUB_REPO = "https://github.com/goingmorocco/website.git"; // ← update this once
+  const GITHUB_REPO = "goingmorocco/website";
 
   let allPosts: { en: string[]; ar: string[] } = { en: [], ar: [] };
+  let fetchErrors: string[] = [];
 
   async function fetchPostList(locale: "en" | "ar"): Promise<string[]> {
     const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/src/content/blog/${locale}`);
-    if (!res.ok) return [];
+    if (!res.ok) {
+      fetchErrors.push(`${locale}: GitHub API returned ${res.status} — check GITHUB_REPO is set correctly, or that you haven't hit GitHub's anonymous rate limit (60 requests/hour).`);
+      return [];
+    }
     const files = await res.json();
     return files
       .filter((f: any) => f.name.endsWith(".mdx") || f.name.endsWith(".md"))
@@ -102,6 +106,14 @@ import Container from "../../../components/Container.astro";
     allPosts = { en, ar };
 
     document.getElementById("posts-loading")!.classList.add("hidden");
+
+    if (fetchErrors.length > 0) {
+      document.getElementById("posts-loading")!.classList.remove("hidden");
+      document.getElementById("posts-loading")!.classList.add("text-red-600");
+      document.getElementById("posts-loading")!.textContent = fetchErrors.join(" ");
+      return;
+    }
+
     renderList("en", en);
     renderList("ar", ar);
   }
