@@ -112,10 +112,10 @@ const structuredData = [
 
       {isRemoteImage ? (
         <img
-          src={wixResizedUrl(post.data.featuredImage as string, 1600, 900, 80)}
+          src={wixResizedUrl(post.data.featuredImage as string, 1600, 1067, 80)}
           alt={post.data.featuredImageAlt}
           width="1200"
-          height="675"
+          height="800"
           class="w-full rounded-2xl object-cover"
           loading="eager"
           decoding="async"
@@ -125,7 +125,7 @@ const structuredData = [
           src={post.data.featuredImage as ImageMetadata}
           alt={post.data.featuredImageAlt}
           width={1200}
-          height={675}
+          height={800}
           class="w-full rounded-2xl object-cover"
           priority
         />
