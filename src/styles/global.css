@@ -129,7 +129,16 @@ textarea:focus-visible {
   font-size: 0.9em;
 }
 .prose-content img {
+  max-width: 100%;
+  height: auto;
   border-radius: 1rem;
+}
+.prose-content iframe,
+.prose-content video {
+  max-width: 100%;
+}
+.prose-content {
+  overflow-wrap: break-word;
 }
 /*
   Add this inside/near your existing .prose-content rules in global.css.
