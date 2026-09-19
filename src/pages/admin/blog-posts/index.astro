@@ -21,8 +21,16 @@ import Container from "../../../components/Container.astro";
         </a>
       </div>
 
-      <input id="search" type="text" placeholder="Filter by slug…"
-        class="mt-4 w-full max-w-sm rounded-lg border border-sand-light px-3 py-2 text-sm" />
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <input id="search" type="text" placeholder="Filter by slug or title…"
+          class="w-full max-w-sm rounded-lg border border-sand-light px-3 py-2 text-sm" />
+
+        <select id="status-filter" class="rounded-lg border border-sand-light px-3 py-2 text-sm text-ink/70">
+          <option value="all">All posts</option>
+          <option value="published">Published only</option>
+          <option value="draft">Drafts only</option>
+        </select>
+      </div>
 
       <div class="mt-6 flex gap-2 border-b border-sand-light">
         <button data-tab="en" class="tab-btn border-b-2 border-royal px-3 py-2 text-sm font-medium text-royal">English</button>
@@ -38,42 +46,75 @@ import Container from "../../../components/Container.astro";
 
 <script>
   import { requireAdmin } from "../../../utils/adminGuard";
+  import { supabase } from "../../../utils/supabaseClient";
 
-  // Public read — no token needed, this is just your already-public repo content.
-  const GITHUB_REPO = "goingmorocco/website";
-
-  let allPosts: { en: string[]; ar: string[] } = { en: [], ar: [] };
-  let fetchErrors: string[] = [];
-
-  async function fetchPostList(locale: "en" | "ar"): Promise<string[]> {
-    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/src/content/blog/${locale}`);
-    if (!res.ok) {
-      fetchErrors.push(`${locale}: GitHub API returned ${res.status} — check GITHUB_REPO is set correctly, or that you haven't hit GitHub's anonymous rate limit (60 requests/hour).`);
-      return [];
-    }
-    const files = await res.json();
-    return files
-      .filter((f: any) => f.name.endsWith(".mdx") || f.name.endsWith(".md"))
-      .map((f: any) => f.name.replace(/\.mdx?$/, ""))
-      .sort();
+  interface PostRow {
+    slug: string;
+    title: string;
+    category: string;
+    draft: boolean;
   }
 
-  function renderList(locale: "en" | "ar", slugs: string[]) {
+  let allPosts: { en: PostRow[]; ar: PostRow[] } = { en: [], ar: [] };
+
+  async function fetchPostList(): Promise<{ en: PostRow[]; ar: PostRow[] } | null> {
+    const { data, error } = await supabase.functions.invoke("list-blog-posts");
+    if (error) {
+      document.getElementById("posts-loading")!.classList.remove("hidden");
+      document.getElementById("posts-loading")!.classList.add("text-red-600");
+      document.getElementById("posts-loading")!.textContent = `Couldn't load posts: ${error.message}`;
+      return null;
+    }
+    return data as { en: PostRow[]; ar: PostRow[] };
+  }
+
+  function escapeHtml(text: string): string {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function currentStatusFilter(): "all" | "published" | "draft" {
+    return (document.getElementById("status-filter") as HTMLSelectElement).value as "all" | "published" | "draft";
+  }
+
+  function applyFilters(posts: PostRow[], query: string, status: "all" | "published" | "draft"): PostRow[] {
+    return posts.filter((p) => {
+      const matchesQuery = !query || p.slug.toLowerCase().includes(query) || p.title.toLowerCase().includes(query);
+      const matchesStatus = status === "all" || (status === "draft" ? p.draft : !p.draft);
+      return matchesQuery && matchesStatus;
+    });
+  }
+
+  function renderList(locale: "en" | "ar", posts: PostRow[]) {
     const container = document.getElementById(`tab-${locale}`)!;
-    if (slugs.length === 0) {
+    if (posts.length === 0) {
       container.innerHTML = `<p class="text-sm text-ink/50">No posts found.</p>`;
       return;
     }
-    container.innerHTML = slugs
+    container.innerHTML = posts
       .map(
-        (slug) => `
-        <a href="/admin/blog-posts/edit/?locale=${locale}&slug=${encodeURIComponent(slug)}"
-           class="block rounded-xl border border-sand-light bg-white p-4 text-sm text-ink hover:border-royal hover:text-royal">
-          ${slug}
+        (post) => `
+        <a href="/admin/blog-posts/edit/?locale=${locale}&slug=${encodeURIComponent(post.slug)}"
+           class="flex items-center justify-between gap-3 rounded-xl border border-sand-light bg-white p-4 text-sm text-ink hover:border-royal hover:text-royal">
+          <span class="min-w-0">
+            <span class="block truncate font-medium">${escapeHtml(post.title)}</span>
+            <span class="block truncate text-xs text-ink/40">${escapeHtml(post.slug)}${post.category ? ` · ${escapeHtml(post.category)}` : ""}</span>
+          </span>
+          ${
+            post.draft
+              ? `<span class="shrink-0 rounded-full bg-sand-light px-2.5 py-1 text-xs font-semibold text-sand-dark">Draft</span>`
+              : `<span class="shrink-0 rounded-full bg-royal/10 px-2.5 py-1 text-xs font-semibold text-royal">Published</span>`
+          }
         </a>
       `
       )
       .join("");
+  }
+
+  function renderAll() {
+    const query = (document.getElementById("search") as HTMLInputElement).value.toLowerCase();
+    const status = currentStatusFilter();
+    renderList("en", applyFilters(allPosts.en, query, status));
+    renderList("ar", applyFilters(allPosts.ar, query, status));
   }
 
   document.querySelectorAll<HTMLButtonElement>(".tab-btn").forEach((btn) => {
@@ -89,11 +130,8 @@ import Container from "../../../components/Container.astro";
     });
   });
 
-  document.getElementById("search")!.addEventListener("input", (e) => {
-    const query = (e.target as HTMLInputElement).value.toLowerCase();
-    renderList("en", allPosts.en.filter((s) => s.includes(query)));
-    renderList("ar", allPosts.ar.filter((s) => s.includes(query)));
-  });
+  document.getElementById("search")!.addEventListener("input", renderAll);
+  document.getElementById("status-filter")!.addEventListener("change", renderAll);
 
   async function init() {
     const admin = await requireAdmin();
@@ -102,20 +140,12 @@ import Container from "../../../components/Container.astro";
     document.getElementById("checking")!.classList.add("hidden");
     document.getElementById("admin-content")!.classList.remove("hidden");
 
-    const [en, ar] = await Promise.all([fetchPostList("en"), fetchPostList("ar")]);
-    allPosts = { en, ar };
+    const posts = await fetchPostList();
+    if (!posts) return;
 
+    allPosts = posts;
     document.getElementById("posts-loading")!.classList.add("hidden");
-
-    if (fetchErrors.length > 0) {
-      document.getElementById("posts-loading")!.classList.remove("hidden");
-      document.getElementById("posts-loading")!.classList.add("text-red-600");
-      document.getElementById("posts-loading")!.textContent = fetchErrors.join(" ");
-      return;
-    }
-
-    renderList("en", en);
-    renderList("ar", ar);
+    renderAll();
   }
 
   init();
