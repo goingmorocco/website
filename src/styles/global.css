@@ -1,5 +1,4 @@
 @import "tailwindcss";
-/* touch: re-trigger build to confirm overflow fix is live */
 
 /*
   Self-hosted via @fontsource-variable (not Google Fonts CDN): one origin
@@ -46,6 +45,32 @@ body {
   background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-body);
+}
+
+/*
+  Hard, global backstop against horizontal page overflow. Root-caused on the
+  Marrakech airport-transfer post: on mobile, a page grid without an explicit
+  0-minimum column track let an oversized child (a <Gallery> image at its
+  original 2560px Wix width) grow the grid's implicit column past the
+  viewport width. Mobile browsers respond by laying the page out at that
+  wider width and shrinking it to fit the screen -- the "zoomed
+  out/desktop mode" look, with tiny text and a banner that doesn't fill
+  the screen.
+
+  The real fix is at the source (see src/pages/post/[slug].astro and its ar
+  counterpart, which now give their grid an explicit minmax(0,1fr) track at
+  every breakpoint, not just lg:). This rule is the last-resort net: even if
+  some future component, embed, or forgotten page never gets that treatment,
+  the page itself can never render wider than the device, because the
+  scrolling box the browser actually sizes against is clamped here.
+*/
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /*
@@ -130,16 +155,21 @@ textarea:focus-visible {
   font-size: 0.9em;
 }
 .prose-content img {
+  border-radius: 1rem;
   max-width: 100%;
   height: auto;
-  border-radius: 1rem;
 }
-.prose-content iframe,
-.prose-content video {
+/*
+  Belt-and-suspenders for the mobile overflow fix above: every direct
+  content component (Gallery's own inner grid, an embed, a raw table)
+  gets min-width: 0 so it can never resist being sized down to the
+  article column, and max-width: 100% so nothing can declare itself
+  wider than its container regardless of any HTML width= attribute
+  carried over from the original Wix export.
+*/
+.prose-content > * {
+  min-width: 0;
   max-width: 100%;
-}
-.prose-content {
-  overflow-wrap: break-word;
 }
 /*
   Add this inside/near your existing .prose-content rules in global.css.

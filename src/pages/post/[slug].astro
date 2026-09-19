@@ -82,8 +82,35 @@ const structuredData = [
     <Breadcrumbs items={breadcrumbItems} />
   </Container>
 
-  <Container class="grid gap-10 pb-16 lg:grid-cols-[minmax(0,1fr)_280px]">
-    <article>
+  <!--
+    FIX (mobile overflow / "desktop mode" bug): the grid-template-columns
+    below was previously only declared at the `lg:` breakpoint
+    (`lg:grid-cols-[minmax(0,1fr)_280px]`), which meant that on mobile this
+    grid had NO explicit column track at all. An implicit/auto grid track
+    has no enforced minimum-width of 0 -- it happily grows to fit its
+    largest child's intrinsic content size. A post using <Gallery> with a
+    2560px-wide source image (or any other oversized element) would force
+    that implicit column -- and with it the whole page -- wider than the
+    device viewport. Mobile browsers respond to that by rendering the page
+    at its full (wider) layout width and shrinking it to fit the screen,
+    which is exactly the "zoomed out / desktop mode" symptom reported.
+
+    `grid-cols-1` makes Tailwind emit `grid-template-columns: repeat(1,
+    minmax(0, 1fr))` at the base breakpoint, which -- like the `lg:` rule
+    already did for desktop -- gives the column a real 0 minimum, so it can
+    never grow past its container no matter how wide its content wants to
+    be.
+  -->
+  <Container class="grid grid-cols-1 gap-10 overflow-x-hidden pb-16 lg:grid-cols-[minmax(0,1fr)_280px]">
+    <!--
+      Second layer of defense: `min-w-0` on the grid item itself.
+      Flex/grid children default to `min-width: auto`, which (independent of
+      the parent track's own minmax) lets a child's oversized intrinsic
+      content push it wider than its track. `min-w-0` here removes that
+      loophole so `<article>` can never be wider than the column it lives in,
+      whatever a future component ends up embedding.
+    -->
+    <article class="min-w-0 overflow-x-hidden">
       <header class="mb-6">
         {categoryEntry && (
           <a href={`/categories/${categoryEntry.data.id}/`} class="text-xs font-semibold uppercase tracking-wide text-gold-text">
@@ -116,7 +143,7 @@ const structuredData = [
           alt={post.data.featuredImageAlt}
           width="1200"
           height="800"
-          class="w-full rounded-2xl object-cover"
+          class="w-full max-w-full rounded-2xl object-cover"
           loading="eager"
           decoding="async"
         />
@@ -126,12 +153,19 @@ const structuredData = [
           alt={post.data.featuredImageAlt}
           width={1200}
           height={800}
-          class="w-full rounded-2xl object-cover"
+          class="w-full max-w-full rounded-2xl object-cover"
           priority
         />
       )}
 
-      <div class="prose-content mt-8 max-w-none">
+      <!--
+        Third layer: min-w-0 again on the direct prose wrapper, plus
+        overflow-x-hidden as a hard clip of last resort. Anything a content
+        component does internally (Gallery's own grid, a raw HTML table,
+        a future embed) is now guaranteed to be clipped here rather than
+        propagating up into the page.
+      -->
+      <div class="prose-content mt-8 min-w-0 max-w-none overflow-x-hidden">
         <Content />
       </div>
 
