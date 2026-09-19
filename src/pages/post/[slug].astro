@@ -9,6 +9,7 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import TableOfContents from "../../components/TableOfContents.astro";
 import PostNav from "../../components/PostNav.astro";
 import RelatedPosts from "../../components/RelatedPosts.astro";
+import Lightbox from "../../components/Lightbox.astro";
 import { t, formatDate, localizedPath } from "../../utils/i18n";
 import { sortByDateDesc, getAdjacentPosts, getRelatedPosts } from "../../utils/posts";
 import { getReadingTime } from "../../utils/reading-time";
@@ -110,7 +111,17 @@ const structuredData = [
       loophole so `<article>` can never be wider than the column it lives in,
       whatever a future component ends up embedding.
     -->
-    <article class="min-w-0 overflow-x-hidden">
+    <!--
+      order-2 on mobile / order-1 on desktop: on mobile the grid is a single
+      stacked column (see grid-cols-1 above), so without an explicit order
+      the TOC <aside> below renders AFTER the whole article, since it comes
+      second in the markup. order-2 here + order-1 on the <aside> puts the
+      TOC first on mobile. At the lg: breakpoint both reset to order-1/
+      order-2 (their natural document order), which is what makes the
+      existing 2-column desktop placement (article in the wide column,
+      TOC in the 280px sidebar column) work in the first place.
+    -->
+    <article class="order-2 min-w-0 overflow-x-hidden lg:order-1">
       <header class="mb-6">
         {categoryEntry && (
           <a href={`/categories/${categoryEntry.data.id}/`} class="text-xs font-semibold uppercase tracking-wide text-gold-text">
@@ -180,7 +191,7 @@ const structuredData = [
       </div>
     </article>
 
-    <aside class="lg:sticky lg:top-20 lg:self-start">
+    <aside class="order-1 lg:order-2 lg:sticky lg:top-20 lg:self-start">
       <TableOfContents headings={headings} locale={locale} />
     </aside>
   </Container>
@@ -188,4 +199,6 @@ const structuredData = [
   <Container class="pb-16">
     <RelatedPosts locale={locale} posts={related} categoryName={categoryName} />
   </Container>
+
+  <Lightbox />
 </BaseLayout>

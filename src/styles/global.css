@@ -73,6 +73,14 @@ body {
   max-width: 100vw;
 }
 
+/* Locks background scroll while the image lightbox (Lightbox.astro) is
+   open. Only overflow-y is touched -- overflow-x stays hidden either way
+   per the rule above, so this can't reintroduce the horizontal-overflow
+   bug it sits right next to. */
+body.lightbox-open {
+  overflow-y: hidden;
+}
+
 /*
   Baseline focus visibility for every interactive element, so accessibility
   doesn't depend on remembering to add focus-visible: utility classes to

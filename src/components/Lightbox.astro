@@ -1,0 +1,153 @@
+---
+// Lightweight, dependency-free image lightbox for blog post content images.
+// Works by scanning for images inside .prose-content after the page loads,
+// rather than wrapping every <img> individually -- so it applies uniformly
+// to markdown-rendered images, MDX components (Gallery, etc.), and the
+// featured image with zero changes needed to any of those files.
+//
+// Include this once per post page (see [slug].astro), anywhere inside
+// <BaseLayout>.
+---
+
+<div
+  id="lightbox-overlay"
+  class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Image viewer"
+>
+  <button
+    id="lightbox-close"
+    type="button"
+    aria-label="Close image viewer"
+    class="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-3xl leading-none text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+  >
+    &times;
+  </button>
+
+  <button
+    id="lightbox-prev"
+    type="button"
+    aria-label="Previous image"
+    class="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white sm:left-4"
+  >
+    &#8249;
+  </button>
+
+  <img id="lightbox-image" src="" alt="" class="max-h-[90vh] max-w-full rounded-lg object-contain" />
+
+  <button
+    id="lightbox-next"
+    type="button"
+    aria-label="Next image"
+    class="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white sm:right-4"
+  >
+    &#8250;
+  </button>
+
+  <div
+    id="lightbox-counter"
+    class="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-sm text-white"
+  >
+  </div>
+</div>
+
+<style>
+  /* Content images get a visual affordance so it's obvious they're clickable. */
+  :global(.prose-content img) {
+    cursor: zoom-in;
+  }
+</style>
+
+<script>
+  function initLightbox() {
+    const overlay = document.getElementById("lightbox-overlay");
+    const imageEl = document.getElementById("lightbox-image") as HTMLImageElement | null;
+    const closeBtn = document.getElementById("lightbox-close");
+    const prevBtn = document.getElementById("lightbox-prev");
+    const nextBtn = document.getElementById("lightbox-next");
+    const counterEl = document.getElementById("lightbox-counter");
+    if (!overlay || !imageEl || !closeBtn || !prevBtn || !nextBtn || !counterEl) return;
+
+    // Only images inside the article body, and only ones not already acting
+    // as a link -- an image wrapped in <a> keeps its normal link behavior
+    // instead of opening the lightbox, in case any post intentionally uses
+    // a linked image (e.g. an affiliate banner).
+    const images = Array.from(document.querySelectorAll<HTMLImageElement>(".prose-content img")).filter(
+      (img) => !img.closest("a")
+    );
+
+    if (images.length === 0) return;
+
+    let currentIndex = 0;
+    let lastFocused: HTMLElement | null = null;
+
+    function openAt(index: number) {
+      currentIndex = index;
+      const img = images[currentIndex];
+      imageEl!.src = img.currentSrc || img.src;
+      imageEl!.alt = img.alt || "";
+      const multi = images.length > 1;
+      counterEl!.textContent = multi ? `${currentIndex + 1} / ${images.length}` : "";
+      prevBtn!.classList.toggle("hidden", !multi);
+      nextBtn!.classList.toggle("hidden", !multi);
+      lastFocused = document.activeElement as HTMLElement;
+      overlay!.classList.remove("hidden");
+      overlay!.classList.add("flex");
+      document.body.classList.add("lightbox-open");
+      closeBtn!.focus();
+    }
+
+    function close() {
+      overlay!.classList.add("hidden");
+      overlay!.classList.remove("flex");
+      document.body.classList.remove("lightbox-open");
+      imageEl!.src = "";
+      lastFocused?.focus();
+    }
+
+    function showPrev() {
+      openAt((currentIndex - 1 + images.length) % images.length);
+    }
+    function showNext() {
+      openAt((currentIndex + 1) % images.length);
+    }
+
+    images.forEach((img, index) => {
+      img.setAttribute("tabindex", "0");
+      img.setAttribute("role", "button");
+      img.setAttribute("aria-label", "Open image full size");
+      img.addEventListener("click", () => openAt(index));
+      img.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openAt(index);
+        }
+      });
+    });
+
+    closeBtn.addEventListener("click", close);
+    prevBtn.addEventListener("click", showPrev);
+    nextBtn.addEventListener("click", showNext);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) close();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (overlay!.classList.contains("hidden")) return;
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowLeft") showPrev();
+      if (e.key === "ArrowRight") showNext();
+    });
+  }
+
+  // Astro ships this as a static page; the script runs once per page load,
+  // so just wait for the DOM to be ready rather than needing a framework
+  // client directive.
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initLightbox);
+  } else {
+    initLightbox();
+  }
+</script>
