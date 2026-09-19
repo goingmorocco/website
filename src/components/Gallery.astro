@@ -19,7 +19,7 @@ const { images, columns = 3 } = Astro.props;
 const colClass = { 2: "sm:grid-cols-2", 3: "sm:grid-cols-3", 4: "sm:grid-cols-4" }[columns];
 ---
 
-<div class:list={["not-prose my-6 grid grid-cols-2 gap-2", colClass]}>
+<div class:list={["not-prose my-6 grid grid-cols-2 gap-2 overflow-hidden", colClass]}>
   {images.map((img) => (
     <img
       src={img.src}
@@ -28,7 +28,7 @@ const colClass = { 2: "sm:grid-cols-2", 3: "sm:grid-cols-3", 4: "sm:grid-cols-4"
       height={img.height}
       loading="lazy"
       decoding="async"
-      class="aspect-square w-full rounded-xl object-cover"
+      class="aspect-square w-full min-w-0 max-w-full rounded-xl object-cover"
     />
   ))}
 </div>
