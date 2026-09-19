@@ -7,7 +7,7 @@ import Container from "../../../components/Container.astro";
   locale="en"
   title="Forum Post | GoingMorocco"
   description="Read this GoingMorocco forum post."
-  alternateUrls={{ en: "/forum/thread/", ar: "/ar/forum/thread/" }}
+  alternateUrls={{ en: "/forum/thread/" }}
 >
   <Container class="max-w-2xl py-16">
     <div id="thread-loading" class="text-center text-ink/50">Loading post…</div>
@@ -84,6 +84,33 @@ import Container from "../../../components/Container.astro";
 
   const params = new URLSearchParams(window.location.search);
   const slug = params.get("slug");
+
+  // ---------- SEO tags ----------
+  // This page is a single static template shared by every forum thread, so
+  // Astro can't bake a per-thread canonical/hreflang into the build (there's
+  // no live request at build time to read the ?slug= from). BaseLayout falls
+  // back to the bare "/forum/thread/" path, which doesn't match the real,
+  // crawled URL and trips both the "canonical points elsewhere" and
+  // "self-referential alternate is missing" checks. Fix it here, as soon as
+  // the real slug is known, before anything else runs.
+  function updateSeoTagsForSlug(threadSlug: string) {
+    const canonicalHref = `https://goingmorocco.com/forum/thread/?slug=${encodeURIComponent(threadSlug)}`;
+
+    const canonicalEl = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (canonicalEl) canonicalEl.href = canonicalHref;
+
+    // Covers hreflang="en" and hreflang="x-default" alike -- both should
+    // point at this exact thread URL, which also satisfies the
+    // self-referential requirement for "en".
+    document.querySelectorAll<HTMLLinkElement>('link[rel="alternate"][hreflang]').forEach((el) => {
+      el.href = canonicalHref;
+    });
+
+    const ogUrlEl = document.querySelector<HTMLMetaElement>('meta[property="og:url"]');
+    if (ogUrlEl) ogUrlEl.content = canonicalHref;
+  }
+
+  if (slug) updateSeoTagsForSlug(slug);
 
   const loadingEl = document.getElementById("thread-loading")!;
   const notFoundEl = document.getElementById("thread-not-found")!;

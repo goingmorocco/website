@@ -287,3 +287,42 @@ details.rounded-2xl.border {
 .newspaper-home .rounded-2xl.border {
   border: 1px solid var(--color-sand-light) !important;
 }
+
+/* ============================================================
+   Homepage card link — the underlined "Read the guide" text link
+   in Card.astro's reserved footer slot (only rendered when a card
+   provides a `link`). Underlined at rest per spec; hover animates
+   the underline weight/spacing and nudges the arrow right.
+   ============================================================ */
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--color-royal);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: gap 0.2s ease, text-decoration-thickness 0.2s ease, color 0.2s ease;
+}
+.card-link:hover {
+  color: var(--color-royal-dark);
+  text-decoration-thickness: 2px;
+  gap: 0.5rem;
+}
+.card-link-arrow {
+  flex: none;
+  transition: transform 0.2s ease;
+}
+.card-link:hover .card-link-arrow {
+  transform: translateX(3px);
+}
+/* .newspaper-home forces every element to black text (see the "Newspaper
+   theme" rule above) — keep this link on-brand royal blue there too. */
+.newspaper-home .card-link {
+  color: var(--color-royal) !important;
+}
+.newspaper-home .card-link:hover {
+  color: var(--color-royal-dark) !important;
+}

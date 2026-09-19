@@ -6,6 +6,8 @@ interface CardData {
   description: string;
   image: string;
   imageAlt: string;
+  link?: string;
+  linkText?: string;
 }
 
 interface Props {
@@ -27,7 +29,7 @@ const colClass = { 2: "sm:grid-cols-2", 3: "sm:grid-cols-2 lg:grid-cols-3", 4: "
     </div>
     <div class:list={["mt-10 grid grid-cols-1 gap-6", colClass]}>
       {cards.map((card) => (
-        <Card title={card.title} description={card.description} image={card.image} imageAlt={card.imageAlt} />
+        <Card title={card.title} description={card.description} image={card.image} imageAlt={card.imageAlt} link={card.link} linkText={card.linkText} />
       ))}
     </div>
   </div>

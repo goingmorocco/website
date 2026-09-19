@@ -8,9 +8,11 @@ interface Props {
   image?: string;
   imageAlt?: string;
   icon?: string;
+  link?: string;
+  linkText?: string;
 }
 
-const { title, description, image, imageAlt = "", icon } = Astro.props;
+const { title, description, image, imageAlt = "", icon, link, linkText = "Read the guide" } = Astro.props;
 ---
 
 <article class="flex h-full flex-col overflow-hidden rounded-2xl border border-sand-light bg-white shadow-sm transition-shadow hover:shadow-md">
@@ -29,10 +31,15 @@ const { title, description, image, imageAlt = "", icon } = Astro.props;
     {icon && <span class="mb-2 text-2xl" aria-hidden="true">{icon}</span>}
     <h3 class="font-display text-lg text-ink">{title}</h3>
     <p class="mt-2 flex-1 text-sm leading-relaxed text-ink/70">{description}</p>
-    {/* Reserved space for a future CTA / Read More / Explore button or link
-        (to a category, blog post, or destination page). Intentionally left
-        empty for now so adding one later doesn't require touching this
-        component's layout. */}
-    <div class="mt-4 empty:hidden"></div>
+    {link && (
+      <div class="mt-4">
+        <a href={link} class="card-link">
+          {linkText}
+          <svg class="card-link-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7h9.5M8 3.5 11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    )}
   </div>
 </article>
